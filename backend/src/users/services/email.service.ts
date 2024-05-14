@@ -13,7 +13,7 @@ export class EmailService {
       secure: true,
       auth: {
         user: 'skillsharehub17@gmail.com',
-        pass: 'kbau ibeu snrr anhx',
+        pass: process.env.EMAIL_PASSWORD,
       },
     });
   }
