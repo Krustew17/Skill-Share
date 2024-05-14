@@ -1,16 +1,17 @@
 import { UsersModule } from './users/users.module';
 import { User } from './users/users.entity';
-import { UsersController } from './users/controllers/users.controller';
-import { UserService } from './users/services/user.service';
+import { Job } from './jobs/jobs.entity';
+import { JwtMiddleware } from './users/middlewares/middlewares.middleware';
 
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { JwtModule } from '@nestjs/jwt';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { JobsModule } from './jobs/jobs.module';
+import { JwtModule } from '@nestjs/jwt';
+
 import * as dotenv from 'dotenv';
-import { EmailService } from './users/services/email.service';
 
 dotenv.config();
 
@@ -27,14 +28,19 @@ dotenv.config();
       synchronize: true,
       autoLoadEntities: true,
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Job]),
     UsersModule,
+    JobsModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1d' },
     }),
   ],
-  controllers: [AppController, UsersController],
-  providers: [AppService, UserService, EmailService],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(JwtMiddleware).forRoutes('users/fetch');
+  }
+}

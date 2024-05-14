@@ -1,16 +1,18 @@
+import { Request } from 'express';
 import { loginPayloadDto } from '../dto/login.dto';
 import { registerUserDto } from '../dto/register.dto';
 import { UserService } from '../services/user.service';
 
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UserService) {}
 
   @Get('fetch')
-  getUsers() {
-    return { message: 'Returned all users' };
+  async getAllUsers(@Req() req: Request) {
+    const user = req['user'];
+    return this.userService.getAllUsers();
   }
 
   @Post('register')
@@ -20,7 +22,6 @@ export class UsersController {
 
   @Get('verify-email')
   async verifyEmail(@Query('token') token: string) {
-    console.log(token);
     return this.userService.verifyUser(token);
   }
   @Post('login')
