@@ -1,6 +1,8 @@
+import { loginPayloadDto } from '../dto/login.dto';
+import { registerUserDto } from '../dto/register.dto';
 import { UserService } from '../services/user.service';
 
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
@@ -11,11 +13,19 @@ export class UsersController {
     return { message: 'Returned all users' };
   }
 
-  @Post('create')
-  createUser(
-    @Body() { username, password }: { username: string; password: string },
-  ) {
-    return this.userService.Createuser(username, password);
+  @Post('register')
+  createUser(@Body() userData: registerUserDto) {
+    return this.userService.createUser(userData);
+  }
+
+  @Get('verify-email')
+  async verifyEmail(@Query('token') token: string) {
+    console.log(token);
+    return this.userService.verifyUser(token);
+  }
+  @Post('login')
+  loginUser(@Body() AuthPayload: loginPayloadDto) {
+    return this.userService.loginUser(AuthPayload);
   }
 
   @Get('getuser')
