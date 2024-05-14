@@ -4,13 +4,15 @@ import { UsersController } from './users/controllers/users.controller';
 import { UserService } from './users/services/user.service';
 
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
 import * as dotenv from 'dotenv';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { EmailService } from './users/services/email.service';
 
-dotenv.config(); // Load environment variables from .env file
+dotenv.config();
 
 @Module({
   imports: [
@@ -27,8 +29,12 @@ dotenv.config(); // Load environment variables from .env file
     }),
     TypeOrmModule.forFeature([User]),
     UsersModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1d' },
+    }),
   ],
   controllers: [AppController, UsersController],
-  providers: [AppService, UserService],
+  providers: [AppService, UserService, EmailService],
 })
 export class AppModule {}
