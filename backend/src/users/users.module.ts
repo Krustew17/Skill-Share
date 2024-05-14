@@ -4,9 +4,11 @@ import { UserService } from './services/user.service';
 import { EmailService } from './services/email.service';
 
 import { Module } from '@nestjs/common';
-
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Module({
   imports: [
@@ -18,5 +20,6 @@ import { JwtModule } from '@nestjs/jwt';
   ],
   controllers: [UsersController],
   providers: [UserService, EmailService],
+  exports: [UserService, EmailService, JwtModule],
 })
 export class UsersModule {}

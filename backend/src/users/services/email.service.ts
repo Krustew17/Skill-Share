@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 
+const HOST = 'http://127.0.0.1:3000';
+
 @Injectable()
 export class EmailService {
   private transporter;
@@ -19,13 +21,22 @@ export class EmailService {
   }
 
   async sendVerificationEmail(email: string, token: string) {
-    const url = `http://127.0.0.1:3000/users/verify-email?token=${token}`;
-
-    await this.transporter.sendMail({
-      from: '"SkillShare" <skillsharehub17@gmail.com>',
-      to: email,
-      subject: 'Verify your email',
-      html: `Click <a href="${url}">here</a> to verify your email.`,
-    });
+    const url = `${HOST}/users/verify-email?token=${token}`;
+    if (email.includes('gmail.com')) {
+      await this.transporter.sendMail({
+        from: '"SkillShare" <skillsharehub17@gmail.com>',
+        to: email,
+        subject: 'Verify your email',
+        html: `Click <a href="${url}">here</a> to verify your email.`,
+      });
+    } else {
+      await this.transporter.sendMail({
+        from: '"SkillShare" <skillsharehub17@gmail.com>',
+        to: email,
+        subject: 'Verify your email',
+        html: `Click the url below to verify your email:\n
+      ${url}`,
+      });
+    }
   }
 }

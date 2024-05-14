@@ -7,7 +7,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { comparePasswords, hashPassword } from '../utils/bcrypt';
 
 @Injectable()
@@ -17,7 +17,14 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
     private readonly emailService: EmailService,
+    private dataSource: DataSource,
   ) {}
+
+  async getAllUsers() {
+    const query = 'SELECT * FROM public."user"';
+    const result = await this.dataSource.query(query);
+    return result;
+  }
 
   async createUser(userData: registerUserDto) {
     const user = await this.userRepository.findOneBy({
@@ -52,10 +59,10 @@ export class UserService {
       username: AuthPayload.username,
     });
     if (!user) {
-      return { error: 'user does not exist.' };
+      throw new HttpException('user not found', HttpStatus.NOT_FOUND);
     }
     if (!user.isActive) {
-      return { error: 'email not verified' };
+      throw new HttpException('user not verified', HttpStatus.UNAUTHORIZED);
     }
 
     const isPasswordValid = comparePasswords(
@@ -63,9 +70,12 @@ export class UserService {
       user.password,
     );
     if (!isPasswordValid) {
-      return { error: 'invalid credentials' };
+      return {
+        error: 'invalid credentials',
+        HttpStatus: HttpStatus.UNAUTHORIZED,
+      };
     }
-    return { success: 'logging in..' };
+    return this.jwtService.signAsync({ user });
   }
 
   async verifyUser(token: string) {
@@ -81,7 +91,10 @@ export class UserService {
       user.isActive = true;
       await this.userRepository.save(user);
 
-      return { message: 'Email verified successfully' };
+      return {
+        message: 'Email verified successfully',
+        HttpStatus: HttpStatus.OK,
+      };
     } catch (error) {
       throw new HttpException(
         'Invalid or expired token',
