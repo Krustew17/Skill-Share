@@ -12,6 +12,7 @@ import {
   Put,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { Request } from 'express';
 
@@ -22,6 +23,20 @@ export class jobsController {
   @Get()
   getAllJobs() {
     return this.jobService.getAllJobs();
+  }
+
+  @Get('filters')
+  async filterJobs(
+    @Query('sortBy') sortBy: string,
+    @Query('search') search: string,
+    @Query('skills') skills: Array<string>,
+  ) {
+    return await this.jobService.filterJobs({ sortBy, search, skills });
+  }
+
+  @Get('user/:id')
+  getAllJobsByUserId(@Param('id') UserId: number) {
+    return this.jobService.getAllJobsByUser(UserId);
   }
 
   @Post('create')

@@ -1,7 +1,6 @@
 import { UsersController } from './controllers/users.controller';
 import { User } from './users.entity';
 import { UserService } from './services/user.service';
-import { EmailService } from './services/email.service';
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -19,7 +18,7 @@ dotenv.config();
     }),
   ],
   controllers: [UsersController],
-  providers: [UserService, EmailService],
-  exports: [UserService, EmailService, JwtModule],
+  providers: [UserService],
+  exports: [UserService],
 })
 export class UsersModule {}
