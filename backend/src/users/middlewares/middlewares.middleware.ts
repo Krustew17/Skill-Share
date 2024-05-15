@@ -7,6 +7,7 @@ export class JwtMiddleware implements NestMiddleware {
   constructor(private readonly jwtService: JwtService) {}
 
   use(req: Request, res: Response, next: NextFunction) {
+    console.log('inside middleware');
     const authHeader = req.headers['authorization'];
     if (!authHeader || !authHeader.startsWith('Bearer')) {
       return res
@@ -23,7 +24,6 @@ export class JwtMiddleware implements NestMiddleware {
         secret: process.env.JWT_SECRET,
       });
       req['user'] = decoded['user'];
-      console.log(decoded.id);
       next();
     } catch (error) {
       return res
