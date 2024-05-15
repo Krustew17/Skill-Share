@@ -1,7 +1,12 @@
 import { Job } from './jobs.entity';
 import { JwtMiddleware } from 'src/users/middlewares/middlewares.middleware';
 
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 
@@ -24,6 +29,9 @@ dotenv.config();
 })
 export class JobsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(JwtMiddleware).forRoutes('jobs/create');
+    consumer
+      .apply(JwtMiddleware)
+      .exclude({ path: 'jobs', method: RequestMethod.GET })
+      .forRoutes(jobsController);
   }
 }
