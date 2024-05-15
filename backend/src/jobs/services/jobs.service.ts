@@ -17,18 +17,18 @@ export class jobsService {
     return await this.jobRepository.find();
   }
 
+  async getAllJobsByUser(id: number) {
+    return await this.jobRepository.find({ where: { userId: id } });
+  }
+
   async createJob(jobData: jobPostDto, userId: number) {
     const job = this.jobRepository.create({ ...jobData, userId });
     return this.jobRepository.save(job);
   }
 
   async updateJob(jobId: number, newJobData: jobPostDto, req: Request) {
-    console.log(jobId);
     const job = await this.jobRepository.findOneBy({ id: jobId['id'] });
     const user = req['user'];
-    console.log(job);
-    console.log(user);
-    console.log(newJobData);
 
     if (user.id !== job.userId) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
@@ -58,5 +58,9 @@ export class jobsService {
       message: 'Job deleted successfully',
       HttpStatus: HttpStatus.OK,
     };
+  }
+
+  async filterJobs(filters: object) {
+    // return await this.jobRepository.createQueryBuilder;
   }
 }

@@ -17,11 +17,14 @@ export class JwtMiddleware implements NestMiddleware {
 
     const token = authHeader.split(' ')[1];
     try {
-      if (token) {
-        console.log('got token');
-      }
       const decoded = this.jwtService.verify(token, {
         secret: process.env.JWT_SECRET,
+      });
+      res.cookie.apply({
+        name: 'session',
+        value: token,
+        httpOnly: true,
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
       });
       req['user'] = decoded['user'];
       next();
