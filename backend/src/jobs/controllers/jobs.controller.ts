@@ -27,11 +27,11 @@ export class jobsController {
 
   @Get('filters')
   async filterJobs(
-    @Query('sortBy') sortBy: string,
     @Query('search') search: string,
+    @Query('orderBy') orderBy: string,
     @Query('skills') skills: Array<string>,
   ) {
-    return await this.jobService.filterJobs({ sortBy, search, skills });
+    return await this.jobService.filterJobs({ search, orderBy, skills });
   }
 
   @Get('user/:id')
