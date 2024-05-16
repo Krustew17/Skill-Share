@@ -13,8 +13,12 @@ import {
   Param,
   Delete,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { filtersDto } from '../dto/filters.dto';
+import { ValidateFiltersPipe } from 'src/validate-filters/validate-filters.pipe';
 
 @Controller('jobs')
 export class jobsController {
@@ -26,12 +30,9 @@ export class jobsController {
   }
 
   @Get('filters')
-  async filterJobs(
-    @Query('search') search: string,
-    @Query('orderBy') orderBy: string,
-    @Query('skills') skills: Array<string>,
-  ) {
-    return await this.jobService.filterJobs({ search, orderBy, skills });
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async filterJobs(@Query() filters: filtersDto) {
+    return await this.jobService.filterJobs(filters);
   }
 
   @Get('user/:id')

@@ -1,8 +1,10 @@
 import { Job } from '../jobs.entity';
 import { jobPostDto } from '../dto/job.post.dto';
+import { filtersDto } from '../dto/filters.dto';
 
 import { HttpException, HttpStatus, Injectable, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+
 import { Repository } from 'typeorm';
 import { Request } from 'express';
 
@@ -75,27 +77,39 @@ export class jobsService {
       .where('job.skills && :skillsArr', { skillsArr: skills })
       .getMany();
   }
-
-  async filterJobsBySearch(search: string) {
-    return this.jobRepository
-      .createQueryBuilder('job')
-      .where('job.title ILIKE :search OR job.description ILIKE :search', {
-        search: `%${search}%`,
-      })
-      .getMany();
-  }
-
-  async filterJobs(filters: object) {
+  async filterJobs(filters: filtersDto) {
     let data: object;
-    // const skillsArr = filters['skills']
-    //   .split(',')
-    //   .map((skill: string) => skill.trim());
-    // data = { data: await this.filterJobsBySkills(skillsArr) };
-    const filtered_jobs = await this.filterJobsBySearch(filters['search']);
-    data = { data: filtered_jobs, jobs_found: filtered_jobs.length };
-    if (data['data'].length === 0) {
-      throw new HttpException('No jobs found', HttpStatus.NOT_FOUND);
+    const query = this.jobRepository.createQueryBuilder('job');
+
+    if (filters.search) {
+      query.where(
+        '(job.title ILIKE :search OR job.description ILIKE :search)',
+        {
+          search: `%${filters.search}%`,
+        },
+      );
     }
-    return data;
+    if (filters.pay !== undefined) {
+      query.andWhere('job.pay >= :pay', { pay: filters.pay });
+    }
+    // const skillsArr = filters.skills.toString().split(',');
+    // if (skillsArr && skillsArr.length > 0) {
+    //   for (let i = 0; i < skillsArr.length; i++) {
+    //     const paramName = `skillsArr${i}`;
+    //     query.andWhere(`:paramName = ANY(job.skills)`, {
+    //       [paramName]: skillsArr[i],
+    //     });
+    //   }
+    // }
+
+    if (filters.order) {
+      const [key, orderBy] = filters.order.split(':');
+      const direction = orderBy.toLowerCase() === 'desc' ? 'DESC' : 'ASC';
+      query.orderBy(`job.${key} `, direction);
+    }
+
+    console.log(query.getSql());
+    const jobs_found = await query.getMany();
+    return { data: jobs_found, amount_jobs: jobs_found.length };
   }
 }
