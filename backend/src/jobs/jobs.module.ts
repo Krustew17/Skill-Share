@@ -31,7 +31,10 @@ export class JobsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(JwtMiddleware)
-      .exclude({ path: 'jobs', method: RequestMethod.GET })
+      .exclude(
+        { path: 'jobs', method: RequestMethod.GET },
+        { path: 'jobs/filters', method: RequestMethod.GET },
+      )
       .forRoutes(jobsController);
   }
 }

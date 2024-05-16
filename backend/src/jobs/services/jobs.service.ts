@@ -6,6 +6,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
 
+const FILTERS = {
+  sortBy: {
+    title: 'title',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+  },
+  skills: ['node', 'react', 'javascript', 'c++', 'python', 'typescript'],
+};
+
 @Injectable()
 export class jobsService {
   constructor(
@@ -60,7 +69,32 @@ export class jobsService {
     };
   }
 
+  async filterJobsBySkills(skills: Array<string>) {
+    return this.jobRepository
+      .createQueryBuilder('job')
+      .where('job.skills && :skillsArr', { skillsArr: skills })
+      .getMany();
+  }
+
+  async filterJobsBySearch(search: string) {
+    return this.jobRepository
+      .createQueryBuilder('job')
+      .where('job.title ILIKE :search OR job.description ILIKE :search', {
+        search: `%${search}%`,
+      })
+      .getMany();
+  }
+
   async filterJobs(filters: object) {
-    // return await this.jobRepository.createQueryBuilder;
+    let data: object;
+    // const skillsArr = filters['skills']
+    //   .split(',')
+    //   .map((skill: string) => skill.trim());
+    // data = { data: await this.filterJobsBySkills(skillsArr) };
+    data = { data: await this.filterJobsBySearch(filters['search']) };
+    if (data['data'].length === 0) {
+      throw new HttpException('No jobs found', HttpStatus.NOT_FOUND);
+    }
+    return data;
   }
 }
