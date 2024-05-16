@@ -40,4 +40,18 @@ export class AuthController {
   deleteUser(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     return this.authService.deleteUser(req, res);
   }
+
+  @Post('request-password-reset')
+  async sendPasswordResetEmail(@Body('email') email: string) {
+    return this.authService.sendPasswordResetEmail(email);
+  }
+
+  @Post('reset-password')
+  async resetPassword(
+    @Query('token') token: string,
+    @Body('password') newPassword: string,
+    @Body('confirmPassword') confirmPassword: string,
+  ) {
+    return this.authService.resetPassword(token, newPassword, confirmPassword);
+  }
 }

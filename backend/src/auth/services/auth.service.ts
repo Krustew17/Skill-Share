@@ -5,7 +5,13 @@ import { Job } from 'src/jobs/jobs.entity';
 import { EmailService } from './email.service';
 import { loginPayloadDto } from '../dto/login.dto';
 
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  Body,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Query,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -127,4 +133,57 @@ export class AuthService {
     };
   }
   // TO DO: LOGOUT THE USER AND REMOVE THE JWT TOKEN
+
+  async createPasswordResetToken(userId: number): Promise<string> {
+    const payload = { userId };
+    return this.jwtService.sign(payload, { expiresIn: '1h' });
+  }
+
+  async sendPasswordResetEmail(email: string) {
+    console.log(email);
+    const user = await this.userRepository.findOneBy({ email });
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    const resetToken = await this.createPasswordResetToken(user.id);
+    await this.emailService.sendPasswordResetEmail(email, resetToken);
+    return {
+      message: 'Password reset email sent',
+      HttpStatus: HttpStatus.OK,
+      resetToken,
+    };
+  }
+  async resetPassword(
+    token: string,
+    newPassword: string,
+    confirmPassword: string,
+  ) {
+    try {
+      const decoded = this.jwtService.verify(token);
+      const userId = decoded.userId;
+      const user = await this.userRepository.findOneBy({ id: userId });
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+
+      if (newPassword !== confirmPassword) {
+        throw new HttpException(
+          'Passwords do not match',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      user.password = await hashPassword(newPassword);
+      await this.userRepository.save(user);
+      return {
+        message: 'Password reset successfully',
+        HttpStatus: HttpStatus.OK,
+      };
+    } catch (error) {
+      throw new HttpException(
+        'Invalid or expired token',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
 }
