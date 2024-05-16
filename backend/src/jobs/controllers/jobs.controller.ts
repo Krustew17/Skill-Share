@@ -1,5 +1,6 @@
 import { jobsService } from '../services/jobs.service';
 import { jobPostDto } from '../dto/job.post.dto';
+import { filtersDto } from '../dto/filters.dto';
 
 import {
   Controller,
@@ -13,6 +14,8 @@ import {
   Param,
   Delete,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { Request } from 'express';
 
@@ -26,12 +29,9 @@ export class jobsController {
   }
 
   @Get('filters')
-  async filterJobs(
-    @Query('search') search: string,
-    @Query('orderBy') orderBy: string,
-    @Query('skills') skills: Array<string>,
-  ) {
-    return await this.jobService.filterJobs({ search, orderBy, skills });
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async filterJobs(@Query() filters: filtersDto) {
+    return await this.jobService.filterJobs(filters);
   }
 
   @Get('user/:id')
