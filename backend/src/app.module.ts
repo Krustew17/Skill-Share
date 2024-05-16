@@ -10,7 +10,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { JobsModule } from './jobs/jobs.module';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthModule } from './auth/auth.module';
+import AuthModule from './auth/auth.module';
 
 import * as dotenv from 'dotenv';
 

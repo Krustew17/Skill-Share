@@ -1,9 +1,11 @@
+import { Job } from 'src/jobs/jobs.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -28,4 +30,7 @@ export class User {
 
   @Column({ default: false })
   isActive: boolean;
+
+  @OneToMany(() => Job, (job) => job.user, { cascade: true })
+  jobOffers: Job[];
 }

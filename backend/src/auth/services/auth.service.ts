@@ -1,19 +1,24 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { registerUserDto } from '../dto/register.dto';
 import { comparePasswords, hashPassword } from '../utils/bcrypt';
-import { JwtService } from '@nestjs/jwt';
-import { Repository } from 'typeorm';
 import { User } from 'src/users/users.entity';
+import { Job } from 'src/jobs/jobs.entity';
 import { EmailService } from './email.service';
 import { loginPayloadDto } from '../dto/login.dto';
-import { Response, Request } from 'express';
+
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+
+import { Repository } from 'typeorm';
+import { Response, Request } from 'express';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Job)
+    private readonly jobRepository: Repository<Job>,
     private readonly jwtService: JwtService,
     private readonly emailService: EmailService,
   ) {}
@@ -103,4 +108,23 @@ export class AuthService {
       );
     }
   }
+
+  async deleteUser(req: Request, res: Response) {
+    // TO DO: BLACKLIST/REMOVE THE JWT TOKEN AFTER DELETING THE USER
+    const user = req['user'];
+    if (!user) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
+    const jobs = await this.jobRepository.find({
+      where: { user: { id: user.id } },
+    });
+    console.log(jobs);
+    await this.jobRepository.remove(jobs);
+    await this.userRepository.delete({ id: user.id });
+    return {
+      message: 'User deleted successfully',
+      HttpStatus: HttpStatus.OK,
+    };
+  }
+  // TO DO: LOGOUT THE USER AND REMOVE THE JWT TOKEN
 }

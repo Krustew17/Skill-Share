@@ -8,15 +8,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
 
-const FILTERS = {
-  sortBy: {
-    title: 'title',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-  },
-  skills: ['node', 'react', 'javascript', 'c++', 'python', 'typescript'],
-};
-
 @Injectable()
 export class jobsService {
   constructor(
@@ -28,27 +19,40 @@ export class jobsService {
     return await this.jobRepository.find();
   }
 
-  async getAllJobsByUser(id: number) {
-    return await this.jobRepository.find({ where: { userId: id } });
+  async getAllJobsByUser(userId: number): Promise<Job[]> {
+    return await this.jobRepository.find({ where: { user: { id: userId } } });
   }
 
-  async createJob(jobData: jobPostDto, userId: number) {
-    const job = this.jobRepository.create({ ...jobData, userId });
+  async createJob(jobData: jobPostDto, req: Request) {
+    const user = req['user'];
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    const job = this.jobRepository.create({ ...jobData, user: user });
     return this.jobRepository.save(job);
   }
 
   async updateJob(jobId: number, newJobData: jobPostDto, req: Request) {
-    const job = await this.jobRepository.findOneBy({ id: jobId['id'] });
+    const jobID = parseInt(jobId['id']);
+    const job = await this.jobRepository.findOne({
+      where: { id: jobID },
+      relations: ['user'],
+    });
+
+    if (!job) {
+      throw new HttpException('Job not found', HttpStatus.NOT_FOUND);
+    }
+
     const user = req['user'];
 
-    if (user.id !== job.userId) {
+    if (user.id !== job.user.id) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
     if (!job) {
       throw new HttpException('Job not found', HttpStatus.NOT_FOUND);
     }
 
-    await this.jobRepository.update({ id: jobId['id'] }, { ...newJobData });
+    await this.jobRepository.update({ id: jobID }, { ...newJobData });
     return {
       message: 'Job updated successfully',
       HttpStatus: HttpStatus.OK,
@@ -56,12 +60,17 @@ export class jobsService {
   }
 
   async deleteJob(jobId: number, req: Request) {
-    const job = await this.jobRepository.findOneBy({ id: jobId });
+    const job = await this.jobRepository.findOne({
+      where: { id: jobId },
+      relations: ['user'],
+    });
     if (!job) {
       throw new HttpException('Job not found', HttpStatus.NOT_FOUND);
     }
+
     const user = req['user'];
-    if (user.id !== job.userId || !user) {
+
+    if (user.id !== job.user.id || !user) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
     await this.jobRepository.delete({ id: jobId });
@@ -108,7 +117,6 @@ export class jobsService {
       query.orderBy(`job.${key} `, direction);
     }
 
-    console.log(query.getSql());
     const jobs_found = await query.getMany();
     return { data: jobs_found, amount_jobs: jobs_found.length };
   }

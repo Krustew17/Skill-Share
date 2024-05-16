@@ -41,12 +41,7 @@ export class jobsController {
 
   @Post('create')
   createJob(@Body() jobPostData: jobPostDto, @Req() req: Request) {
-    const user = req['user'];
-    if (!user) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
-    }
-    const userId = req['user'].id;
-    return this.jobService.createJob(jobPostData, userId);
+    return this.jobService.createJob(jobPostData, req);
   }
 
   @Put('update/:id')

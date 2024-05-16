@@ -1,8 +1,19 @@
-import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
 import { registerUserDto } from '../dto/register.dto';
 import { loginPayloadDto } from '../dto/login.dto';
-import { Response, Request } from 'express';
 import { AuthService } from '../services/auth.service';
+
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Query,
+  Req,
+  Res,
+} from '@nestjs/common';
+
+import { Response, Request } from 'express';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -23,5 +34,10 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     return this.authService.loginUser(AuthPayload, req, res);
+  }
+
+  @Delete('delete')
+  deleteUser(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    return this.authService.deleteUser(req, res);
   }
 }
