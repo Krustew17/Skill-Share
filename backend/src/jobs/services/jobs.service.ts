@@ -91,7 +91,8 @@ export class jobsService {
     //   .split(',')
     //   .map((skill: string) => skill.trim());
     // data = { data: await this.filterJobsBySkills(skillsArr) };
-    data = { data: await this.filterJobsBySearch(filters['search']) };
+    const filtered_jobs = await this.filterJobsBySearch(filters['search']);
+    data = { data: filtered_jobs, jobs_found: filtered_jobs.length };
     if (data['data'].length === 0) {
       throw new HttpException('No jobs found', HttpStatus.NOT_FOUND);
     }
