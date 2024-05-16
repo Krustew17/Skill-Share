@@ -35,4 +35,14 @@ export class EmailService {
       });
     }
   }
+
+  async sendPasswordResetEmail(email: string, token: string) {
+    const url = `${HOST}/auth/reset-password?token=${token}`;
+    await this.transporter.sendMail({
+      from: '"mailtrap@demomailtrap.com',
+      to: email,
+      subject: 'Reset your password',
+      html: `Click <a href="${url}">here</a> to reset your password.`,
+    });
+  }
 }
