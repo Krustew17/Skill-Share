@@ -1,6 +1,4 @@
 import { Request, Response } from 'express';
-import { loginPayloadDto } from '../dto/login.dto';
-import { registerUserDto } from '../dto/register.dto';
 import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 
