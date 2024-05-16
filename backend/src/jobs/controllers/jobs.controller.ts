@@ -1,5 +1,6 @@
 import { jobsService } from '../services/jobs.service';
 import { jobPostDto } from '../dto/job.post.dto';
+import { filtersDto } from '../dto/filters.dto';
 
 import {
   Controller,
@@ -17,8 +18,6 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { filtersDto } from '../dto/filters.dto';
-import { ValidateFiltersPipe } from 'src/validate-filters/validate-filters.pipe';
 
 @Controller('jobs')
 export class jobsController {
