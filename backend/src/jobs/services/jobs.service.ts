@@ -16,7 +16,15 @@ export class jobsService {
   ) {}
 
   async getAllJobs() {
-    return await this.jobRepository.find();
+    const jobs = await this.jobRepository
+      .createQueryBuilder('jobs')
+      .addOrderBy('id', 'ASC')
+      .getMany();
+    const data = {
+      jobs: jobs,
+      amount_jobs: jobs.length,
+    };
+    return data;
   }
 
   async getAllJobsByUser(userId: number): Promise<Job[]> {
@@ -28,6 +36,8 @@ export class jobsService {
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
+    console.log(user);
+    console.log(req['isAuth']);
     const job = this.jobRepository.create({ ...jobData, user: user });
     return this.jobRepository.save(job);
   }
@@ -44,12 +54,9 @@ export class jobsService {
     }
 
     const user = req['user'];
-
+    console.log(job);
     if (user.id !== job.user.id) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
-    }
-    if (!job) {
-      throw new HttpException('Job not found', HttpStatus.NOT_FOUND);
     }
 
     await this.jobRepository.update({ id: jobID }, { ...newJobData });

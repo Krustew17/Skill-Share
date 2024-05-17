@@ -20,7 +20,7 @@ export class Job {
   description: string;
 
   @Column('text', { array: true })
-  skills: string[]; // This column will store the array of words
+  skills: string[];
 
   @Column()
   pay: number;

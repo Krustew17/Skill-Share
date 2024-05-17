@@ -1,4 +1,7 @@
 import { Job } from 'src/jobs/jobs.entity';
+import { TalentCards } from '../talent/talentcards.entity';
+import { Earnings } from './earnings.entity';
+
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -33,4 +36,10 @@ export class User {
 
   @OneToMany(() => Job, (job) => job.user, { cascade: true })
   jobOffers: Job[];
+
+  @OneToMany(() => TalentCards, (talent) => talent.user, { cascade: true })
+  talentCards: TalentCards[];
+
+  @OneToMany(() => Earnings, (earnings) => earnings.user, { cascade: true })
+  earnings: Earnings[];
 }

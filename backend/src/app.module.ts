@@ -1,19 +1,21 @@
 import { UsersModule } from './users/users.module';
 import { User } from './users/users.entity';
 import { Job } from './jobs/jobs.entity';
-import { JwtMiddleware } from './users/middlewares/middlewares.middleware';
-
-import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
+import { Earnings } from './users/earnings.entity';
+import { TalentCards } from './talent/talentcards.entity';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { JobsModule } from './jobs/jobs.module';
 import { JwtModule } from '@nestjs/jwt';
+import { TalentModule } from './talent/talent.module';
+import { LeaderboardModule } from './leaderboard/leaderboard.module';
 import AuthModule from './auth/auth.module';
 
 import * as dotenv from 'dotenv';
-
+import { APP_INTERCEPTOR } from '@nestjs/core';
 dotenv.config();
 
 @Module({
@@ -29,7 +31,7 @@ dotenv.config();
       synchronize: true,
       autoLoadEntities: true,
     }),
-    TypeOrmModule.forFeature([User, Job]),
+    TypeOrmModule.forFeature([User, Job, Earnings, TalentCards]),
     UsersModule,
     JobsModule,
     JwtModule.register({
@@ -37,12 +39,15 @@ dotenv.config();
       signOptions: { expiresIn: '1d' },
     }),
     AuthModule,
+    TalentModule,
+    LeaderboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {
-  // configure(consumer: MiddlewareConsumer) {
-  //   consumer.apply(JwtMiddleware).forRoutes('');
+  //   configure(consumer: MiddlewareConsumer) {
+  //     consumer.apply(checkAuthenticatedMiddleware).forRoutes('*');
+  //   }
   // }
 }

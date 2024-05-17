@@ -5,13 +5,7 @@ import { Job } from 'src/jobs/jobs.entity';
 import { EmailService } from './email.service';
 import { loginPayloadDto } from '../dto/login.dto';
 
-import {
-  Body,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  Query,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -124,7 +118,6 @@ export class AuthService {
     const jobs = await this.jobRepository.find({
       where: { user: { id: user.id } },
     });
-    console.log(jobs);
     await this.jobRepository.remove(jobs);
     await this.userRepository.delete({ id: user.id });
     return {
