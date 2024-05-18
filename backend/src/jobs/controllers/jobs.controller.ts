@@ -8,18 +8,21 @@ import {
   Post,
   Body,
   Req,
-  HttpException,
-  HttpStatus,
   Put,
   Param,
   Delete,
   Query,
   UsePipes,
   ValidationPipe,
+  UseInterceptors,
+  Res,
 } from '@nestjs/common';
-import { Request } from 'express';
+
+import { Request, Response } from 'express';
+import { AuthInterceptor } from 'src/auth/interceptors/auth.interceptor';
 
 @Controller('jobs')
+@UseInterceptors(AuthInterceptor)
 export class jobsController {
   constructor(private readonly jobService: jobsService) {}
 
