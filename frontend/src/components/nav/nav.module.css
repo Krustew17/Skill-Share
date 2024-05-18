@@ -72,3 +72,9 @@
     color: var(--primary-color);
     background-color: transparent;
 }
+.isActive a {
+    color: purple;
+}
+.active a:focus {
+    color: yellow;
+}

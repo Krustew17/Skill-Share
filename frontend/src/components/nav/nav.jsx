@@ -5,6 +5,7 @@ import styles from "./nav.module.css";
 
 export default function NavBar() {
     const { authenticated, logout } = useContext(AuthContext);
+    console.log;
     return (
         <nav className={styles.navBar}>
             <Link to="/" className={styles.logo}>
@@ -13,6 +14,7 @@ export default function NavBar() {
             <ul className={styles.navList}>
                 <CustomLink to="/talents">Talents</CustomLink>
                 <CustomLink to="/jobs">Jobs</CustomLink>
+                <CustomLink to="/memberships">Memberships</CustomLink>
                 <CustomLink to="/FAQ">FAQ</CustomLink>
             </ul>
             {authenticated ? (
@@ -38,7 +40,7 @@ function CustomLink({ to, children, ...props }) {
     const isActive = useMatch({ path: resolvedPath.pathname });
 
     return (
-        <li className={isActive ? "active" : ""}>
+        <li className={isActive ? `${styles.isActive}` : ""}>
             <Link to={to} {...props}>
                 {children}
             </Link>
