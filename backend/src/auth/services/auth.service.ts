@@ -47,7 +47,10 @@ export class AuthService {
       savedUser.email,
       verificationToken,
     );
-    return savedUser;
+    return {
+      message: 'User created successfully',
+      HttpStatus: HttpStatus.CREATED,
+    };
   }
 
   async loginUser(AuthPayload: loginPayloadDto, req: Request, res: Response) {
@@ -98,10 +101,11 @@ export class AuthService {
       user.isActive = true;
       await this.userRepository.save(user);
 
-      return {
-        message: 'Email verified successfully',
-        HttpStatus: HttpStatus.OK,
+      const data = {
+        access_token: this.jwtService.sign({ user }),
+        refresh_token: this.jwtService.sign({ user }, { expiresIn: '7d' }),
       };
+      return data;
     } catch (error) {
       throw new HttpException(
         'Invalid or expired token',

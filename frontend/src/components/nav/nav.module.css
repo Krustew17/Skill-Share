@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap");
+
 .navBar {
     display: flex;
     justify-content: space-between;
@@ -9,6 +11,7 @@
 }
 .navBar .logo {
     font-size: 2rem;
+    font-family: "Dancing Script", cursive;
     text-decoration: none;
     color: #fff;
 }
@@ -24,7 +27,6 @@
 
 .navList a {
     text-decoration: none;
-    color: var(--black-color);
 }
 
 .navBar .spacer {

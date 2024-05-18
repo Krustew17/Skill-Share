@@ -17,4 +17,9 @@ export class UsersController {
   ) {
     return this.userService.Getuser(username, password);
   }
+
+  @Get('get-user-by-token')
+  getUserByToken(token: string) {
+    return this.userService.getUserByToken(token);
+  }
 }

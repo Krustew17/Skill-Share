@@ -1,6 +1,7 @@
 import { User } from '../users.entity';
 
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository, DataSource } from 'typeorm';
@@ -10,6 +11,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly jwtService: JwtService,
     private dataSource: DataSource,
   ) {}
 
@@ -21,5 +23,10 @@ export class UserService {
 
   async Getuser(username: string, password: string): Promise<User> {
     return await this.userRepository.findOneBy({ username, password });
+  }
+
+  async getUserByToken(token: string) {
+    const decoded = this.jwtService.verify(token);
+    return decoded;
   }
 }

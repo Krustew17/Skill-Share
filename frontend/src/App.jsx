@@ -5,8 +5,9 @@ import Jobs from "./components/jobs/jobs.jsx";
 import FAQ from "./components/FAQ/faq.jsx";
 import SignUp from "./components/sign up/signup.jsx";
 import Login from "./components/login/login.jsx";
-import { Route, Routes } from "react-router-dom";
+import MagicLinkVerification from "./components/magic_link_verification/magic_link_verification.jsx";
 
+import { Route, Routes } from "react-router-dom";
 function App() {
     return (
         <>
@@ -19,6 +20,10 @@ function App() {
                     <Route path="/FAQ" element={<FAQ />} />
                     <Route path="/sign-up" element={<SignUp />} />
                     <Route path="/login" element={<Login />} />
+                    <Route
+                        path="verify-email"
+                        element={<MagicLinkVerification />}
+                    />
                 </Routes>
             </div>
         </>
