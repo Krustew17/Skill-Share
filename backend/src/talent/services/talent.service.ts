@@ -1,13 +1,12 @@
 import { TalentCards } from '../talentcards.entity';
+import { createTalentDto } from '../dto/create.talent.dto';
+import { updateTalentDto } from '../dto/update.talent.dto';
 
 import { HttpException, HttpStatus, Injectable, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 import { Request } from 'express';
-import { createTalentDto } from '../dto/create.talent.dto';
-import { create } from 'domain';
-import { updateTalentDto } from '../dto/update.talent.dto';
 
 @Injectable()
 export class TalentService {

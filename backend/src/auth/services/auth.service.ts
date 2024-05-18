@@ -84,6 +84,7 @@ export class AuthService {
     return data;
   }
 
+  // TO DO: login the user after verifying the email
   async verifyUser(token: string) {
     try {
       const decoded = this.jwtService.verify(token);
