@@ -13,7 +13,6 @@ import { StripeModule } from './stripe/stripe.module';
 
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 
 import * as dotenv from 'dotenv';
@@ -43,9 +42,6 @@ dotenv.config();
     TalentModule,
     LeaderboardModule,
     StripeModule,
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
   ],
   controllers: [AppController],
   providers: [AppService],
