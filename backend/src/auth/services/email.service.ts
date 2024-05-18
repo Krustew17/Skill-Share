@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 
-const HOST = 'http://127.0.0.1:3000';
+const HOST = 'http://127.0.0.1:5173';
 
 @Injectable()
 export class EmailService {
@@ -17,7 +17,7 @@ export class EmailService {
     });
   }
   async sendVerificationEmail(email: string, token: string) {
-    const url = `${HOST}/auth/verify-email?token=${token}`;
+    const url = `${HOST}/verify-email?token=${token}`;
     if (email.includes('gmail.com')) {
       await this.transporter.sendMail({
         from: 'mailtrap@demomailtrap.com',
