@@ -3,18 +3,9 @@ import React, { createContext, useState, useEffect } from "react";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-    const [authenticated, setAuthenticated] = useState(false);
-
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token !== "undefined" && token !== null) {
-            setAuthenticated(true);
-        }
-    }, []);
-
-    const login = () => {
-        setAuthenticated(true);
-    };
+    const [authenticated, setAuthenticated] = useState(
+        !!localStorage.getItem("token")
+    );
 
     const logout = () => {
         setAuthenticated(false);
@@ -22,7 +13,7 @@ const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ authenticated, login, logout }}>
+        <AuthContext.Provider value={{ authenticated, logout }}>
             {children}
         </AuthContext.Provider>
     );

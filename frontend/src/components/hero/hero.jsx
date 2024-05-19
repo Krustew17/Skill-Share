@@ -1,3 +1,48 @@
+import { Link } from "react-router-dom";
+
 export default function Hero() {
-    return <div>Hero</div>;
+    return (
+        <section className="bg-white mt-16 md:mt-32">
+            <div className="container mx-auto py-8 px-4 text-center lg:py-16 lg:px-12">
+                <h1 className="text-5xl font-semibold tracking-tight text-gray-900 lg:text-9xl">
+                    Connect with top{" "}
+                    <span className="text-blue-500">Talent</span> and Services
+                </h1>
+                <p className="mt-4 text-2xl md:text-4xl text-gray-600">
+                    Find the best professionals and services for your needs.
+                </p>
+                <div className="mt-16 flex justify-center gap-5 ">
+                    <Link
+                        to="/sign-up"
+                        className="bg-blue-500 text-white px-8 py-4 text-xs md:px-16 md:py-6 rounded-lg hover:bg-blue-400  md:text-3xl"
+                    >
+                        Get Started
+                    </Link>
+                    <button className="bg-blue-500 text-white px-8 py-4 text-xs  md:px-16 md:py-6 rounded-lg hover:bg-blue-400 md:text-3xl">
+                        Learn More
+                    </button>
+                </div>
+                <h2 className="text-xl md:text-3xl text-left mb-10 mt-20  text-gray-500">
+                    Trusted by
+                </h2>
+                <div className="flex flex-wrap gap-16 md:gap-32 flex-row">
+                    <img
+                        src="/src/assets/Airbnb_Logo.png"
+                        alt="airbnb logo"
+                        className="h-4 sm:h-10 xl:h-12"
+                    />
+                    <img
+                        src="/src/assets/Microsoft_logo.png"
+                        alt="microsoft logo"
+                        className="h-4 sm:h-10 xl:h-12"
+                    />
+                    <img
+                        src="/src/assets/Nike-Logo.png"
+                        alt="nike logo"
+                        className="h-6 sm:h-10 xl:h-12"
+                    />
+                </div>
+            </div>
+        </section>
+    );
 }
