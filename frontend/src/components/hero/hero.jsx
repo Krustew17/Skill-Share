@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 
 export default function Hero() {
     return (
-        <section className="bg-white mt-16 md:mt-32">
-            <div className="container mx-auto py-8 px-4 text-center lg:py-16 lg:px-12">
-                <h1 className="text-5xl font-semibold tracking-tight text-gray-900 lg:text-9xl">
+        <section className="bg-white dark:bg-gray-800 mt-10 md:mt-32">
+            <div className="container mx-auto py-8 px-4 text-center lg:py-8 lg:px-12">
+                <h1 className="text-5xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-7xl md:text-8xl lg:text-9xl">
                     Connect with top{" "}
                     <span className="text-blue-500">Talent</span> and Services
                 </h1>
-                <p className="mt-4 text-2xl md:text-4xl text-gray-600">
+                <p className="mt-4 text-xl sm:text-3xl lg:text-4xl text-gray-300">
                     Find the best professionals and services for your needs.
                 </p>
                 <div className="mt-16 flex justify-center gap-5 ">

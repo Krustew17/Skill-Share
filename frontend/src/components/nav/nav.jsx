@@ -1,25 +1,39 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Link, useResolvedPath, useMatch } from "react-router-dom";
+import { DarkModeSwitch } from "react-toggle-dark-mode";
 
 export default function NavBar() {
     const { authenticated, logout } = useContext(AuthContext);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    let [DarkMode, setDarkMode] = useState(false);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const toggleDarkMode = () => {
+        setDarkMode(!DarkMode);
+    };
+
+    useEffect(() => {
+        if (DarkMode) {
+            document.body.classList.add("dark");
+        } else {
+            document.body.classList.remove("dark");
+        }
+    }, [DarkMode]);
+
     return (
-        <nav className="bg-white shadow-lg p-4">
+        <nav className="bg-white dark:bg-gray-900 shadow-lg p-4">
             <div className="max-w-screen-2xl mx-auto flex justify-between items-center">
-                <div className="flex items-center space-x-4">
-                    <Link
+                <div className="flex items-center space-x-4 list-none dark:text-white">
+                    <CustomLink
                         to="/"
-                        className="text-2xl lg:text-4xl font-dancing-script mr-10"
+                        className="text-2xl lg:text-4xl font-dancing-script mr-6 lg:mr-10 "
                     >
                         Skill Share
-                    </Link>
+                    </CustomLink>
                     <div className="hidden md:flex space-x-4 text-xl list-none">
                         <CustomLink to="/talents">Talents</CustomLink>
                         <CustomLink to="/jobs">Jobs</CustomLink>
@@ -27,7 +41,17 @@ export default function NavBar() {
                         <CustomLink to="/FAQ">FAQ</CustomLink>
                     </div>
                 </div>
+
                 <div className="hidden md:flex space-x-4">
+                    <DarkModeSwitch
+                        className="mr-4"
+                        checked={DarkMode}
+                        onChange={toggleDarkMode}
+                        size={35}
+                        moonColor="#d3d6db"
+                        sunColor="#1f2937"
+                    />
+
                     {authenticated ? (
                         <button
                             onClick={logout}
@@ -39,7 +63,7 @@ export default function NavBar() {
                         <div className="list-none flex gap-5">
                             <CustomLink
                                 to="/sign-up"
-                                className=" text-black px-4 py-2 rounded hover:bg-blue-400"
+                                className=" text-black dark:text-white px-4 py-2 rounded hover:bg-blue-400"
                             >
                                 Sign up
                             </CustomLink>
@@ -52,7 +76,15 @@ export default function NavBar() {
                         </div>
                     )}
                 </div>
-                <div className="md:hidden">
+                <div className="md:hidden flex flex-row flex-wrap gap-10">
+                    <DarkModeSwitch
+                        className=""
+                        checked={DarkMode}
+                        onChange={toggleDarkMode}
+                        size={30}
+                        moonColor="#d3d6db"
+                        sunColor="#1f2937"
+                    />
                     <button
                         onClick={toggleMenu}
                         className="text-gray-700 focus:outline-none"
@@ -75,7 +107,7 @@ export default function NavBar() {
                 </div>
             </div>
             {isMenuOpen && (
-                <div className="md:hidden mt-4 space-y-2 list-none flex flex-col gap-4 h-full text-center">
+                <div className="md:hidden mt-4 space-y-2 list-none flex flex-col gap-4 h-full text-center dark:text-white">
                     <CustomLink to="/talents" className="block text-lg">
                         Talents
                     </CustomLink>
