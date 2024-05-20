@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 
 export default function Hero() {
     return (
-        <section className="bg-white dark:bg-gray-800 mt-10 md:mt-32">
+        <section className="bg-white dark:bg-gray-800 mt-10 md:mt-32 ">
             <div className="container mx-auto py-8 px-4 text-center lg:py-8 lg:px-12">
                 <h1 className="text-5xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-7xl md:text-8xl lg:text-9xl">
                     Connect with top{" "}
                     <span className="text-blue-500">Talent</span> and Services
                 </h1>
-                <p className="mt-4 text-xl sm:text-3xl lg:text-4xl text-gray-300">
+                <p className="mt-4 text-xl sm:text-3xl lg:text-4xl text-gray-400">
                     Find the best professionals and services for your needs.
                 </p>
                 <div className="mt-16 flex justify-center gap-5 ">
@@ -22,10 +22,10 @@ export default function Hero() {
                         Learn More
                     </button>
                 </div>
-                <h2 className="text-xl md:text-3xl text-left mb-10 mt-20  text-gray-500">
+                <h2 className="text-xl md:text-3xl text-left mb-10 mt-20  text-gray-300">
                     Trusted by
                 </h2>
-                <div className="flex flex-wrap gap-16 md:gap-32 flex-row">
+                <div className="flex flex-wrap gap-16 md:gap-32 flex-row mb-10">
                     <img
                         src="/src/assets/Airbnb_Logo.png"
                         alt="airbnb logo"
