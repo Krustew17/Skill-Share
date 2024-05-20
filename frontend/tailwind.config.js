@@ -9,6 +9,9 @@ export default {
                 "dancing-script": ["Dancing Script", "cursive"],
                 roboto: ["Roboto", "sans-serif"],
             },
+            height: {
+                spanHeight: "2px",
+            },
         },
     },
     plugins: [],
