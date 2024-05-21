@@ -2,6 +2,7 @@ import NavBar from "./components/nav.jsx";
 import Hero from "./components/hero.jsx";
 import AboutUs from "./components/about-us.jsx";
 import Premium from "./components/premium.jsx";
+import Footer from "./components/footer.jsx";
 import Talents from "./pages/talents/talents.jsx";
 import Jobs from "./pages/jobs/jobs.jsx";
 import Memberships from "./pages/memberships/memberships.jsx";
@@ -34,6 +35,7 @@ function App() {
                 <>
                     <AboutUs />
                     <Premium />
+                    <Footer />
                 </>
             )}
         </>

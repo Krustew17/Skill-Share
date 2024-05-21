@@ -7,7 +7,6 @@ export default function NavBar() {
     const { authenticated, logout } = useContext(AuthContext);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [DarkMode, setDarkMode] = useState(() => {
-        // Initial dark mode state based on system preference or saved preference
         return (
             localStorage.getItem("darkMode") === "true" ||
             window.matchMedia("(prefers-color-scheme: dark)").matches
