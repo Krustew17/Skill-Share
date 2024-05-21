@@ -1,5 +1,4 @@
 import { FaCheck } from "react-icons/fa6";
-import { IoClose, IoCloseOutline } from "react-icons/io5";
 import { GoDotFill } from "react-icons/go";
 import { IoMdClose } from "react-icons/io";
 export default function Premium() {
@@ -7,10 +6,10 @@ export default function Premium() {
         <section className="flex flex-col gap-3 mt-5 mb-10">
             <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-600"></span>
 
-            <h1 className="text-center text-6xl mt-10 font-bold dark:text-white">
+            <h1 className="text-center text-4xl px-10 sm:text-6xl mt-10 font-bold dark:text-white">
                 Explore Premium
             </h1>
-            <div className="flex gap-48 justify-center mt-16">
+            <div className="flex flex-col sm:flex-row px-12  gap-24 sm:gap-48 justify-center mt-16">
                 <article className="flex flex-col gap-3 border-black dark:border-gray-200 rounded-lg border-2 px-10 py-12">
                     <h2 className="text-5xl tracking-wide dark:text-gray-50">
                         Basic

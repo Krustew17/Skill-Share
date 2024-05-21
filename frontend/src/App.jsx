@@ -10,8 +10,10 @@ import SignUp from "./pages/sign up/signup.jsx";
 import Login from "./pages/login/login.jsx";
 import MagicLinkVerification from "./pages/magic_link_verification/magic_link_verification.jsx";
 import "./index.css";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 function App() {
+    const location = useLocation();
+
     return (
         <>
             <NavBar />
@@ -28,8 +30,12 @@ function App() {
                     element={<MagicLinkVerification />}
                 />
             </Routes>
-            <AboutUs />
-            <Premium />
+            {location.pathname == "/" && (
+                <>
+                    <AboutUs />
+                    <Premium />
+                </>
+            )}
         </>
     );
 }
