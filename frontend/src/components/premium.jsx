@@ -1,7 +1,13 @@
 import { FaCheck } from "react-icons/fa6";
 import { GoDotFill } from "react-icons/go";
 import { IoMdClose } from "react-icons/io";
+import { useStripe } from "@stripe/react-stripe-js";
+import { useContext, useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 export default function Premium() {
+    const paymentUrl = "https://buy.stripe.com/test_bIY29l8Dje2n1sA9AB";
+    const { currentUser } = useContext(AuthContext);
+    const email = currentUser.email;
     return (
         <section className="flex flex-col gap-3 mt-5 mb-10">
             <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-600"></span>
@@ -74,9 +80,13 @@ export default function Premium() {
                             The Premium Plan is for businesses and professionals
                             who want to maximize their reach and efficiency.
                         </p>
-                        <button className="text-3xl text-black dark:text-white py-2 bg-blue-500 border-2 border-blue-500 hover:bg-blue-600 hover:border-blue-600 hover:cursor-pointer rounded mt-6 sm:mt-10">
+                        <a
+                            target_="_blank"
+                            href={paymentUrl + "?prefilled_email=" + email}
+                            className="text-3xl text-black text-center dark:text-white py-2 bg-blue-500 border-2 border-blue-500 hover:bg-blue-600 hover:border-blue-600 hover:cursor-pointer rounded mt-6 sm:mt-10"
+                        >
                             9.99$
-                        </button>
+                        </a>
                     </div>
                 </article>
             </div>

@@ -22,4 +22,10 @@ export class UsersController {
   getUserByToken(token: string) {
     return this.userService.getUserByToken(token);
   }
+
+  @Get('me')
+  getMe(@Req() req: Request) {
+    const token = req.headers.authorization.split(' ')[1];
+    return this.userService.getMe(token);
+  }
 }
