@@ -1,18 +1,38 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, {
+    createContext,
+    useState,
+    useEffect,
+    useLayoutEffect,
+} from "react";
 
 const AuthContext = createContext();
-
+let amount = 0;
 const AuthProvider = ({ children }) => {
     const [authenticated, setAuthenticated] = useState(
         !!localStorage.getItem("token")
     );
-    const [currentUser, setCurrentUser] = useState("");
+    const [currentUser, setCurrentUser] = useState(null);
 
-    if (authenticated) {
+    async function getUser() {
         const token = localStorage.getItem("token");
-        const decodedToken = jwtDecode(token);
-        setCurrentUser(decodedToken.user);
+
+        if (!token) {
+            return;
+        }
+
+        const user = await fetch("http://127.0.0.1:3000/users/me", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        const res = await user.json();
+        setCurrentUser(res);
+        return res;
     }
+
+    useEffect(() => {
+        getUser();
+    }, []);
 
     const logout = () => {
         setAuthenticated(false);

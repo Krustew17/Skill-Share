@@ -1,13 +1,48 @@
 import { FaCheck } from "react-icons/fa6";
 import { GoDotFill } from "react-icons/go";
 import { IoMdClose } from "react-icons/io";
-import { useStripe } from "@stripe/react-stripe-js";
-import { useContext, useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
+import { useContext, useState, useEffect } from "react";
+import { AuthContext } from "../contexts/AuthContext";
+import { loadStripe } from "@stripe/stripe-js";
+import { useStripe, useElements, Elements } from "@stripe/react-stripe-js";
+// import CheckoutScreen from "./checkoutScreen";
+
+const stripePromise = loadStripe(
+    "pk_test_51PHWiFIK3rKcTeQQZeLQQmN3QgdcxdIGV5rc8Xki77jOo40EJQ9BMyDd22Ip7BOTgzJJMJAynkTF1ktpjV3M1jJq002JKrzbst"
+);
+
 export default function Premium() {
-    const paymentUrl = "https://buy.stripe.com/test_bIY29l8Dje2n1sA9AB";
     const { currentUser } = useContext(AuthContext);
-    const email = currentUser.email;
+
+    const processPayment = async () => {
+        const stripe = await stripePromise;
+        const body = {
+            name: "Skill Share Premium",
+            price: 999,
+            email: currentUser.user.email,
+        };
+        const headers = {
+            "Content-Type": "application/json",
+        };
+
+        const request = await fetch(
+            "http://127.0.0.1:3000/stripe/create-checkout-session",
+            {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify(body),
+            }
+        );
+
+        const session = await request.json();
+        const result = await stripe.redirectToCheckout({
+            sessionId: session.session.id,
+        });
+        if (result.error) {
+            console.log(result.error.message);
+        }
+    };
+
     return (
         <section className="flex flex-col gap-3 mt-5 mb-10">
             <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-600"></span>
@@ -80,13 +115,12 @@ export default function Premium() {
                             The Premium Plan is for businesses and professionals
                             who want to maximize their reach and efficiency.
                         </p>
-                        <a
-                            target_="_blank"
-                            href={paymentUrl + "?prefilled_email=" + email}
+                        <button
+                            onClick={processPayment}
                             className="text-3xl text-black text-center dark:text-white py-2 bg-blue-500 border-2 border-blue-500 hover:bg-blue-600 hover:border-blue-600 hover:cursor-pointer rounded mt-6 sm:mt-10"
                         >
                             9.99$
-                        </a>
+                        </button>
                     </div>
                 </article>
             </div>

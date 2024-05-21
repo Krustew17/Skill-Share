@@ -43,6 +43,9 @@ export class User {
   @OneToMany(() => Earnings, (earnings) => earnings.user, { cascade: true })
   earnings: Earnings[];
 
+  @Column({ nullable: true })
+  customerId: string;
+
   @Column({ default: false })
   hasPremium: boolean;
 }

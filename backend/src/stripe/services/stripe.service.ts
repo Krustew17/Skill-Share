@@ -3,13 +3,22 @@ import { JwtService } from '@nestjs/jwt';
 
 import Stripe from 'stripe';
 import { Request, Response } from 'express';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/users.entity';
+import { Repository } from 'typeorm';
+import { EmailService } from 'src/auth/services/email.service';
 
 const domain = process.env.DOMAIN;
 
 @Injectable()
 export class StripeService {
   private stripe: Stripe;
-  constructor(private readonly jwtService: JwtService) {
+  constructor(
+    private readonly jwtService: JwtService,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    private readonly emailService: EmailService,
+  ) {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2024-04-10',
     });
@@ -39,23 +48,25 @@ export class StripeService {
 
   async createPaymentIntent(
     amount: number,
-    currency: string = 'usd',
-    payment_method: string = 'pm_card_visa',
-  ) {
+    currency: string,
+    customerEmail: string,
+  ): Promise<Stripe.PaymentIntent> {
     const paymentIntent = await this.stripe.paymentIntents.create({
       amount,
       currency,
-      payment_method,
+      automatic_payment_methods: { enabled: true },
+      // payment_method_types: ['card'],
+      receipt_email: customerEmail,
     });
-    return {
-      clientSecret: paymentIntent.client_secret,
-      id: paymentIntent.id,
-    };
+    return paymentIntent;
   }
-  async confirmPaymentIntent(paymentIntentId: string, paymentMethodId: string) {
-    return await this.stripe.paymentIntents.confirm(paymentIntentId, {
-      payment_method: paymentMethodId,
-    });
+
+  async confirmPaymentIntent(
+    paymentIntentId: string,
+  ): Promise<Stripe.PaymentIntent> {
+    const confirmedPaymentIntent =
+      await this.stripe.paymentIntents.confirm(paymentIntentId);
+    return confirmedPaymentIntent;
   }
 
   handleStripeWebhook(request: Request, response: Response) {
@@ -77,9 +88,7 @@ export class StripeService {
     switch (event.type) {
       case 'payment_intent.succeeded':
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        console.log(`PaymentIntent was successful!`, paymentIntent);
-        const user = request['user'];
-        console.log(user);
+        console.log(paymentIntent);
         // Handle successful payment here
         break;
       case 'payment_intent.payment_failed':
@@ -91,5 +100,17 @@ export class StripeService {
       default:
         console.log(`Unhandled event type ${event.type}.`);
     }
+  }
+
+  async updateUserToPremium(email: string) {
+    const user = await this.userRepository.findOneBy({ email });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    user.hasPremium = true;
+    await this.emailService.sendPremiumEmail(email);
+    return await this.userRepository.save(user);
   }
 }

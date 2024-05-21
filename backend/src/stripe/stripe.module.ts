@@ -4,16 +4,24 @@ import { StripeController } from './controllers/stripe.controller';
 
 import * as dotenv from 'dotenv';
 import { JwtService } from '@nestjs/jwt';
-import { RawBodyMiddleware } from './middlewares/webhook/webhook.middleware';
+import { JwtMiddleware } from 'src/users/middlewares/middlewares.middleware';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from 'src/users/users.entity';
+import { EmailService } from 'src/auth/services/email.service';
 dotenv.config();
 
 @Module({
-  imports: [],
-  providers: [StripeService, JwtService],
+  imports: [TypeOrmModule.forFeature([User])],
+  providers: [StripeService, JwtService, EmailService],
   controllers: [StripeController],
 })
 export class StripeModule {
-  // configure(consumer: MiddlewareConsumer) {
-  //   consumer.apply(RawBodyMiddleware).forRoutes('stripe/webhooks');
-  // }
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(JwtMiddleware)
+      .forRoutes(
+        'stripe/create-payment-intent',
+        'stripe/confirm-payment-intent',
+      );
+  }
 }
