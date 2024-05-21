@@ -11,9 +11,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 import { Response, Request } from 'express';
+import Stripe from 'stripe';
 
 @Injectable()
 export class AuthService {
+  private stripe: Stripe;
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -21,7 +23,11 @@ export class AuthService {
     private readonly jobRepository: Repository<Job>,
     private readonly jwtService: JwtService,
     private readonly emailService: EmailService,
-  ) {}
+  ) {
+    this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2024-04-10',
+    });
+  }
   async createUser(userData: registerUserDto) {
     const user = await this.userRepository.findOneBy({
       username: userData.username,
@@ -47,6 +53,14 @@ export class AuthService {
       savedUser.email,
       verificationToken,
     );
+    // Create a Stripe customer
+    const stripeCustomer = await this.stripe.customers.create({
+      email: userData.email,
+    });
+
+    // Save the Stripe customer ID to the user (if you have a stripeCustomerId field in your User entity)
+    savedUser.customerId = stripeCustomer.id;
+    await this.userRepository.save(savedUser);
     return {
       message: 'User created successfully',
       HttpStatus: HttpStatus.CREATED,

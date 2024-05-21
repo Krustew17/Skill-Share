@@ -1,6 +1,6 @@
 import { User } from '../users.entity';
 
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -26,7 +26,26 @@ export class UserService {
   }
 
   async getUserByToken(token: string) {
+    if (!token) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
     const decoded = this.jwtService.verify(token);
+
+    if (!decoded) {
+      throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
+    }
+
+    return decoded;
+  }
+
+  async getMe(token: string) {
+    if (!token) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
+    const decoded = this.jwtService.verify(token);
+    if (!decoded) {
+      throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
+    }
     return decoded;
   }
 }

@@ -45,4 +45,13 @@ export class EmailService {
       html: `Click <a href="${url}">here</a> to reset your password.`,
     });
   }
+
+  async sendPremiumEmail(email: string) {
+    await this.transporter.sendMail({
+      from: '"mailtrap@demomailtrap.com',
+      to: email,
+      subject: 'Premium Account',
+      html: `Your account has been upgraded to premium. Enjoy!`,
+    });
+  }
 }
