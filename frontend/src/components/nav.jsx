@@ -6,7 +6,13 @@ import { DarkModeSwitch } from "react-toggle-dark-mode";
 export default function NavBar() {
     const { authenticated, logout } = useContext(AuthContext);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    let [DarkMode, setDarkMode] = useState(false);
+    const [DarkMode, setDarkMode] = useState(() => {
+        // Initial dark mode state based on system preference or saved preference
+        return (
+            localStorage.getItem("darkMode") === "true" ||
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+        );
+    });
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -18,9 +24,11 @@ export default function NavBar() {
 
     useEffect(() => {
         if (DarkMode) {
-            document.body.classList.add("dark");
+            document.documentElement.classList.add("dark");
+            localStorage.setItem("darkMode", "true");
         } else {
-            document.body.classList.remove("dark");
+            document.documentElement.classList.remove("dark");
+            localStorage.setItem("darkMode", "false");
         }
     }, [DarkMode]);
 
