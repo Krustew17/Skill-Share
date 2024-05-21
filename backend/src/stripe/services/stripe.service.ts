@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { EmailService } from 'src/auth/services/email.service';
+import { User } from 'src/users/users.entity';
+
+import { InjectRepository } from '@nestjs/typeorm';
+
+import { Request, Response } from 'express';
+import { Repository } from 'typeorm';
 
 import Stripe from 'stripe';
-import { Request, Response } from 'express';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/users.entity';
-import { Repository } from 'typeorm';
-import { EmailService } from 'src/auth/services/email.service';
 
 const domain = process.env.DOMAIN;
 
