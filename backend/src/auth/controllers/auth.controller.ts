@@ -11,9 +11,11 @@ import {
   Query,
   Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 
 import { Response, Request } from 'express';
+import { AuthGuard } from '@nestjs/passport';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -54,5 +56,19 @@ export class AuthController {
     @Body('confirmPassword') confirmPassword: string,
   ) {
     return this.authService.resetPassword(token, newPassword, confirmPassword);
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth(@Req() req: Request, @Res() res: Response) {}
+
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
+    const loginResult = await this.authService.googleLogin(req);
+    console.log(loginResult);
+    if (loginResult) {
+      res.redirect('http://127.0.0.1:5173?token=' + loginResult.access_token);
+    }
   }
 }

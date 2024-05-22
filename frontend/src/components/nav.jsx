@@ -4,8 +4,9 @@ import { Link, useResolvedPath, useMatch } from "react-router-dom";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import SignUp from "../pages/sign up/signup";
 import Login from "../pages/login/login";
+
 export default function NavBar() {
-    const { authenticated, logout } = useContext(AuthContext);
+    const { authenticated, logout, currentUser } = useContext(AuthContext);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [DarkMode, setDarkMode] = useState(() => {
         return (
@@ -13,6 +14,9 @@ export default function NavBar() {
             window.matchMedia("(prefers-color-scheme: dark)").matches
         );
     });
+    if (currentUser) {
+        console.log(currentUser.user.profile.picture);
+    }
     const test = (data) => {
         if (data === "close") {
             setIsModalOpen(false);
@@ -85,12 +89,25 @@ export default function NavBar() {
                     />
 
                     {authenticated ? (
-                        <button
-                            onClick={logout}
-                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400"
-                        >
-                            Logout
-                        </button>
+                        <div className="flex gap-10">
+                            {currentUser ? (
+                                <img
+                                    className="h-10 rounded-full border-2 border-gray-800 dark:border-gray-300 hover:cursor-pointer hover:shadow-blue-600 dark:hover:shadow-blue-300 hover:shadow-lg"
+                                    src={`${currentUser.user.profile.picture}`}
+                                />
+                            ) : (
+                                <img
+                                    src="src/assets/default_avatar.png"
+                                    alt="default"
+                                />
+                            )}
+                            <button
+                                onClick={logout}
+                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400"
+                            >
+                                Logout
+                            </button>
+                        </div>
                     ) : (
                         <div className="list-none flex gap-5">
                             <CustomLink

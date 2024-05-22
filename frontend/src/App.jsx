@@ -9,6 +9,7 @@ import FAQ from "./pages/FAQ/faq.jsx";
 import SignUp from "./pages/sign up/signup.jsx";
 import Login from "./pages/login/login.jsx";
 import MagicLinkVerification from "./pages/magic_link_verification/magic_link_verification.jsx";
+import { AuthContext } from "./contexts/AuthContext.jsx";
 
 import { Route, Routes, useLocation } from "react-router-dom";
 import { useEffect } from "react";
@@ -16,6 +17,7 @@ import { ToastContainer, toast, Bounce } from "react-toastify";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
+import { useContext } from "react";
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -25,6 +27,7 @@ const stripePromise = loadStripe(
 
 function App() {
     const location = useLocation();
+    const { setAuthenticated } = useContext(AuthContext);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -53,6 +56,12 @@ function App() {
                 theme: "colored",
                 transition: Bounce,
             });
+        }
+        if (searchParams.get("token")) {
+            console.log(searchParams.get("token"));
+            localStorage.setItem("token", searchParams.get("token"));
+            setAuthenticated(true);
+            window.location.replace("/");
         }
     }, [location]);
 

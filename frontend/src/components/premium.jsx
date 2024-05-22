@@ -13,7 +13,7 @@ const stripePromise = loadStripe(
 export default function Premium() {
     const { currentUser } = useContext(AuthContext);
 
-    const processPayment = async () => {
+    const processPayment = async (e) => {
         const stripe = await stripePromise;
         const body = {
             name: "Skill Share Premium",
@@ -50,7 +50,7 @@ export default function Premium() {
                 Explore Premium
             </h1>
             <div className="flex flex-col md:flex-row md:px-8 px-12 max-w-screen-xl mx-auto gap-12 lg:gap-48 justify-center mt-16">
-                <article className="flex flex-col gap-3 border-black dark:border-gray-200 rounded-lg border-2 px-5 sm:px-10 py-6 sm:py-12">
+                <article className="flex flex-col gap-3 border-black dark:border-gray-200 rounded-lg border-2 px-5 sm:px-10 py-6 sm:py-12 hover:scale-105 transition-transform duration-300">
                     <h2 className="text-4xl sm:text-5xl tracking-wide dark:text-gray-50">
                         Basic
                     </h2>
@@ -85,7 +85,7 @@ export default function Premium() {
                         </button>
                     </div>
                 </article>
-                <article className="flex flex-col gap-3 border-black dark:border-gray-200 rounded-lg border-2 px-5 sm:px-10 py-6 sm:py-12">
+                <article className="flex flex-col gap-3 border-black dark:border-gray-200 rounded-lg border-2 px-5 sm:px-10 py-6 sm:py-12 hover:scale-105 transition-transform duration-300">
                     <h2 className="text-4xl sm:text-5xl tracking-wide dark:text-gray-50">
                         Premium
                     </h2>

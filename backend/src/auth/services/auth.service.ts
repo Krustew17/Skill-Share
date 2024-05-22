@@ -4,6 +4,7 @@ import { User } from 'src/users/users.entity';
 import { Job } from 'src/jobs/jobs.entity';
 import { EmailService } from './email.service';
 import { loginPayloadDto } from '../dto/login.dto';
+import { UserProfile } from 'src/users/user.profile.entity';
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -21,6 +22,9 @@ export class AuthService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Job)
     private readonly jobRepository: Repository<Job>,
+    @InjectRepository(UserProfile)
+    private readonly userProfileRepository: Repository<UserProfile>,
+
     private readonly jwtService: JwtService,
     private readonly emailService: EmailService,
   ) {
@@ -190,5 +194,55 @@ export class AuthService {
         HttpStatus.BAD_REQUEST,
       );
     }
+  }
+
+  async googleLogin(req: any) {
+    if (!req.user) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
+
+    const { email, firstName, lastName, picture, googleId } = req.user;
+
+    // Check if user exists
+    let user = await this.userRepository.findOne({
+      where: { email },
+      relations: ['profile'],
+    });
+
+    if (user) {
+      // Link Google account if not already linked
+      if (!user.profile) {
+        const userProfile = this.userProfileRepository.create({
+          firstName,
+          lastName,
+          picture,
+        });
+        user.googleId = googleId;
+        user.profile = userProfile;
+        await this.userRepository.save(user);
+      }
+    } else {
+      // Create a new user and profile if not found
+      const userProfile = this.userProfileRepository.create({
+        firstName,
+        lastName,
+        picture,
+      });
+      user = this.userRepository.create({
+        email,
+        profile: userProfile,
+        googleId: googleId,
+      });
+      await this.userRepository.save(user);
+    }
+
+    return {
+      user,
+      access_token: this.jwtService.sign({ user }, { expiresIn: '1d' }),
+      refresh_token: this.jwtService.sign(
+        { user: { id: user.id, email: user.email } },
+        { expiresIn: '7d' },
+      ),
+    };
   }
 }

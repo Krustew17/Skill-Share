@@ -1,6 +1,7 @@
 import { Job } from 'src/jobs/jobs.entity';
 import { TalentCards } from '../talent/talentcards.entity';
 import { Earnings } from './earnings.entity';
+import { UserProfile } from './user.profile.entity';
 
 import {
   Entity,
@@ -9,6 +10,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 
 @Entity()
@@ -16,13 +18,13 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   username: string;
 
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
 
   @CreateDateColumn({ name: 'created_at' })
@@ -48,4 +50,10 @@ export class User {
 
   @Column({ default: false })
   hasPremium: boolean;
+
+  @Column()
+  googleId: string;
+
+  @OneToOne(() => UserProfile, (profile) => profile.user, { cascade: true })
+  profile: UserProfile;
 }
