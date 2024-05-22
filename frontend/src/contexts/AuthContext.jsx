@@ -1,12 +1,6 @@
-import React, {
-    createContext,
-    useState,
-    useEffect,
-    useLayoutEffect,
-} from "react";
+import React, { createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
-let amount = 0;
 const AuthProvider = ({ children }) => {
     const [authenticated, setAuthenticated] = useState(
         !!localStorage.getItem("token")
@@ -47,7 +41,9 @@ const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ authenticated, logout, currentUser }}>
+        <AuthContext.Provider
+            value={{ authenticated, setAuthenticated, logout, currentUser }}
+        >
             {children}
         </AuthContext.Provider>
     );
