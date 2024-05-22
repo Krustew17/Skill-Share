@@ -2,8 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import * as cookieParser from 'cookie-parser';
-import { json, raw, urlencoded } from 'body-parser';
-import { RawBody } from '@nestjs/common';
+import { raw } from 'body-parser';
 
 dotenv.config();
 async function bootstrap() {

@@ -2,7 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { Link, useResolvedPath, useMatch } from "react-router-dom";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
-
+import SignUp from "../pages/sign up/signup";
+import Login from "../pages/login/login";
 export default function NavBar() {
     const { authenticated, logout } = useContext(AuthContext);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,6 +13,30 @@ export default function NavBar() {
             window.matchMedia("(prefers-color-scheme: dark)").matches
         );
     });
+    const test = (data) => {
+        if (data === "close") {
+            setIsModalOpen(false);
+            setIsMenuOpen(false);
+        }
+    };
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+    const openLogin = () => {
+        setIsLoginOpen(true);
+    };
+
+    const closeLogin = () => {
+        setIsLoginOpen(false);
+    };
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -69,13 +94,14 @@ export default function NavBar() {
                     ) : (
                         <div className="list-none flex gap-5">
                             <CustomLink
-                                to="/sign-up"
+                                // to="/sign-up"
+                                onClick={openModal}
                                 className=" text-black dark:text-white px-4 py-2 rounded hover:bg-blue-400"
                             >
                                 Sign up
                             </CustomLink>
                             <CustomLink
-                                to="/login"
+                                onClick={openLogin}
                                 className="bg-blue-500 text-white px-8 py-2 rounded-lg hover:bg-blue-400"
                             >
                                 Login
@@ -113,6 +139,30 @@ export default function NavBar() {
                     </button>
                 </div>
             </div>
+            {isLoginOpen && (
+                <div className="fixed inset-0 flex items-center justify-center z-50 max-w-full">
+                    <div
+                        className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+                        onClick={closeLogin}
+                    ></div>
+                    <div className="relative z-10 px-4">
+                        <Login />
+                    </div>
+                </div>
+            )}
+
+            {isModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center z-50 max-w-full">
+                    <div
+                        className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+                        onClick={closeModal}
+                    ></div>
+                    <div className="relative z-10 px-4">
+                        <SignUp setter={test} />
+                    </div>
+                </div>
+            )}
+
             {isMenuOpen && (
                 <div className="md:hidden mt-4 space-y-2 list-none flex flex-col gap-4 h-full text-center dark:text-white">
                     <CustomLink to="/talents" className="block text-lg">
@@ -137,13 +187,15 @@ export default function NavBar() {
                     ) : (
                         <div className="flex flex-col gap-2 items-center">
                             <CustomLink
-                                to="/sign-up"
+                                // to="/sign-up"
+                                onClick={openModal}
                                 className="block max-w-32 text-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400"
                             >
                                 Sign up
                             </CustomLink>
                             <CustomLink
-                                to="/login"
+                                // to="/login"
+                                onClick={openLogin}
                                 className="block max-w-32 text-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400"
                             >
                                 Login

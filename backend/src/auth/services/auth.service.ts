@@ -71,6 +71,7 @@ export class AuthService {
     const user = await this.userRepository.findOneBy({
       username: AuthPayload.username,
     });
+    console.log(user);
     if (!user) {
       throw new HttpException('user not found', HttpStatus.NOT_FOUND);
     }
@@ -88,20 +89,12 @@ export class AuthService {
         HttpStatus: HttpStatus.UNAUTHORIZED,
       };
     }
-    // res.cookie('session', await this.jwtService.signAsync({ user }), {
-    //   httpOnly: true,
-    //   secure: true,
-    //   sameSite: true,
-    //   maxAge: 15 * 60 * 1000,
-    // });
     const data = {
       access_token: this.jwtService.sign({ user }),
       refresh_token: this.jwtService.sign({ user }, { expiresIn: '7d' }),
     };
     return data;
   }
-
-  // TO DO: login the user after verifying the email
   async verifyUser(token: string) {
     try {
       const decoded = this.jwtService.verify(token);
@@ -129,7 +122,7 @@ export class AuthService {
   }
 
   async deleteUser(req: Request, res: Response) {
-    // TO DO: BLACKLIST/REMOVE THE JWT TOKEN AFTER DELETING THE USER
+    // TO DO: BLACKLIST/REMOVE THE JWT TOKEN AFTER DELETING/LOGGONG OUT THE USER
     const user = req['user'];
     if (!user) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
