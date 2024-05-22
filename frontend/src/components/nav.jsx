@@ -14,9 +14,7 @@ export default function NavBar() {
             window.matchMedia("(prefers-color-scheme: dark)").matches
         );
     });
-    if (currentUser) {
-        console.log(currentUser.user.profile.picture);
-    }
+    console.log(currentUser);
     const test = (data) => {
         if (data === "close") {
             setIsModalOpen(false);
@@ -93,7 +91,7 @@ export default function NavBar() {
                             {currentUser ? (
                                 <img
                                     className="h-10 rounded-full border-2 border-gray-800 dark:border-gray-300 hover:cursor-pointer hover:shadow-blue-600 dark:hover:shadow-blue-300 hover:shadow-lg"
-                                    src={`${currentUser.user.profile.picture}`}
+                                    src={`${currentUser.userProfile.picture}`}
                                 />
                             ) : (
                                 <img
