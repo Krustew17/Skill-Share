@@ -11,6 +11,13 @@ const AuthProvider = ({ children }) => {
     const [authenticated, setAuthenticated] = useState(
         !!localStorage.getItem("token")
     );
+
+    useEffect(() => {
+        if (localStorage.getItem("token") === "undefined") {
+            setAuthenticated(false);
+        }
+    });
+
     const [currentUser, setCurrentUser] = useState(null);
 
     async function getUser() {

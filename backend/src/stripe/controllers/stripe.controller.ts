@@ -1,13 +1,9 @@
 import { StripeService } from '../services/stripe.service';
 import { RawBodyRequest } from '../types/raw-body-request.interface';
-import { User } from 'src/users/users.entity';
+
 import { Body, Controller, HttpStatus, Post, Req, Res } from '@nestjs/common';
 
-import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-
 import { Response, Request } from 'express';
-import { Repository } from 'typeorm';
 import Stripe from 'stripe';
 
 @Controller('stripe')
