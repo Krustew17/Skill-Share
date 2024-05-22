@@ -10,11 +10,14 @@ import SignUp from "./pages/sign up/signup.jsx";
 import Login from "./pages/login/login.jsx";
 import MagicLinkVerification from "./pages/magic_link_verification/magic_link_verification.jsx";
 import "./index.css";
-import SuccessfulPayment from "./pages/successful-payment.jsx";
 import CancelledPayment from "./pages/cancelled-payment.jsx";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { ToastContainer, toast, Bounce } from "react-toastify";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const stripePromise = loadStripe(
     "pk_test_51PHWiFIK3rKcTeQQZeLQQmN3QgdcxdIGV5rc8Xki77jOo40EJQ9BMyDd22Ip7BOTgzJJMJAynkTF1ktpjV3M1jJq002JKrzbst"
@@ -22,6 +25,36 @@ const stripePromise = loadStripe(
 
 function App() {
     const location = useLocation();
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const status = searchParams.get("successful_payment");
+        if (status === "true") {
+            toast.success("Successful Payment ", {
+                position: "bottom-left",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+        } else if (status === "false") {
+            toast.error("Payment failed, please try again. ", {
+                position: "bottom-left",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+        }
+    }, [location]);
 
     return (
         <>
@@ -37,7 +70,6 @@ function App() {
                     path="verify-email"
                     element={<MagicLinkVerification />}
                 />
-                <Route path="/success" element={<SuccessfulPayment />} />
                 <Route path="/cancel" element={<CancelledPayment />} />
             </Routes>
             {location.pathname == "/" && (
@@ -47,6 +79,19 @@ function App() {
                         <Premium />
                     </Elements>
                     <Footer />
+                    <ToastContainer
+                        position="bottom-left"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="dark"
+                        transition:Bounce
+                    />
                 </>
             )}
         </>

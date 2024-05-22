@@ -16,7 +16,6 @@ const domain = process.env.DOMAIN;
 export class StripeService {
   private stripe: Stripe;
   constructor(
-    private readonly jwtService: JwtService,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly emailService: EmailService,
@@ -41,7 +40,7 @@ export class StripeService {
         },
       ],
       mode: 'payment',
-      success_url: `${domain}/success`,
+      success_url: `${domain}/order/successful-payment`,
       cancel_url: `${domain}/cancel`,
     });
 
@@ -63,48 +62,8 @@ export class StripeService {
     return paymentIntent;
   }
 
-  async confirmPaymentIntent(
-    paymentIntentId: string,
-  ): Promise<Stripe.PaymentIntent> {
-    const confirmedPaymentIntent =
-      await this.stripe.paymentIntents.confirm(paymentIntentId);
-    return confirmedPaymentIntent;
-  }
-
-  handleStripeWebhook(request: Request, response: Response) {
-    const sig = request.headers['stripe-signature'];
-    const webhookSecret = process.env.STRIPE_WEBHOOK_KEY;
-
-    let event: Stripe.Event;
-    try {
-      event = this.stripe.webhooks.constructEvent(
-        request.body,
-        sig,
-        webhookSecret,
-      );
-    } catch (err) {
-      console.log(`⚠️ Webhook signature verification failed.`, err.message);
-      return response.status(400).send(`Webhook Error: ${err.message}`);
-    }
-
-    switch (event.type) {
-      case 'payment_intent.succeeded':
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        console.log(paymentIntent);
-        // Handle successful payment here
-        break;
-      case 'payment_intent.payment_failed':
-        const failedPaymentIntent = event.data.object as Stripe.PaymentIntent;
-        console.log(`PaymentIntent failed!`, failedPaymentIntent);
-        // Handle failed payment here
-        break;
-      // Add more event types as needed
-      default:
-        console.log(`Unhandled event type ${event.type}.`);
-    }
-  }
-
   async updateUserToPremium(email: string) {
+    console.log(email);
     const user = await this.userRepository.findOneBy({ email });
 
     if (!user) {
