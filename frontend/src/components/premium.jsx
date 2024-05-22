@@ -1,10 +1,9 @@
 import { FaCheck } from "react-icons/fa6";
 import { GoDotFill } from "react-icons/go";
 import { IoMdClose } from "react-icons/io";
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { loadStripe } from "@stripe/stripe-js";
-import { useStripe, useElements, Elements } from "@stripe/react-stripe-js";
 // import CheckoutScreen from "./checkoutScreen";
 
 const stripePromise = loadStripe(

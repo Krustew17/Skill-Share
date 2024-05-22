@@ -13,61 +13,11 @@ import Stripe from 'stripe';
 @Controller('stripe')
 export class StripeController {
   private stripe: Stripe;
-  constructor(
-    private readonly stripeService: StripeService,
-    private readonly jwtService: JwtService,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
-  ) {
+  constructor(private readonly stripeService: StripeService) {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2024-04-10',
     });
   }
-
-  @Post('create-payment-intent')
-  async createPaymentIntent(
-    @Body() data: { amount: number; currency: string; customerEmail: string },
-    @Req() req: Request,
-  ) {
-    try {
-      const { amount, currency, customerEmail } = data;
-      const customer = await this.stripe.customers.create({
-        name: 'test',
-        email: customerEmail,
-      });
-      const ephemeralKey = await this.stripe.ephemeralKeys.create(
-        { customer: customer.id },
-        { apiVersion: '2024-04-10' },
-      );
-
-      const paymentIntent = await this.stripeService.createPaymentIntent(
-        amount,
-        currency,
-        customerEmail,
-      );
-      return {
-        client_secret: paymentIntent.client_secret,
-        ephemeralKey: ephemeralKey.secret,
-        publishable_key: process.env.STRIPE_PUBLISHABLE_KEY,
-        userId: customer.id,
-      };
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  @Post('confirm-payment-intent')
-  async confirmPaymentIntent(@Body() data: { paymentIntentId: string }) {
-    try {
-      const { paymentIntentId } = data;
-      const confirmedPaymentIntent =
-        await this.stripeService.confirmPaymentIntent(paymentIntentId);
-      return confirmedPaymentIntent;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   @Post('create-checkout-session')
   async createCheckoutSession(
     @Body() product: { name: string; price: number; email: string },
@@ -89,8 +39,8 @@ export class StripeController {
       line_items: [lineItems],
       mode: 'payment',
       customer_email: product.email,
-      success_url: `http://127.0.0.1:5173/order/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `http://127.0.0.1:5173/cancel`,
+      success_url: `http://127.0.0.1:5173?successful_payment=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `http://127.0.0.1:5173?successful_payment=false&session_id={CHECKOUT_SESSION_ID}`,
     });
     return res.json({ session: session });
   }
@@ -114,14 +64,6 @@ export class StripeController {
     }
 
     switch (event.type) {
-      case 'payment_intent.succeeded':
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        console.log(`PaymentIntent was successful!`, paymentIntent);
-        break;
-      case 'payment_intent.payment_failed':
-        const failedPaymentIntent = event.data.object as Stripe.PaymentIntent;
-        console.log(`PaymentIntent failed!`);
-        break;
       case 'checkout.session.completed':
         const checkoutSession = event.data.object as Stripe.Checkout.Session;
         this.handleCheckoutSessionCompleted(checkoutSession);
@@ -134,7 +76,11 @@ export class StripeController {
   private async handleCheckoutSessionCompleted(
     session: Stripe.Checkout.Session,
   ) {
-    if (session.customer_email) {
+    if (
+      session.customer_email &&
+      session.status === 'complete' &&
+      session.payment_status === 'paid'
+    ) {
       await this.stripeService.updateUserToPremium(session.customer_email);
     }
   }
