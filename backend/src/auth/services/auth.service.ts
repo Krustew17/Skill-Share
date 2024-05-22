@@ -57,14 +57,18 @@ export class AuthService {
       savedUser.email,
       verificationToken,
     );
-    // Create a Stripe customer
     const stripeCustomer = await this.stripe.customers.create({
       email: userData.email,
     });
-
-    // Save the Stripe customer ID to the user (if you have a stripeCustomerId field in your User entity)
     savedUser.customerId = stripeCustomer.id;
     await this.userRepository.save(savedUser);
+
+    const userProfile = this.userProfileRepository.create({
+      user: savedUser,
+      picture: 'src/assets/default_avatar.jpg',
+    });
+    await this.userProfileRepository.save(userProfile);
+
     return {
       message: 'User created successfully',
       HttpStatus: HttpStatus.CREATED,
@@ -222,16 +226,18 @@ export class AuthService {
         await this.userRepository.save(user);
       }
     } else {
-      // Create a new user and profile if not found
       const userProfile = this.userProfileRepository.create({
         firstName,
         lastName,
         picture,
       });
+      const customer = await this.stripe.customers.create({ email: email });
+
       user = this.userRepository.create({
         email,
         profile: userProfile,
         googleId: googleId,
+        customerId: customer.id,
       });
       await this.userRepository.save(user);
     }

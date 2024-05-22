@@ -51,7 +51,7 @@ export class User {
   @Column({ default: false })
   hasPremium: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   googleId: string;
 
   @OneToOne(() => UserProfile, (profile) => profile.user, { cascade: true })

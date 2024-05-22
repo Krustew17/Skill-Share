@@ -24,6 +24,7 @@ export default function MagicLinkVerification() {
                 const data = await response.json();
                 localStorage.setItem("token", data.access_token);
                 setLoading(false);
+                window.location.replace("/");
             } catch (error) {
                 setError(error.message);
                 setLoading(false);

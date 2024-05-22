@@ -4,7 +4,6 @@ import { IoMdClose } from "react-icons/io";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { loadStripe } from "@stripe/stripe-js";
-// import CheckoutScreen from "./checkoutScreen";
 
 const stripePromise = loadStripe(
     "pk_test_51PHWiFIK3rKcTeQQZeLQQmN3QgdcxdIGV5rc8Xki77jOo40EJQ9BMyDd22Ip7BOTgzJJMJAynkTF1ktpjV3M1jJq002JKrzbst"
