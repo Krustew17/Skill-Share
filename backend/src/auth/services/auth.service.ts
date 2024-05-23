@@ -46,6 +46,9 @@ export class AuthService {
     if (email) {
       throw new HttpException('email already exists', HttpStatus.CONFLICT);
     }
+    if (userData.password !== userData.confirmPassword) {
+      throw new HttpException('passwords do not match', HttpStatus.BAD_REQUEST);
+    }
 
     const password = await hashPassword(userData.password);
     const newUser = this.userRepository.create({ ...userData, password });
@@ -93,7 +96,7 @@ export class AuthService {
     );
     if (!isPasswordValid) {
       return {
-        error: 'invalid credentials',
+        message: 'invalid credentials',
         HttpStatus: HttpStatus.UNAUTHORIZED,
       };
     }

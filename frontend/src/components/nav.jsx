@@ -195,7 +195,7 @@ export default function NavBar() {
                     {authenticated ? (
                         <button
                             onClick={logout}
-                            className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400"
+                            className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 max-w-32 self-center"
                         >
                             Logout
                         </button>

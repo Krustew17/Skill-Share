@@ -5,6 +5,7 @@ export default function Login() {
         username: "",
         password: "",
     });
+    const [errorMessage, setErrorMessage] = useState("");
 
     const Notify = () => {
         toast.success("Successful Login ", {
@@ -26,6 +27,7 @@ export default function Login() {
     };
 
     const handleSubmit = async (event) => {
+        setErrorMessage("");
         event.preventDefault();
         const formData = new FormData(event.target);
         const response = await fetch("http://localhost:3000/auth/login", {
@@ -39,19 +41,17 @@ export default function Login() {
             }),
         });
         const responseJson = await response.json();
+        console.log(responseJson);
         if (responseJson.message === "user not verified") {
-            toast.error("Please Verify Your Email", {
-                position: "bottom-left",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-            });
-            return;
+            setErrorMessage("User not verified. Please check your email.");
+        }
+
+        if (responseJson.message === "user not found") {
+            setErrorMessage("User does not exist.");
+        }
+
+        if (responseJson.message === "invalid credentials") {
+            setErrorMessage("Invalid credentials.");
         }
 
         if (responseJson.access_token) {
@@ -125,6 +125,9 @@ export default function Login() {
                     <span className="w-1/5 border-b dark:border-gray-400 lg:w-1/4"></span>
                 </div>
                 <form onSubmit={handleSubmit}>
+                    <div className="text-red-500 mt-3 mb-3 text-md">
+                        {errorMessage}
+                    </div>
                     <div className="mt-4">
                         <label
                             className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
