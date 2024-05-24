@@ -71,7 +71,7 @@ export default function NavBar() {
                     <div className="hidden md:flex space-x-4 text-xl list-none">
                         <CustomLink to="/talents">Talents</CustomLink>
                         <CustomLink to="/jobs">Jobs</CustomLink>
-                        <CustomLink to="/memberships">Memberships</CustomLink>
+                        <CustomLink to="/premium">Premium</CustomLink>
                         <CustomLink to="/FAQ">FAQ</CustomLink>
                     </div>
                 </div>
@@ -185,9 +185,6 @@ export default function NavBar() {
                     </CustomLink>
                     <CustomLink to="/jobs" className="block text-lg">
                         Jobs
-                    </CustomLink>
-                    <CustomLink to="/memberships" className="block text-lg">
-                        Memberships
                     </CustomLink>
                     <CustomLink to="/FAQ" className="block text-lg">
                         FAQ
