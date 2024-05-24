@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { toast, ToastContainer, Bounce } from "react-toastify";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { toast, Bounce } from "react-toastify";
 export default function SignUp({ setter }) {
     const [formData, setFormData] = useState({
         username: "",
@@ -8,6 +7,7 @@ export default function SignUp({ setter }) {
         password: "",
         confirmPassword: "",
     });
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -15,8 +15,16 @@ export default function SignUp({ setter }) {
     };
 
     const handleSubmit = async (event) => {
+        setErrorMessage("");
         event.preventDefault();
         const formData = new FormData(event.target);
+
+        if (formData.get("password") !== formData.get("confirmPassword")) {
+            setErrorMessage("Passwords do not match");
+            console.log("test");
+            return;
+        }
+
         const response = await fetch("http://localhost:3000/auth/register", {
             method: "POST",
             headers: {
@@ -26,6 +34,7 @@ export default function SignUp({ setter }) {
                 username: formData.get("username"),
                 email: formData.get("email"),
                 password: formData.get("password"),
+                confirmPassword: formData.get("confirmPassword"),
             }),
         });
         const responseJson = await response.json();
@@ -42,6 +51,8 @@ export default function SignUp({ setter }) {
                 transition: Bounce,
             });
             setter("close");
+        } else {
+            setErrorMessage(responseJson.message);
         }
     };
     return (
@@ -96,6 +107,10 @@ export default function SignUp({ setter }) {
                     <span className="w-1/5 border-b dark:border-gray-400 lg:w-1/4"></span>
                 </div>
                 <form onSubmit={handleSubmit}>
+                    <div className="text-red-500 mt-3 mb-3 text-md">
+                        {errorMessage}
+                    </div>
+
                     <div className="mt-4">
                         <label
                             className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
@@ -174,7 +189,7 @@ export default function SignUp({ setter }) {
                     </a>
                     <div className="mt-6">
                         <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
-                            Sign In
+                            Sign Up
                         </button>
                     </div>
                 </form>

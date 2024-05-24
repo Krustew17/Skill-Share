@@ -71,7 +71,7 @@ export default function NavBar() {
                     <div className="hidden md:flex space-x-4 text-xl list-none">
                         <CustomLink to="/talents">Talents</CustomLink>
                         <CustomLink to="/jobs">Jobs</CustomLink>
-                        <CustomLink to="/memberships">Memberships</CustomLink>
+                        <CustomLink to="/premium">Premium</CustomLink>
                         <CustomLink to="/FAQ">FAQ</CustomLink>
                     </div>
                 </div>
@@ -186,16 +186,13 @@ export default function NavBar() {
                     <CustomLink to="/jobs" className="block text-lg">
                         Jobs
                     </CustomLink>
-                    <CustomLink to="/memberships" className="block text-lg">
-                        Memberships
-                    </CustomLink>
                     <CustomLink to="/FAQ" className="block text-lg">
                         FAQ
                     </CustomLink>
                     {authenticated ? (
                         <button
                             onClick={logout}
-                            className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400"
+                            className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 max-w-32 self-center"
                         >
                             Logout
                         </button>
