@@ -100,12 +100,27 @@ export class AuthService {
         HttpStatus: HttpStatus.UNAUTHORIZED,
       };
     }
+    // res.cookie('refreshToken', this.jwtService.sign({ user }), {
+    //   httpOnly: true,
+    //   maxAge: 3 * 24 * 60 * 60 * 1000,
+    // });
+
     const data = {
       access_token: this.jwtService.sign({ user }),
       refresh_token: this.jwtService.sign({ user }, { expiresIn: '7d' }),
     };
     return data;
   }
+
+  // #TO DO BLACKLIST THE REFRESH TOKEN
+  async logoutUser(req: Request, res: Response) {
+    res.clearCookie('refreshToken');
+    return {
+      message: 'Logged out successfully',
+      HttpStatus: HttpStatus.OK,
+    };
+  }
+
   async verifyUser(token: string) {
     try {
       const decoded = this.jwtService.verify(token);
@@ -148,7 +163,6 @@ export class AuthService {
       HttpStatus: HttpStatus.OK,
     };
   }
-  // TO DO: LOGOUT THE USER AND REMOVE THE JWT TOKEN
 
   async createPasswordResetToken(userId: number): Promise<string> {
     const payload = { userId };

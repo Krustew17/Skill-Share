@@ -38,6 +38,10 @@ export class AuthController {
   ) {
     return this.authService.loginUser(AuthPayload, req, res);
   }
+  @Post('logout')
+  logoutUser(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    return this.authService.logoutUser(req, res);
+  }
 
   @Delete('delete')
   deleteUser(@Req() req: Request, @Res({ passthrough: true }) res: Response) {

@@ -35,8 +35,16 @@ const AuthProvider = ({ children }) => {
         getUser();
     }, []);
 
-    const logout = () => {
+    const logout = async () => {
         setAuthenticated(false);
+        const request = await fetch("http://127.0.0.1:3000/auth/logout", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        });
+        const res = await request.json();
+        console.log(res);
         localStorage.removeItem("token");
     };
 
