@@ -42,15 +42,17 @@ export default function FAQ() {
                     {faqs.map((faq, index) => (
                         <div
                             key={index}
-                            className={`accordion py-8 px-6 border-b border-solid border-gray-200 transition-all duration-500 rounded-2xl hover:bg-indigo-50 dark:hover:bg-gray-400 ${
-                                activeIndex === index ? "bg-indigo-50" : ""
+                            className={`accordion py-8 px-6 mt-2 border-b border-solid border-gray-200 transition-all duration-500 rounded-2xl hover:bg-indigo-50 dark:hover:bg-gray-700 ${
+                                activeIndex === index
+                                    ? "bg-indigo-50 dark:bg-gray-700"
+                                    : ""
                             }`}
                         >
                             <button
-                                className={`accordion-toggle group inline-flex items-center justify-between leading-8 text-gray-900 dark:text-gray-100 w-full transition duration-500 text-left ${
+                                className={`accordion-toggle group inline-flex items-center justify-between leading-8 text-gray-900 dark:text-gray-200 w-full transition duration-500 text-left ${
                                     activeIndex === index
-                                        ? "font-medium text-indigo-600 dark:text-indigo-600"
-                                        : "hover:text-indigo-600"
+                                        ? "font-medium text-indigo-600 dark:text-indigo-400"
+                                        : "hover:text-indigo-600 dark:hover:text-indigo-400"
                                 }`}
                                 onClick={() => toggleAccordion(index)}
                                 aria-expanded={activeIndex === index}
@@ -84,7 +86,7 @@ export default function FAQ() {
                                         activeIndex === index ? "200px" : "0",
                                 }}
                             >
-                                <p className="text-base text-gray-900 leading-6">
+                                <p className="text-base text-gray-900 dark:text-gray-200 leading-6">
                                     {faq.answer}
                                 </p>
                             </div>

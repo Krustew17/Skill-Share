@@ -87,18 +87,17 @@ export default function NavBar() {
                     />
 
                     {authenticated ? (
-                        <div className="flex gap-10">
-                            {currentUser ? (
+                        <div className="flex gap-10 list-none">
+                            <CustomLink to="/profile">
                                 <img
                                     className="h-10 rounded-full border-2 border-gray-800 dark:border-gray-300 hover:cursor-pointer hover:shadow-blue-600 dark:hover:shadow-blue-300 hover:shadow-lg"
-                                    src={`${currentUser.userProfile.picture}`}
+                                    src={
+                                        currentUser
+                                            ? `${currentUser.userProfile.picture}`
+                                            : "src/assets/default_avatar.png"
+                                    }
                                 />
-                            ) : (
-                                <img
-                                    src="src/assets/default_avatar.png"
-                                    alt="default"
-                                />
-                            )}
+                            </CustomLink>
                             <button
                                 onClick={logout}
                                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400"
