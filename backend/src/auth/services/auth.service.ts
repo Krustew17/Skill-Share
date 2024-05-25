@@ -100,14 +100,10 @@ export class AuthService {
         HttpStatus: HttpStatus.UNAUTHORIZED,
       };
     }
-    // res.cookie('refreshToken', this.jwtService.sign({ user }), {
-    //   httpOnly: true,
-    //   maxAge: 3 * 24 * 60 * 60 * 1000,
-    // });
 
     const data = {
       access_token: this.jwtService.sign({ user }),
-      refresh_token: this.jwtService.sign({ user }, { expiresIn: '7d' }),
+      // refresh_token: this.jwtService.sign({ user }, { expiresIn: '7d' }),
     };
     return data;
   }
