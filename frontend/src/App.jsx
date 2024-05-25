@@ -8,6 +8,7 @@ import Jobs from "./pages/jobs/jobs.jsx";
 import FAQ from "./pages/FAQ/faq.jsx";
 import SignUp from "./pages/sign up/signup.jsx";
 import Login from "./pages/login/login.jsx";
+import Profile from "./pages/profile.jsx";
 import MagicLinkVerification from "./pages/magic_link_verification/magic_link_verification.jsx";
 import { AuthContext } from "./contexts/AuthContext.jsx";
 
@@ -79,6 +80,7 @@ function App() {
                     path="verify-email"
                     element={<MagicLinkVerification />}
                 />
+                <Route path="/profile" element={<Profile />} />
             </Routes>
             {location.pathname == "/" && (
                 <>

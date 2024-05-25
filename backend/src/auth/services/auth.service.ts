@@ -254,4 +254,20 @@ export class AuthService {
       ),
     };
   }
+  async generateAccessToken(user: any) {
+    const payload = { username: user.username, sub: user.userId };
+    return this.jwtService.sign(payload);
+  }
+
+  async refreshToken(oldToken: string) {
+    try {
+      const payload = this.jwtService.verify(oldToken, {
+        ignoreExpiration: true,
+      });
+      const newToken = this.generateAccessToken(payload);
+      return newToken;
+    } catch (e) {
+      throw new Error('Invalid token');
+    }
+  }
 }

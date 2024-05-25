@@ -4,7 +4,7 @@ import { IoMdClose } from "react-icons/io";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { loadStripe } from "@stripe/stripe-js";
-
+import { toast, Bounce } from "react-toastify";
 const stripePromise = loadStripe(
     "pk_test_51PHWiFIK3rKcTeQQZeLQQmN3QgdcxdIGV5rc8Xki77jOo40EJQ9BMyDd22Ip7BOTgzJJMJAynkTF1ktpjV3M1jJq002JKrzbst"
 );
@@ -13,6 +13,19 @@ export default function Premium() {
     const { currentUser } = useContext(AuthContext);
 
     const processPayment = async (e) => {
+        if (!currentUser) {
+            return toast.error("Please login first ", {
+                position: "bottom-left",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+        }
         const stripe = await stripePromise;
         const body = {
             name: "Skill Share Premium",

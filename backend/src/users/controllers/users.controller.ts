@@ -1,6 +1,19 @@
-import { Request, Response } from 'express';
-import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
 import { UserService } from '../services/user.service';
+import { JwtRefreshGuard } from 'src/auth/guards/jwt-refresh-guard';
+import { AuthService } from 'src/auth/services/auth.service';
+
+import { Request } from 'express';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('users')
 export class UsersController {
@@ -24,6 +37,7 @@ export class UsersController {
   }
 
   @Get('me')
+  @UseGuards(JwtRefreshGuard)
   getMe(@Req() req: Request) {
     const token = req.headers.authorization.split(' ')[1];
     return this.userService.getMe(token);
