@@ -21,6 +21,7 @@ export default function NavBar() {
             setIsMenuOpen(false);
         }
     };
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoginOpen, setIsLoginOpen] = useState(false);
 
@@ -92,7 +93,7 @@ export default function NavBar() {
                                 <img
                                     className="h-10 rounded-full border-2 border-gray-800 dark:border-gray-300 hover:cursor-pointer hover:shadow-blue-600 dark:hover:shadow-blue-300 hover:shadow-lg"
                                     src={
-                                        currentUser
+                                        currentUser?.userProfile?.picture
                                             ? `${currentUser.userProfile.picture}`
                                             : "src/assets/default_avatar.png"
                                     }

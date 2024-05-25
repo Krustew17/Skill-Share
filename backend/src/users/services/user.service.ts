@@ -49,15 +49,16 @@ export class UserService {
     if (!decoded) {
       throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
     }
-    console.log(decoded.userId);
+    const userId = decoded.userId ? decoded.userId : decoded.user.id;
     const user = await this.userRepository.findOne({
-      where: { id: decoded.userId },
+      where: { id: userId },
       relations: ['profile'],
     });
     const data = {
       user,
       userProfile: user.profile,
     };
+    console.log('data', data);
     return data;
   }
 }

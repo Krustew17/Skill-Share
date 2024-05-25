@@ -11,12 +11,13 @@ export class EmailService {
       host: 'sandbox.smtp.mailtrap.io',
       port: 2525,
       auth: {
-        user: '842507cc779c3a',
+        user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,
       },
     });
   }
   async sendVerificationEmail(email: string, token: string) {
+    console.log(process.env.EMAIL_USER, process.env.EMAIL_PASSWORD);
     const url = `${HOST}/verify-email?token=${token}`;
     if (email.includes('gmail.com')) {
       await this.transporter.sendMail({
