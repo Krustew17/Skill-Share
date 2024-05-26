@@ -1,5 +1,6 @@
 import { TalentService } from '../services/talent.service';
 import { createTalentDto } from '../dto/create.talent.dto';
+import { updateTalentDto } from '../dto/update.talent.dto';
 import {
   Body,
   Controller,
@@ -8,11 +9,9 @@ import {
   Param,
   Post,
   Put,
-  Query,
   Req,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { updateTalentDto } from '../dto/update.talent.dto';
 
 @Controller('talent')
 export class TalentController {

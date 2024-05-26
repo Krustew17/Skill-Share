@@ -1,6 +1,5 @@
 import { UserService } from '../services/user.service';
 import { JwtRefreshGuard } from 'src/auth/guards/jwt-refresh-guard';
-import { AuthService } from 'src/auth/services/auth.service';
 
 import { Request } from 'express';
 import {
@@ -13,7 +12,6 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 
 @Controller('users')
 export class UsersController {
