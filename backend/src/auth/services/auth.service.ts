@@ -103,7 +103,7 @@ export class AuthService {
 
     const data = {
       access_token: this.jwtService.sign({ user }),
-      // refresh_token: this.jwtService.sign({ user }, { expiresIn: '7d' }),
+      refresh_token: this.jwtService.sign({ user }, { expiresIn: '7d' }),
     };
     return data;
   }
