@@ -1,3 +1,5 @@
+import TalentCard from "../../components/talentCard";
+
 export default function Talents() {
     return (
         <div flex flex-col>
@@ -41,12 +43,7 @@ export default function Talents() {
                     </button>
                 </div>
             </form>
-            <div className="max-w-xl px-32">
-                <div className="flex flex-col px-10 py-20 border-2 border-gray-300 ">
-                    filters
-                </div>
-                <div>cards</div>
-            </div>
+            <TalentCard />
         </div>
     );
 }
