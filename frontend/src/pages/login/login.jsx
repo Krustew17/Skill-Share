@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast, Bounce } from "react-toastify";
-export default function Login() {
+export default function Login({ onClose }) {
     const [formData, setFormData] = useState({
         username: "",
         password: "",

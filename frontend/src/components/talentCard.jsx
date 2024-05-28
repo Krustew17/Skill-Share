@@ -45,7 +45,7 @@ export default function TalentCard() {
                     </select>
                 </div>
             </div>
-            <div className="w-full lg:w-4/5 px-4 flex flex-wrap gap-6">
+            <div className="w-full lg:w-4/5 px-6 flex flex-wrap gap-6">
                 {Array.from({ length: 9 }).map((_, index) => (
                     <div
                         key={index}

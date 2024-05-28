@@ -21,7 +21,7 @@ export class TalentCards {
 
   @IsNumber()
   @Column()
-  pay: number;
+  price: number;
 
   @ManyToOne(() => User, (user) => user.talentCards, { onDelete: 'CASCADE' })
   user: User;
