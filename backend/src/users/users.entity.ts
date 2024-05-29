@@ -12,6 +12,7 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
+import { TalentStatistics } from './user.statistics.entity';
 
 @Entity()
 export class User {
@@ -56,4 +57,11 @@ export class User {
 
   @OneToOne(() => UserProfile, (profile) => profile.user, { cascade: true })
   profile: UserProfile;
+
+  @OneToOne(
+    () => TalentStatistics,
+    (TalentStatistics) => TalentStatistics.user,
+    { cascade: true },
+  )
+  talentStatistics: TalentStatistics;
 }

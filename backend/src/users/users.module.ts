@@ -2,6 +2,7 @@ import { UsersController } from './controllers/users.controller';
 import { User } from './users.entity';
 import { UserService } from './services/user.service';
 import { UserProfile } from './user.profile.entity';
+import { TalentStatistics } from './user.statistics.entity';
 import AuthModule from 'src/auth/auth.module';
 
 import { MiddlewareConsumer, Module } from '@nestjs/common';
@@ -14,7 +15,7 @@ dotenv.config();
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, UserProfile]),
+    TypeOrmModule.forFeature([User, UserProfile, TalentStatistics]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1d' },

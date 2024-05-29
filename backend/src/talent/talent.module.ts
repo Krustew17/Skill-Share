@@ -1,5 +1,7 @@
 import { TalentCards } from './talentcards.entity';
 import { User } from 'src/users/users.entity';
+import { UserProfile } from 'src/users/user.profile.entity';
+import { TalentStatistics } from 'src/users/user.statistics.entity';
 import { TalentService } from './services/talent.service';
 import { TalentController } from './controllers/talent.controller';
 
@@ -8,10 +10,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { JwtMiddleware } from '../users/middlewares/middlewares.middleware';
 import { JwtService } from '@nestjs/jwt';
-import { UserProfile } from 'src/users/user.profile.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TalentCards, User, UserProfile])],
+  imports: [
+    TypeOrmModule.forFeature([
+      TalentCards,
+      User,
+      UserProfile,
+      TalentStatistics,
+    ]),
+  ],
   providers: [TalentService, JwtService],
   controllers: [TalentController],
 })
