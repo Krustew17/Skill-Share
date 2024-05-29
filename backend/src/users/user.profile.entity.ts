@@ -19,6 +19,9 @@ export class UserProfile {
   lastName: string;
 
   @Column({ nullable: true })
+  country: string;
+
+  @Column({ nullable: true })
   picture: string;
 
   @OneToOne(() => User, (user) => user.profile)

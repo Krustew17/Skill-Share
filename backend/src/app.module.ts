@@ -16,6 +16,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 
 import * as dotenv from 'dotenv';
+import { MulterModule } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 dotenv.config();
 
 @Module({
@@ -42,6 +46,19 @@ dotenv.config();
     TalentModule,
     LeaderboardModule,
     StripeModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
+    MulterModule.register({
+      storage: diskStorage({
+        destination: './frontend/public/uploads', // Specify the destination folder within your frontend app
+        filename: (req, file, cb) => {
+          const filename = `${Date.now()}-${file.originalname}`;
+          cb(null, filename);
+        },
+      }),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

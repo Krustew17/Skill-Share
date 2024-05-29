@@ -4,7 +4,7 @@ import { GoPersonFill } from "react-icons/go";
 import { FaStar } from "react-icons/fa";
 import { MdBackpack } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
-import ProfileTabContent from "./tabcontents/profile.tabcontent";
+import { FaMoneyBillTransfer } from "react-icons/fa6";
 
 const Dashboard = ({ activeTab, handleTabClick }) => {
     return (
@@ -52,6 +52,16 @@ const Dashboard = ({ activeTab, handleTabClick }) => {
                     onClick={() => handleTabClick(4)}
                 >
                     <RiLockPasswordFill className="text-3xl" /> Change Password
+                </li>
+                <li
+                    className={`cursor-pointer text-xl mt-1 flex gap-2  ${
+                        activeTab === 5
+                            ? "text-blue-500"
+                            : "text-gray-700 dark:text-gray-200"
+                    } hover:text-blue-500`}
+                    onClick={() => handleTabClick(5)}
+                >
+                    <FaMoneyBillTransfer className="text-3xl" /> Connect Stripe
                 </li>
             </ul>
         </div>

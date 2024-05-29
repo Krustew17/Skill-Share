@@ -6,7 +6,7 @@ export default function ProfileTabContent({ profileData }) {
         username: "",
         firstName: "",
         lastName: "",
-        location: "",
+        country: "",
     });
 
     // Effect to set initial form data when profileData changes
@@ -15,7 +15,7 @@ export default function ProfileTabContent({ profileData }) {
             username: profileData?.username,
             firstName: profileData?.firstName,
             lastName: profileData?.lastName,
-            location: profileData?.location,
+            country: profileData?.country,
         });
     }, [profileData]);
 
@@ -25,13 +25,28 @@ export default function ProfileTabContent({ profileData }) {
             ...formData,
             [e.target.name]: e.target.value,
         });
+        console.log(formData);
     };
 
     // Function to handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Add logic to submit form data to backend or update state
-        console.log("Form submitted:", formData);
+
+        const response = await fetch(
+            "http://127.0.0.1:3000/users/profile/update",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify(formData),
+            }
+        );
+        const data = await response.json();
+        if (data.message === "Profile updated successfully") {
+            window.location.reload();
+        }
     };
 
     return (
@@ -50,7 +65,7 @@ export default function ProfileTabContent({ profileData }) {
                     <input
                         type="text"
                         id="username"
-                        name="Username"
+                        name="username"
                         value={formData.username}
                         onChange={handleInputChange}
                         className="w-full px-4 py-2 border rounded-md dark:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -93,13 +108,13 @@ export default function ProfileTabContent({ profileData }) {
                         htmlFor="location"
                         className="block text-lg mb-1 dark:text-gray-200"
                     >
-                        Location
+                        Country
                     </label>
                     <input
                         type="text"
-                        id="location"
-                        name="location"
-                        value={formData.location}
+                        id="country"
+                        name="country"
+                        value={formData.country}
                         onChange={handleInputChange}
                         className="w-full px-4 py-2 border rounded-md  dark:bg-whitefocus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
