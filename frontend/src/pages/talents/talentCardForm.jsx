@@ -100,17 +100,7 @@ const TalentCardForm = ({ onClose }) => {
                             Step 1: Talent Information
                         </h2>
                         <form onSubmit={handleSubmit}>
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                    Upload Thumbnail
-                                </label>
-                                <input
-                                    type="file"
-                                    name="thumbnail"
-                                    onChange={handleFileChange}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                                />
-                            </div>
+                            <div className="mb-4"></div>
                             <div className="mb-6">
                                 <label className="block text-sm font-medium text-gray-700">
                                     Title
