@@ -69,63 +69,60 @@ export default function Talents() {
                         No talents found
                     </div>
                 ) : (
-                    talents.map(
-                        (talent) => (
-                            <div
-                                className="bg-white dark:bg-gray-800 shadow-lg dark:shadow-md dark:shadow-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-6 mb-6 flex dark:text-white"
-                                key={talent.id}
-                            >
-                                <img
-                                    className="w-16 h-16 rounded-full mr-4 border border-black dark:border-gray-50"
-                                    src={`${talent.user.profile.picture}`}
-                                    alt="Profile"
-                                />
-                                <div className="flex-1">
-                                    <div className="flex justify-between items-center mb-2 ">
-                                        <div>
-                                            <h2 className="text-lg font-semibold dark:text-gray-200">
-                                                {talent.user.profile
-                                                    .firstName &&
-                                                talent.user.profile.lastName
-                                                    ? talent.user.profile
-                                                          .firstName +
-                                                      " " +
-                                                      talent.user.profile
-                                                          .lastName
-                                                    : talent.user.username}
-                                            </h2>
-                                            <p className="text-gray-600 dark:text-white">
-                                                {talent.title}
-                                            </p>
-                                            <p className="text-sm text-gray-500">
-                                                {talent.user.profile.country}
-                                            </p>
-                                        </div>
-                                        <button
-                                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-                                            onClick={() =>
-                                                handleViewDetails(talent)
-                                            }
-                                        >
-                                            View profile
-                                        </button>
+                    talents.map((talent) => (
+                        <div
+                            className="bg-white dark:bg-gray-800 shadow-lg dark:shadow-md dark:shadow-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-6 mb-6 flex dark:text-white"
+                            key={talent.id}
+                        >
+                            <img
+                                className="w-16 h-16 rounded-full mr-4 border border-black dark:border-gray-50"
+                                src={`${talent.user.profile.picture}`}
+                                alt="Profile"
+                            />
+                            <div className="flex-1 border-l-2 dark:border-gray-600 pl-4 border-gray-300">
+                                <div className="flex justify-between items-center mb-2 ">
+                                    <div>
+                                        <h2 className="text-lg font-semibold dark:text-gray-200">
+                                            {talent.user.profile.firstName &&
+                                            talent.user.profile.lastName
+                                                ? talent.user.profile
+                                                      .firstName +
+                                                  " " +
+                                                  talent.user.profile.lastName
+                                                : talent.user.username}
+                                        </h2>
+                                        <p className="text-gray-600 dark:text-white">
+                                            {talent.title}
+                                        </p>
+                                        <p className="text-sm text-gray-500">
+                                            {talent.user.profile.country}
+                                        </p>
                                     </div>
-                                    <div className="flex items-center text-sm mb-2">
-                                        <p className="mx-2 dark:text-green-500 text-green-600">
-                                            ${talent.price}
-                                        </p>
-                                        <p className="mx-2">|</p>
-                                        <p className="mx-2 dark:text-green-500 text-green-600">
-                                            100% Job Success
-                                        </p>
-                                        <p className="mx-2">|</p>
-                                        <p className="dark:text-green-500 text-green-600">
-                                            $1K+ earned{" "}
-                                        </p>
-                                        <p className="mx-2">|</p>
-                                    </div>
-                                    <div className="flex items-center mb-2">
-                                        {/* {talent.skills.map((skill, index) => (
+                                    <button
+                                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                                        onClick={() =>
+                                            handleViewDetails(talent)
+                                        }
+                                    >
+                                        View profile
+                                    </button>
+                                </div>
+                                <div className="flex items-center text-sm mb-2">
+                                    <p className="mr-2 dark:text-green-500 text-green-600">
+                                        ${talent.price}
+                                    </p>
+                                    <p className="mx-2">|</p>
+                                    <p className="mx-2 dark:text-green-500 text-green-600">
+                                        100% Job Success
+                                    </p>
+                                    <p className="mx-2">|</p>
+                                    <p className="dark:text-green-500 text-green-600">
+                                        $1K+ earned{" "}
+                                    </p>
+                                    <p className="mx-2">|</p>
+                                </div>
+                                <div className="flex items-center mb-2">
+                                    {/* {talent.skills.map((skill, index) => (
                                     <span
                                         key={index}
                                         className="bg-gray-200 text-gray-800 px-2 py-1 rounded-full text-xs mr-2"
@@ -133,81 +130,20 @@ export default function Talents() {
                                         {skill}
                                     </span>
                                 ))} */}
-                                    </div>
-                                    <div className="text-gray-700 text-sm max-w-screen-lg dark:text-gray-200">
-                                        {truncateDescription(
-                                            talent.description,
-                                            250
-                                        )}
-                                    </div>
+                                </div>
+                                <div className="text-gray-700 text-sm max-w-screen-lg dark:text-gray-200">
+                                    {truncateDescription(
+                                        talent.description,
+                                        250
+                                    )}
                                 </div>
                             </div>
-                        )
-                        // <div className="flex w-3/5 bg-gray-50 h-64 py-6 px-4 gap-4 mb-5">
-                        //     <div className="flex justify-between">
-                        //         <div className="flex gap-6">
-                        //             <img
-                        //                 className="w-24 h-24 rounded-full"
-                        //                 src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                        //                 alt="Talent Photo"
-                        //             />
-                        //             <div className="flex flex-col">
-                        //                 <h2 className="text-xl  font-medium">
-                        //                     Talent Name
-                        //                 </h2>
-                        //                 {talent.title}
-                        //                 <p className="text-gray-500">Location</p>
-                        //             </div>
-                        //         </div>
-                        //         <button
-                        //             className="bg-blue-500 text-white px-8 text-xs md:h-10 md:px-4 rounded-lg hover:bg-blue-400 md:text-md "
-                        //             onClick={() => handleViewDetails(talent)}
-                        //         >
-                        //             View Details
-                        //         </button>
-                        //     </div>
-                        // </div>
-                    )
+                        </div>
+                    ))
                 )}
-                {/* <div className="flex w-4/5 bg-gray-50 h-64 p-4 gap-4">
-                    <img
-                        className="w-24 h-24 rounded-full"
-                        src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                        alt="Talent Photo"
-                    />
-                    <div className="flex flex-col">
-                        <h2 className="text-xl  font-medium">Talent Name</h2>
-                        {
-                            talent.skills.map()
-                        }
-                        <p className="text-gray-500">Location</p>
-                    </div>
-                </div> */}
-                {/* {talents.map((talent) => (
-                    <div
-                        key={talent.id}
-                        className="w-full sm:w-1/2 md:w-1/4 p-4 bg-white border rounded shadow h-96"
-                    >
-                        <img
-                            className="w-full h-56 mb-1"
-                            src={`http://127.0.0.1:3000/${talent.user.userProfile?.picture}`}
-                            alt="Talent Photo"
-                        />
-                        <h3 className="text-xs mb-2 font-semibold">
-                            Ad by <a href="/">{talent.user.username}</a>
-                        </h3>
-                        <p className="text-sm text-gray-600">{talent.title}</p>
-                        <h3 className="text-lg font-semibold mt-3">$100</h3>
-                        <p className="text-lg text-gray-600">
-                            <button onClick={() => handleViewDetails(talent)}>
-                                View Details
-                            </button>
-                        </p>
-                    </div>
-                ))} */}
                 {isSidePanelOpen && selectedTalent && (
                     <div
-                        className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-end "
+                        className="fixed inset-0 bg-gray-900 bg-opacity-70 flex justify-end "
                         key={selectedTalent.id}
                         // onClick={handleClosePanel}
                     >
@@ -218,14 +154,14 @@ export default function Talents() {
                             >
                                 Close
                             </button>
-                            <div className="p-4 flex mt-5">
+                            <div className="p-4 flex mt-4">
                                 <img
-                                    className="w-28 h-28 rounded-full border border-black dark:border-gray-200 mb-4"
+                                    className="w-28 h-28 rounded-full border border-black dark:border-gray-200 mb-5"
                                     src={selectedTalent.user.profile.picture}
                                     alt="Talent Photo"
                                 />
                                 <div className="flex flex-col ml-6">
-                                    <h3 className="text-2xl font-semibold mt-5 dark:text-white">
+                                    <h3 className="text-2xl font-semibold dark:text-white">
                                         {selectedTalent.user.profile
                                             .firstName &&
                                         selectedTalent.user.profile.lastName
@@ -243,7 +179,7 @@ export default function Talents() {
                                         {selectedTalent.user.profile.country}
                                     </h3>
                                 </div>
-                                <button className="ml-auto mt-5 px-8 max-h-10 bg-blue-500 hover:bg-blue-600 text-white rounded-lg">
+                                <button className="ml-auto mt-5 px-8 max-h-12 text-2xl bg-green-600 hover:bg-green-700 text-white rounded-lg">
                                     Hire
                                 </button>
                             </div>
@@ -257,7 +193,7 @@ export default function Talents() {
                                 <p>|</p>
                                 <p>5+ years of experience</p>
                                 <p>|</p>
-                                <p>1K+ Earned</p>
+                                <p>$1K+ Earned</p>
                             </div>
                             <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
                             <div className="p-4 flex gap-5">
@@ -411,32 +347,7 @@ export default function Talents() {
                         </select>
                     </div>
                 </div>
-                {/* <div className="w-full lg:w-4/5 px-6 flex flex-wrap gap-6"> */}
                 <TalentList />
-                {/* {Array.from({ length: 30 }).map((_, index) => (
-                        <div
-                            key={index}
-                            className="w-full sm:w-1/2 md:w-1/4 p-4 bg-white border rounded shadow"
-                        >
-                            <img
-                                className="w-full h-56 mb-1"
-                                src="https://via.placeholder.com/400"
-                                alt="Talent Photo"
-                            />
-                            <h3 className="text-xs mb-2 font-semibold">
-                                Ad by <a href="/">John Doe</a>
-                            </h3>
-                            <p className="text-sm text-gray-600">
-                                I will develop, integrate, and deploy REST APIs
-                                with Node.js, Express.js, NestJS
-                            </p>
-                            <h3 className="text-lg font-semibold mt-3">$100</h3>
-                            <p className="text-sm text-gray-600">
-                                <a href="/">View Details</a>
-                            </p>
-                        </div>
-                    ))} */}
-                {/* </div> */}
             </div>
         </div>
     );
