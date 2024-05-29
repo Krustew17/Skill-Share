@@ -3,6 +3,9 @@ import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import * as cookieParser from 'cookie-parser';
 import { raw } from 'body-parser';
+import path, { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as express from 'express';
 
 dotenv.config();
 async function bootstrap() {
@@ -15,7 +18,6 @@ async function bootstrap() {
       next();
     },
   );
-
   app.enableCors();
   app.use(cookieParser());
   await app.listen(3000);

@@ -3,7 +3,7 @@ import { User } from '../users.entity';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-
+import { Request } from 'express';
 import { Repository, DataSource } from 'typeorm';
 import { UserProfile } from '../user.profile.entity';
 
@@ -60,5 +60,37 @@ export class UserService {
     };
     console.log('data', data);
     return data;
+  }
+
+  async updateUser(
+    data: {
+      username: string;
+      firstName: string;
+      lastName: string;
+      country: string;
+    },
+    req: Request,
+  ) {
+    const { username, firstName, lastName, country } = data;
+
+    const user = await this.userRepository.findOneBy({ username });
+    if (user && user.id !== req['user'].id) {
+      throw new HttpException('Username is taken', HttpStatus.CONFLICT);
+    }
+    const requestUser = await this.userRepository.findOne({
+      where: { id: req['user'].id },
+      relations: ['profile'],
+    });
+    console.log(requestUser);
+    console.log(req['user']);
+    requestUser.username = username;
+    requestUser.profile.firstName = firstName;
+    requestUser.profile.lastName = lastName;
+    requestUser.profile.country = country;
+    await this.userRepository.save(requestUser);
+    return {
+      message: 'Profile updated successfully',
+      HttpStatus: HttpStatus.OK,
+    };
   }
 }

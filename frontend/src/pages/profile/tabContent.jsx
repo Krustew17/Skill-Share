@@ -2,15 +2,20 @@
 import React from "react";
 import ProfileTabContent from "./tabcontents/profile.tabcontent";
 import ChangePasswordTabContent from "./tabcontents/changePassword.tabcontent";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 const TabContent = ({ activeTab }) => {
+    const { currentUser } = useContext(AuthContext);
+
     return (
         <div className="w-3/4 p-4 bg-white dark:bg-gray-700 shadow-lg rounded-xl">
             {activeTab === 1 && (
                 <ProfileTabContent
                     profileData={{
-                        firstName: "John",
-                        lastName: "Doe",
-                        location: "New York",
+                        username: currentUser?.user.username,
+                        firstName: currentUser?.userProfile.firstName,
+                        lastName: currentUser?.userProfile.lastName,
+                        country: currentUser?.userProfile.country,
                     }}
                 />
             )}

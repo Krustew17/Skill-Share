@@ -1,12 +1,22 @@
 import { User } from '../users/users.entity';
 
 import { IsNumber, IsString } from 'class-validator';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class TalentCards {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
+  thumbnail: string;
 
   @IsString()
   @Column()
@@ -16,13 +26,22 @@ export class TalentCards {
   @Column()
   description: string;
 
-  @Column('text', { array: true })
-  skills: string[];
+  @Column()
+  skills: string;
 
   @IsNumber()
   @Column()
-  pay: number;
+  price: number;
+
+  @Column('text', { array: true, nullable: true })
+  portfolio: string[];
 
   @ManyToOne(() => User, (user) => user.talentCards, { onDelete: 'CASCADE' })
   user: User;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 }

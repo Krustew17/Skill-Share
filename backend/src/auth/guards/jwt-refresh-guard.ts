@@ -25,12 +25,12 @@ export class JwtRefreshGuard implements CanActivate {
     const token = authHeader.split(' ')[1];
     try {
       const decoded = this.jwtService.verify(token);
-      console.log(decoded);
       return true;
     } catch (error) {
       if (error.name === 'TokenExpiredError') {
         const newToken = await this.authService.refreshToken(token);
         request.headers['authorization'] = `Bearer ${newToken}`;
+        console.log('refreshed token');
         return true;
       } else {
         throw new UnauthorizedException();

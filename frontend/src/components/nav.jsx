@@ -72,7 +72,6 @@ export default function NavBar() {
                     <div className="hidden md:flex space-x-4 text-xl list-none">
                         <CustomLink to="/talents">Talents</CustomLink>
                         <CustomLink to="/jobs">Jobs</CustomLink>
-                        <CustomLink to="/premium">Premium</CustomLink>
                         <CustomLink to="/FAQ">FAQ</CustomLink>
                     </div>
                 </div>

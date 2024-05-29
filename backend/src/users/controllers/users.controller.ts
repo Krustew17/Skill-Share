@@ -2,16 +2,7 @@ import { UserService } from '../services/user.service';
 import { JwtRefreshGuard } from 'src/auth/guards/jwt-refresh-guard';
 
 import { Request } from 'express';
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Query,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
@@ -39,5 +30,20 @@ export class UsersController {
   getMe(@Req() req: Request) {
     const token = req.headers.authorization.split(' ')[1];
     return this.userService.getMe(token);
+  }
+
+  @Post('profile/update')
+  @UseGuards(JwtRefreshGuard)
+  updateProfile(
+    @Req() req: Request,
+    @Body()
+    data: {
+      username: string;
+      firstName: string;
+      lastName: string;
+      country: string;
+    },
+  ) {
+    return this.userService.updateUser(data, req);
   }
 }

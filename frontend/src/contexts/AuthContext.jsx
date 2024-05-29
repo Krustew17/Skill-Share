@@ -44,7 +44,8 @@ const AuthProvider = ({ children }) => {
             },
         });
         const res = await request.json();
-        document.cookie.localStorage.removeItem("token");
+        localStorage.removeItem("token");
+        return res;
     };
 
     return (
