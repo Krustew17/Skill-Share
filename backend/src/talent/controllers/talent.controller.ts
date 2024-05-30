@@ -112,10 +112,28 @@ export class TalentController {
   deleteTalentCard(@Param('id') talentCardId: number, @Req() req: Request) {
     return this.talentService.deleteTalentCard(talentCardId, req);
   }
+
+  @Get('rating/average')
+  getTalentRatingAverage(@Query('talentCardId') talentCardId: number) {
+    return this.talentService.getTalentRatingAverage(talentCardId);
+  }
+
+  @Get('reviews')
+  getTalentReviews(@Query('talentCardId') talentCardId: number) {
+    return this.talentService.getTalentReviews(talentCardId);
+  }
+
+  @Post('review/create')
+  createTalentReview(
+    @Body()
+    body: {
+      talentCardId: number;
+      title: string;
+      description: string;
+      rating: number;
+    },
+    @Req() req: Request,
+  ) {
+    return this.talentService.createTalentReview(body, req);
+  }
 }
-// function diskStorage(arg0: {
-//   destination: string;
-//   filename: (req: any, file: any, cb: any) => void;
-// }): any {
-//   throw new Error('Function not implemented.');
-// }

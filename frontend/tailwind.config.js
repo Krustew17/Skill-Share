@@ -12,6 +12,10 @@ export default {
             height: {
                 spanHeight: "2px",
             },
+            wordBreak: {
+                "break-all": "break-all",
+                "break-word": "break-word",
+            },
         },
     },
     plugins: [],

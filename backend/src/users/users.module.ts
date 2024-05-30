@@ -10,12 +10,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
 import { JwtMiddleware } from './middlewares/middlewares.middleware';
+import { TalentReviews } from 'src/talent/talentReviews.entity';
 
 dotenv.config();
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, UserProfile, TalentStatistics]),
+    TypeOrmModule.forFeature([
+      User,
+      UserProfile,
+      TalentStatistics,
+      TalentReviews,
+    ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1d' },

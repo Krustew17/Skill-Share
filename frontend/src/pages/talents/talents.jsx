@@ -3,18 +3,17 @@ import { AuthContext } from "../../contexts/AuthContext";
 import TalentCardForm from "./talentCardForm";
 import Modal from "./modal";
 import Login from "../login/login";
+import { MdLocationPin } from "react-icons/md";
+import { FaStar } from "react-icons/fa";
+import ReviewSlider from "./reviewSlider";
+import truncateDescription from "../../utils/truncateDescriptions";
+
 export default function Talents() {
     const { authenticated } = useContext(AuthContext);
     const [showModal, setShowModal] = useState(false);
     const [selectedTalent, setSelectedTalent] = useState(null);
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
-
-    const truncateDescription = (description, maxLength) => {
-        if (description.length <= maxLength) {
-            return description;
-        }
-        return description.substring(0, maxLength) + "...";
-    };
+    const [currentReviews, setCurrentReviews] = useState([]);
 
     const handleButtonClick = () => {
         setShowModal(true);
@@ -24,13 +23,21 @@ export default function Talents() {
         setShowModal(false);
     };
 
-    const handleViewDetails = (talent) => {
+    const handleViewDetails = async (talent) => {
+        const response = await fetch(
+            "http://127.0.0.1:3000/talent/reviews?talentCardId=" + talent.id,
+            {}
+        );
+
+        const responseJson = await response.json();
+        setCurrentReviews(responseJson.data);
         setSelectedTalent(talent);
         setIsSidePanelOpen(true);
     };
 
     const handleClosePanel = () => {
         setSelectedTalent(null);
+        setCurrentReviews([]);
         setIsSidePanelOpen(false);
     };
 
@@ -49,9 +56,22 @@ export default function Talents() {
                             },
                         }
                     );
-                    const responseJson = await response.json();
-                    console.log(responseJson);
-                    setTalents(responseJson);
+                    const data = await response.json();
+
+                    const talentsWithRatings = await Promise.all(
+                        data.map(async (talent) => {
+                            const ratingResponse = await fetch(
+                                `http://127.0.0.1:3000/talent/rating/average?talentCardId=${talent.id}`
+                            );
+                            const ratingData = await ratingResponse.json();
+                            const rating = Number(ratingData.data).toFixed(1);
+                            return {
+                                ...talent,
+                                averageRating: rating,
+                            };
+                        })
+                    );
+                    setTalents(talentsWithRatings);
                 } catch (error) {
                     console.error("Error fetching talents:", error);
                 }
@@ -59,6 +79,7 @@ export default function Talents() {
 
             fetchTalents();
         }, []);
+
         if (talents.message === "No talents found") {
             return <div>Loading...</div>;
         }
@@ -94,7 +115,8 @@ export default function Talents() {
                                         <p className="text-gray-600 dark:text-white">
                                             {talent.title}
                                         </p>
-                                        <p className="text-sm text-gray-500">
+                                        <p className="text-xs text-gray-500 flex items-center gap-1">
+                                            <MdLocationPin className="text-sm" />{" "}
                                             {talent.user.profile.country}
                                         </p>
                                     </div>
@@ -120,16 +142,20 @@ export default function Talents() {
                                         $1K+ earned{" "}
                                     </p>
                                     <p className="mx-2">|</p>
+                                    <p className="flex items-center gap-2">
+                                        {talent.averageRating}{" "}
+                                        <FaStar className="text-yellow-500" />
+                                    </p>
                                 </div>
                                 <div className="flex items-center mb-2">
-                                    {/* {talent.skills.map((skill, index) => (
-                                    <span
-                                        key={index}
-                                        className="bg-gray-200 text-gray-800 px-2 py-1 rounded-full text-xs mr-2"
-                                    >
-                                        {skill}
-                                    </span>
-                                ))} */}
+                                    {talent.skills.map((skill, index) => (
+                                        <span
+                                            key={index}
+                                            className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2"
+                                        >
+                                            {skill}
+                                        </span>
+                                    ))}
                                 </div>
                                 <div className="text-gray-700 text-sm max-w-screen-lg dark:text-gray-200">
                                     {truncateDescription(
@@ -147,14 +173,20 @@ export default function Talents() {
                         key={selectedTalent.id}
                         // onClick={handleClosePanel}
                     >
-                        <div className="bg-gray-100 dark:bg-gray-800 border-l border-gray-600 shadow-xl shadow-gray-600 w-2/4 h-full p-4 overflow-y-auto">
+                        <div
+                            className={`bg-gray-100 dark:bg-gray-800 border-l border-gray-600 shadow-xl shadow-gray-600 w-2/4 h-full p-4 overflow-y-auto ${
+                                isSidePanelOpen
+                                    ? "slide-panel"
+                                    : "slide-panel-closed"
+                            }`}
+                        >
                             <button
                                 onClick={handleClosePanel}
                                 className="text-right dark:text-white hover:bg-red-500 px-4 py-1 rounded-md"
                             >
                                 Close
                             </button>
-                            <div className="p-4 flex mt-4">
+                            <section className="p-4 flex mt-4">
                                 <img
                                     className="w-28 h-28 rounded-full border border-black dark:border-gray-200 mb-5"
                                     src={selectedTalent.user.profile.picture}
@@ -182,9 +214,9 @@ export default function Talents() {
                                 <button className="ml-auto mt-5 px-8 max-h-12 text-2xl bg-green-600 hover:bg-green-700 text-white rounded-lg">
                                     Hire
                                 </button>
-                            </div>
+                            </section>
                             <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
-                            <div className="flex p-4 gap-5 dark:text-white">
+                            <section className="flex p-4 gap-5 dark:text-white">
                                 <p>Price ${selectedTalent.price}</p>
                                 <p>|</p>
                                 <p>100% Job Success</p>
@@ -194,7 +226,7 @@ export default function Talents() {
                                 <p>5+ years of experience</p>
                                 <p>|</p>
                                 <p>$1K+ Earned</p>
-                            </div>
+                            </section>
                             <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
                             <div className="p-4 flex gap-5">
                                 {selectedTalent.skills.map((skill) => {
@@ -206,13 +238,45 @@ export default function Talents() {
                                 })}
                             </div>
                             <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
-                            <p className="p-4 leading-5 max-w-fit dark:text-white">
+                            <p
+                                className="p-4 leading-5 max-w-fit dark:text-white"
+                                style={{ whiteSpace: "pre-line" }}
+                            >
                                 {selectedTalent.description}
                             </p>
                             <div />
-                            <div>
-                                <p>ratings</p>
-                            </div>
+                            <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
+                            <section className="p-4 flex flex-col items-center justify-between">
+                                <div className="flex flex-row justify-between w-full">
+                                    <button className="bg-yellow-500 hover:bg-yellow-600 dark:hover:bg-yellow-400 px-6 py-2 rounded-xl">
+                                        Add Review
+                                    </button>
+                                    <div className="flex flex-row gap-1 items-center text-xl dark:text-white">
+                                        Average Rating:{" "}
+                                        {selectedTalent.averageRating}{" "}
+                                        <FaStar className="text-yellow-500 text-xl" />
+                                    </div>
+                                </div>
+                                <div className="w-full justify-start mt-5">
+                                    <div>
+                                        {(currentReviews.length === 0 && (
+                                            <p className="text-gray-500 dark:text-gray-400">
+                                                No reviews yet
+                                            </p>
+                                        )) || (
+                                            <div>
+                                                <p className="dark:text-white text-md mb-5">
+                                                    total Reviews:{" "}
+                                                    {currentReviews.length}
+                                                </p>
+                                                <ReviewSlider
+                                                    props={currentReviews}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </section>
                         </div>
                     </div>
                 )}

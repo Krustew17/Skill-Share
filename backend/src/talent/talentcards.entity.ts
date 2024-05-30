@@ -6,9 +6,11 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { TalentReviews } from './talentReviews.entity';
 
 @Entity()
 export class TalentCards {
@@ -41,4 +43,10 @@ export class TalentCards {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @OneToMany(() => TalentReviews, (talentReviews) => talentReviews.talentCard)
+  talentReviews: TalentReviews[];
+
+  @Column('decimal', { default: 0, precision: 5, scale: 2 })
+  averageRating: number;
 }

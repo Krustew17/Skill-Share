@@ -77,6 +77,7 @@ export class StripeController {
       session.status === 'complete' &&
       session.payment_status === 'paid'
     ) {
+      console.log('test');
       await this.stripeService.updateUserToPremium(session.customer_email);
     }
   }
