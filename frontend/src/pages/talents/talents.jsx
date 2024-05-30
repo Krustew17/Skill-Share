@@ -65,7 +65,6 @@ export default function Talents() {
                             );
                             const ratingData = await ratingResponse.json();
                             const rating = Number(ratingData.data).toFixed(1);
-                            console.log(rating);
                             return {
                                 ...talent,
                                 averageRating: rating,
@@ -73,7 +72,6 @@ export default function Talents() {
                         })
                     );
                     setTalents(talentsWithRatings);
-                    console.log(talentsWithRatings);
                 } catch (error) {
                     console.error("Error fetching talents:", error);
                 }

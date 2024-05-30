@@ -3,7 +3,6 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import ReviewCard from "./reviewCard";
 const ReviewSlider = ({ ...reviews }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    console.log(reviews.props[currentIndex]);
 
     const goToNextReview = () => {
         setCurrentIndex((prevIndex) =>

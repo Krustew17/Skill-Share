@@ -165,7 +165,22 @@ export class TalentService {
       0,
     );
     const averageRating = totalRatings / talentReviews.length;
-    return { data: averageRating };
+    let averageRatingRounded = parseFloat(averageRating.toFixed(2));
+
+    if (isNaN(averageRating)) {
+      averageRatingRounded = 0;
+    }
+
+    let talentCard = await this.talentRepository.findOne({
+      where: { id: talentCardId },
+    });
+
+    talentCard = this.talentRepository.merge(talentCard, {
+      averageRating: averageRatingRounded,
+    });
+    console.log(talentCard);
+    await this.talentRepository.save(talentCard);
+    return { data: talentCard.averageRating };
   }
 
   async getTalentReviews(talentCardId: number) {

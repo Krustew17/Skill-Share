@@ -46,4 +46,7 @@ export class TalentCards {
 
   @OneToMany(() => TalentReviews, (talentReviews) => talentReviews.talentCard)
   talentReviews: TalentReviews[];
+
+  @Column('decimal', { default: 0, precision: 5, scale: 2 })
+  averageRating: number;
 }
