@@ -197,15 +197,13 @@ export default function Talents() {
                             </div>
                             <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
                             <div className="p-4 flex gap-5">
-                                {JSON.parse(selectedTalent.skills).map(
-                                    (skill) => {
-                                        return (
-                                            <span className="px-6 py-1 bg-blue-800 dark:bg-blue-600 rounded-md text-white">
-                                                {skill}
-                                            </span>
-                                        );
-                                    }
-                                )}
+                                {selectedTalent.skills.map((skill) => {
+                                    return (
+                                        <span className="px-6 py-1 bg-blue-800 dark:bg-blue-600 rounded-md text-white">
+                                            {skill}
+                                        </span>
+                                    );
+                                })}
                             </div>
                             <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
                             <p className="p-4 leading-5 max-w-fit dark:text-white">

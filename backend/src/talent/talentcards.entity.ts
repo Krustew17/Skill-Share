@@ -15,9 +15,6 @@ export class TalentCards {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  thumbnail: string;
-
   @IsString()
   @Column()
   title: string;
@@ -26,8 +23,8 @@ export class TalentCards {
   @Column()
   description: string;
 
-  @Column()
-  skills: string;
+  @Column('text', { array: true, nullable: true })
+  skills: string[];
 
   @IsNumber()
   @Column()

@@ -9,6 +9,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   UploadedFiles,
   UseInterceptors,
@@ -18,6 +19,7 @@ import { Request } from 'express';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { TalentCards } from '../talentcards.entity';
+import { TalentCardsQueryDto } from '../dto/talentCard.query.dto';
 
 @Controller('talent')
 export class TalentController {
@@ -26,6 +28,11 @@ export class TalentController {
   @Get('all')
   getAllTalentCards() {
     return this.talentService.getAllTalents();
+  }
+
+  @Get('search')
+  search(@Query() query: TalentCardsQueryDto) {
+    return this.talentService.search(query);
   }
 
   @Post('create')
@@ -61,19 +68,24 @@ export class TalentController {
   async createTalentCard(
     @UploadedFiles()
     files: {
-      thumbnail?: Express.Multer.File[];
       portfolio?: Express.Multer.File[];
     },
     @Body() body: TalentCards,
     @Req() req: Request,
   ) {
-    const thumbnailPath = files.thumbnail ? files.thumbnail[0].path : '';
     const portfolioPaths = files.portfolio
       ? files.portfolio.map((file) => file.path)
       : [];
+
+    const skills =
+      typeof body.skills === 'string' ? JSON.parse(body.skills) : body.skills;
+    if (!Array.isArray(skills)) {
+      throw new Error('Skills must be an array');
+    }
+
     const talentCardData: Partial<TalentCards> = {
       ...body,
-      thumbnail: thumbnailPath,
+      skills,
       portfolio: portfolioPaths,
       user: req['user'],
     };
