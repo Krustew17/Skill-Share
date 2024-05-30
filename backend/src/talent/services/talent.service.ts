@@ -2,18 +2,27 @@ import { TalentCards } from '../talentcards.entity';
 import { createTalentDto } from '../dto/create.talent.dto';
 import { updateTalentDto } from '../dto/update.talent.dto';
 
-import { HttpException, HttpStatus, Injectable, Req } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Req,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 import { Request } from 'express';
 import { TalentCardsQueryDto } from '../dto/talentCard.query.dto';
+import { TalentReviews } from '../talentReviews.entity';
 
 @Injectable()
 export class TalentService {
   constructor(
     @InjectRepository(TalentCards)
     private readonly talentRepository: Repository<TalentCards>,
+    @InjectRepository(TalentReviews)
+    private readonly talentReviewsRepository: Repository<TalentReviews>,
   ) {}
 
   async getAllTalents() {
@@ -144,5 +153,60 @@ export class TalentService {
   async saveTalentCard(data: Partial<TalentCards>): Promise<TalentCards> {
     const talentCard = this.talentRepository.create(data);
     return this.talentRepository.save(talentCard);
+  }
+  async getTalentRatingAverage(talentCardId: number) {
+    const talentReviews = await this.talentReviewsRepository
+      .createQueryBuilder('talentReviews')
+      .leftJoinAndSelect('talentReviews.talentCard', 'talentCard')
+      .where('talentCard.id = :id', { id: talentCardId })
+      .getMany();
+    const totalRatings = talentReviews.reduce(
+      (sum, review) => sum + review.rating,
+      0,
+    );
+    const averageRating = totalRatings / talentReviews.length;
+    return { data: averageRating };
+  }
+
+  async getTalentReviews(talentCardId: number) {
+    const talentReviews = await this.talentReviewsRepository
+      .createQueryBuilder('talentReviews')
+      .leftJoinAndSelect('talentReviews.talentCard', 'talentCard')
+      .leftJoinAndSelect('talentReviews.user', 'user')
+      .where('talentCard.id = :id', { id: talentCardId })
+      .getMany();
+    return { data: talentReviews, total: talentReviews.length };
+  }
+
+  async createTalentReview(
+    body: {
+      talentCardId: number;
+      title: string;
+      description: string;
+      rating: number;
+    },
+    @Req() req: Request,
+  ) {
+    const talentCard = await this.talentRepository.findOne({
+      where: { id: body.talentCardId },
+    });
+
+    if (!talentCard) {
+      throw new HttpException('Talent card not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (body.rating > 5 || body.rating < 1) {
+      throw new HttpException('Invalid stars', HttpStatus.BAD_REQUEST);
+    }
+
+    const talentReviewData: Partial<TalentReviews> = {
+      ...body,
+      talentCard: talentCard,
+      user: req['user'],
+    };
+
+    const talentReview = this.talentReviewsRepository.create(talentReviewData);
+    console.log(talentReview);
+    return this.talentReviewsRepository.save(talentReview);
   }
 }

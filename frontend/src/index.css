@@ -20,3 +20,68 @@
     box-sizing: border-box;
     transition: background-color 0.5s;
 }
+/* Define the animation for opening the side panel */
+@keyframes slide-panel-open {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-panel-closed-right {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes slide-panel-closed-left {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+.slide-panel-open {
+    animation: slide-panel-open 0.3s ease-in-out forwards;
+}
+
+.slide-panel-closed-right {
+    animation: slide-panel-closed-right 0.3s ease-in-out forwards;
+}
+
+.slide-panel-closed-left {
+    animation: slide-panel-closed-left 0.3s ease-in-out forwards;
+}
+
+@keyframes slide-panel {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-panel-closed {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.slide-panel {
+    animation: slide-panel 0.3s ease-in-out forwards;
+}
+
+.slide-panel-closed {
+    animation: slide-panel-closed 0.3s ease-in-out forwards;
+}

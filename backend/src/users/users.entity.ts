@@ -13,6 +13,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { TalentStatistics } from './user.statistics.entity';
+import { TalentReviews } from 'src/talent/talentReviews.entity';
 
 @Entity()
 export class User {
@@ -64,4 +65,9 @@ export class User {
     { cascade: true },
   )
   talentStatistics: TalentStatistics;
+
+  @OneToMany(() => TalentReviews, (talentReviews) => talentReviews.user, {
+    cascade: true,
+  })
+  talentReviews: TalentReviews[];
 }

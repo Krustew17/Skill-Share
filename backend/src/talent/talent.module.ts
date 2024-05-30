@@ -10,6 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { JwtMiddleware } from '../users/middlewares/middlewares.middleware';
 import { JwtService } from '@nestjs/jwt';
+import { TalentReviews } from './talentReviews.entity';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { JwtService } from '@nestjs/jwt';
       User,
       UserProfile,
       TalentStatistics,
+      TalentReviews,
     ]),
   ],
   providers: [TalentService, JwtService],
@@ -25,6 +27,8 @@ import { JwtService } from '@nestjs/jwt';
 })
 export class TalentModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(JwtMiddleware).forRoutes('talent/create');
+    consumer
+      .apply(JwtMiddleware)
+      .forRoutes('talent/create', 'talent/review/create');
   }
 }
