@@ -30,6 +30,13 @@ export class TalentController {
     return this.talentService.getAllTalents();
   }
 
+  @Get('cards/me')
+  getTalentCardsByUserId(@Req() req: Request) {
+    const user = req['user'];
+    const userId = user.id;
+    return this.talentService.getTalentCardsByUserId(userId);
+  }
+
   @Get('search')
   search(@Query() query: TalentCardsQueryDto) {
     return this.talentService.search(query);
@@ -37,33 +44,27 @@ export class TalentController {
 
   @Post('create')
   @UseInterceptors(
-    FileFieldsInterceptor(
-      [
-        { name: 'thumbnail', maxCount: 1 },
-        { name: 'portfolio', maxCount: 10 },
-      ],
-      {
-        storage: diskStorage({
-          destination: './uploads',
-          filename: (req, file, cb) => {
-            const filename = `${Date.now()}-${file.originalname}`;
-            cb(null, filename);
-          },
-        }),
-        fileFilter: (req, file, cb) => {
-          if (file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
-            cb(null, true);
-          } else {
-            cb(
-              new BadRequestException(
-                'Only .png, .jpg and .jpeg format allowed!',
-              ),
-              false,
-            );
-          }
+    FileFieldsInterceptor([{ name: 'portfolio', maxCount: 3 }], {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const filename = `${Date.now()}-${file.originalname}`;
+          cb(null, filename);
         },
+      }),
+      fileFilter: (req, file, cb) => {
+        if (file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
+          cb(null, true);
+        } else {
+          cb(
+            new BadRequestException(
+              'Only .png, .jpg and .jpeg format allowed!',
+            ),
+            false,
+          );
+        }
       },
-    ),
+    }),
   )
   async createTalentCard(
     @UploadedFiles()

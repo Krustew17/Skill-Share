@@ -25,6 +25,15 @@ export class TalentService {
     private readonly talentReviewsRepository: Repository<TalentReviews>,
   ) {}
 
+  async getTalentCardsByUserId(userId: number) {
+    const talentCards = await this.talentRepository
+      .createQueryBuilder('talent')
+      .leftJoinAndSelect('talent.user', 'user')
+      .where('user.id = :id', { id: userId })
+      .getMany();
+    return { data: talentCards, amount: talentCards.length };
+  }
+
   async getAllTalents() {
     const talents = await this.talentRepository
       .createQueryBuilder('talent')

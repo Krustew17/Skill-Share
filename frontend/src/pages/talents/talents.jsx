@@ -7,15 +7,43 @@ import { MdLocationPin } from "react-icons/md";
 import { FaStar } from "react-icons/fa";
 import ReviewSlider from "./reviewSlider";
 import truncateDescription from "../../utils/truncateDescriptions";
+import { toast, Bounce, ToastContainer } from "react-toastify";
 
 export default function Talents() {
-    const { authenticated } = useContext(AuthContext);
+    const { authenticated, currentUser } = useContext(AuthContext);
     const [showModal, setShowModal] = useState(false);
     const [selectedTalent, setSelectedTalent] = useState(null);
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
     const [currentReviews, setCurrentReviews] = useState([]);
 
-    const handleButtonClick = () => {
+    const handleButtonClick = async () => {
+        if (!authenticated) {
+            return setShowModal(true);
+        }
+        const talentCards = await fetch(
+            "http://127.0.0.1:3000/talent/cards/me",
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            }
+        );
+        const responseJson = await talentCards.json();
+        if (!currentUser?.user?.hasPremium && responseJson.amount === 3) {
+            toast.error("You need premium to post more than 3 talent cards", {
+                position: "bottom-left",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                limit: 1,
+                transition: Bounce,
+            });
+            return;
+        }
         setShowModal(true);
     };
 
@@ -411,6 +439,7 @@ export default function Talents() {
                 </div>
                 <TalentList />
             </div>
+            <ToastContainer limit={1} />
         </div>
     );
 }
