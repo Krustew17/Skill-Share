@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 import { Request } from 'express';
+import { TalentCardsQueryDto } from '../dto/talentCard.query.dto';
 
 @Injectable()
 export class TalentService {
@@ -29,18 +30,63 @@ export class TalentService {
     return talents;
   }
 
-  // createTalentCard(createTalentBody, req: Request) {
-  //   const user = req['user'];
-  //   if (!user) {
-  //     throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-  //   }
+  async search(query: TalentCardsQueryDto) {
+    const qb = this.talentRepository.createQueryBuilder('talent');
 
-  //   const talent = this.talentRepository.create({
-  //     ...createTalentBody,
-  //     user: user,
-  //   });
-  //   return this.talentRepository.save(talent);
-  // }
+    const talents = qb
+      .leftJoinAndSelect('talent.user', 'user')
+      .leftJoinAndSelect('user.profile', 'profile');
+
+    if (query.keyword) {
+      const keywords = query.keyword.split(' ');
+      const keywordConditions = keywords.map((keyword, index) => {
+        const keywordRegex = `\\m${keyword}\\M`;
+        return `(talent.title ~* :keywordRegex${index} OR talent.description ~* :keywordRegex${index})`;
+      });
+      const keywordQuery = keywordConditions.join(' OR ');
+
+      keywords.forEach((keyword, index) => {
+        qb.setParameter(`keywordRegex${index}`, `\\m${keyword}\\M`);
+      });
+
+      qb.andWhere(keywordQuery);
+    }
+
+    if (query.skills) {
+      const skills = query.skills.split(',').map((skill) => skill.trim());
+
+      // Modify query to use unnest and ILIKE for case-insensitive matching
+      const skillConditions = skills
+        .map((_, index) => {
+          return `EXISTS (SELECT 1 FROM unnest(talent.skills) AS skill WHERE skill ILIKE :skill${index})`;
+        })
+        .join(' AND ');
+
+      qb.andWhere(skillConditions);
+
+      skills.forEach((skill, index) => {
+        qb.setParameter(`skill${index}`, skill);
+      });
+    }
+    if (query.minPrice && query.maxPrice) {
+      qb.andWhere('talent.price BETWEEN :minPrice AND :maxPrice', {
+        minPrice: query.minPrice,
+        maxPrice: query.maxPrice,
+      });
+    } else if (query.minPrice) {
+      qb.andWhere('talent.price >= :minPrice', {
+        minPrice: query.minPrice,
+      });
+    } else if (query.maxPrice) {
+      qb.andWhere('talent.price <= :maxPrice', {
+        maxPrice: query.maxPrice,
+      });
+    }
+
+    const filteredTalents = await talents.getMany();
+
+    return { data: filteredTalents, total: filteredTalents.length };
+  }
 
   // async updateTalentCard(
   //   talentCardId: number,
