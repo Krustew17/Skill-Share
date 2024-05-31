@@ -1,89 +1,106 @@
-import React, { useState } from "react";
+import { memo, useCallback } from "react";
 import { FaStar } from "react-icons/fa";
 
-const AddReview = ({ talentId, onSubmitReview }) => {
-    const [showModal, setShowModal] = useState(false);
-    const [stars, setStars] = useState(0);
-    const [hoverStars, setHoverStars] = useState(0);
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
+const ReviewForm = memo(
+    ({
+        onSubmit,
+        onClose,
+        reviewData,
+        handleReviewDataChange,
+        stars,
+        setStars,
+        hoverStars,
+        setHoverStars,
+    }) => {
+        const handleChange = useCallback(
+            (e) => {
+                console.log(e.target.name);
+                const { name, value } = e.target;
+                handleReviewDataChange({ name, value });
+            },
+            [handleReviewDataChange]
+        );
 
-    const handleSubmit = () => {
-        onSubmitReview({ talentId, stars, title, description });
-        setShowModal(false);
-    };
-
-    return (
-        <div>
-            <button
-                className="bg-yellow-500 hover:bg-yellow-600 dark:hover:bg-yellow-400 px-6 py-2 rounded-xl"
-                onClick={() => setShowModal(true)}
+        return (
+            <form
+                className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50"
+                onSubmit={onSubmit}
             >
-                Add Review
-            </button>
-
-            {showModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-                        <h2 className="text-lg font-semibold mb-4">
-                            Add a Review
-                        </h2>
-
-                        <div className="flex mb-4">
-                            {[...Array(5)].map((_, index) => {
-                                const starValue = index + 1;
-                                return (
-                                    <FaStar
-                                        key={starValue}
-                                        className={`cursor-pointer text-xl ${
-                                            starValue <= (hoverStars || stars)
-                                                ? "text-yellow-500"
-                                                : "text-gray-400"
-                                        }`}
-                                        onMouseEnter={() =>
-                                            setHoverStars(starValue)
-                                        }
-                                        onMouseLeave={() => setHoverStars(0)}
-                                        onClick={() => setStars(starValue)}
-                                    />
-                                );
-                            })}
-                        </div>
-
-                        <input
-                            className="w-full p-2 mb-4 border border-gray-300 rounded"
-                            type="text"
-                            placeholder="Title"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                        />
-
-                        <textarea
-                            className="w-full p-2 mb-4 border border-gray-300 rounded"
-                            placeholder="Description"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                        />
-
-                        <div className="flex justify-end">
-                            <button
-                                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mr-2"
-                                onClick={() => setShowModal(false)}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-                                onClick={handleSubmit}
-                            >
-                                Submit Review
-                            </button>
-                        </div>
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-lg mx-4 dark:text-white">
+                    <h2 className="text-3xl font-semibold mb-4">
+                        Add a Review
+                    </h2>
+                    <div className="flex mb-4 items-center">
+                        <h2 className="mr-3 text-xl">Stars:</h2>
+                        {[...Array(5)].map((_, index) => {
+                            const starValue = index + 1;
+                            return (
+                                <FaStar
+                                    key={starValue}
+                                    className={`cursor-pointer text-xl ${
+                                        starValue <= (hoverStars || stars)
+                                            ? "text-yellow-500"
+                                            : "text-gray-400"
+                                    }`}
+                                    onMouseEnter={() =>
+                                        setHoverStars(starValue)
+                                    }
+                                    onMouseLeave={() => setHoverStars(0)}
+                                    onClick={() => setStars(starValue)}
+                                />
+                            );
+                        })}
+                    </div>
+                    <label htmlFor="title" className="text-xl">
+                        Title
+                    </label>
+                    <input
+                        className="w-full p-2 mb-4 border border-gray-300 rounded dark:text-black"
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="Title"
+                        value={reviewData.title}
+                        onChange={(e) =>
+                            handleReviewDataChange(
+                                e.target.name,
+                                e.target.value
+                            )
+                        }
+                    />
+                    <label htmlFor="description" className="text-xl">
+                        Description
+                    </label>
+                    <textarea
+                        className="w-full p-2 mb-4 border h-32 border-gray-300 rounded dark:text-black"
+                        placeholder="Description"
+                        name="description"
+                        id="description"
+                        value={reviewData.description}
+                        onChange={(e) =>
+                            handleReviewDataChange(
+                                e.target.name,
+                                e.target.value
+                            )
+                        }
+                    />
+                    <div className="flex justify-end">
+                        <button
+                            className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mr-2"
+                            onClick={onClose}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                            type="submit"
+                        >
+                            Submit Review
+                        </button>
                     </div>
                 </div>
-            )}
-        </div>
-    );
-};
-
-export default AddReview;
+            </form>
+        );
+    }
+);
+export default ReviewForm;

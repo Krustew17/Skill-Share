@@ -228,9 +228,13 @@ export class TalentService {
       talentCard: talentCard,
       user: req['user'],
     };
-
     const talentReview = this.talentReviewsRepository.create(talentReviewData);
-    console.log(talentReview);
-    return this.talentReviewsRepository.save(talentReview);
+    await this.talentReviewsRepository.save(talentReview);
+
+    return {
+      message: 'Talent review created successfully',
+      HttpStatus: HttpStatus.OK,
+      data: talentReview,
+    };
   }
 }
