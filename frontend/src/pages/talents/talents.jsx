@@ -1,13 +1,13 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import TalentCardForm from "./talentCardForm";
 import Modal from "./modal";
 import Login from "../login/login";
 import { MdLocationPin } from "react-icons/md";
 import { FaStar } from "react-icons/fa";
-import ReviewSlider from "./reviewSlider";
 import truncateDescription from "../../utils/truncateDescriptions";
 import { toast, Bounce, ToastContainer } from "react-toastify";
+import TalentSidePanel from "./sidePanel";
 
 export default function Talents() {
     const { authenticated, currentUser } = useContext(AuthContext);
@@ -15,6 +15,56 @@ export default function Talents() {
     const [selectedTalent, setSelectedTalent] = useState(null);
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
     const [currentReviews, setCurrentReviews] = useState([]);
+    const [showReviewForm, setShowReviewForm] = useState(false);
+    const [stars, setStars] = useState(0);
+    const [hoverStars, setHoverStars] = useState(0);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+
+    const [reviewData, setReviewData] = useState({
+        stars: 0,
+        title: "",
+        description: "",
+    });
+
+    const handleReviewDataChange = useCallback((e) => {
+        const { name, value } = e.target;
+        console.log(e.target.name);
+        setReviewData({ ...reviewData, [name]: value });
+        console.log(reviewData);
+    });
+
+    const handleAddReviewClick = useCallback(() => {
+        setStars(0);
+        reviewData.title = "";
+        reviewData.description = "";
+        setShowReviewForm(true);
+    }, []);
+
+    const handleCloseReviewForm = () => {
+        setShowReviewForm(false);
+    };
+
+    const handleSubmitReview = async () => {
+        const reviewData = {
+            talentCardId: selectedTalent.id,
+            title,
+            description,
+            amountStars: stars,
+        };
+
+        const response = await fetch(
+            "http://127.0.0.1:3000/talent/review/create",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(reviewData),
+            }
+        );
+        const responseJson = await response.json();
+    };
 
     const handleButtonClick = async () => {
         if (!authenticated) {
@@ -195,119 +245,15 @@ export default function Talents() {
                         </div>
                     ))
                 )}
-                {isSidePanelOpen && selectedTalent && (
-                    <div
-                        className="fixed inset-0 bg-gray-900 bg-opacity-70 flex justify-end "
-                        key={selectedTalent.id}
-                        // onClick={handleClosePanel}
-                    >
-                        <div
-                            className={`bg-gray-100 dark:bg-gray-800 border-l border-gray-600 shadow-xl shadow-gray-600 w-2/4 h-full p-4 overflow-y-auto ${
-                                isSidePanelOpen
-                                    ? "slide-panel"
-                                    : "slide-panel-closed"
-                            }`}
-                        >
-                            <button
-                                onClick={handleClosePanel}
-                                className="text-right dark:text-white hover:bg-red-500 px-4 py-1 rounded-md"
-                            >
-                                Close
-                            </button>
-                            <section className="p-4 flex mt-4">
-                                <img
-                                    className="w-28 h-28 rounded-full border border-black dark:border-gray-200 mb-5"
-                                    src={selectedTalent.user.profile.picture}
-                                    alt="Talent Photo"
-                                />
-                                <div className="flex flex-col ml-6">
-                                    <h3 className="text-2xl font-semibold dark:text-white">
-                                        {selectedTalent.user.profile
-                                            .firstName &&
-                                        selectedTalent.user.profile.lastName
-                                            ? selectedTalent.user.profile
-                                                  .firstName +
-                                              " " +
-                                              selectedTalent.user.profile
-                                                  .lastName
-                                            : selectedTalent.user.username}
-                                    </h3>
-                                    <h3 className="dark:text-white text-xl">
-                                        {selectedTalent.title}
-                                    </h3>
-                                    <h3 className="dark:text-gray-300 text-sm">
-                                        {selectedTalent.user.profile.country}
-                                    </h3>
-                                </div>
-                                <button className="ml-auto mt-5 px-8 max-h-12 text-2xl bg-green-600 hover:bg-green-700 text-white rounded-lg">
-                                    Hire
-                                </button>
-                            </section>
-                            <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
-                            <section className="flex p-4 gap-5 dark:text-white">
-                                <p>Price ${selectedTalent.price}</p>
-                                <p>|</p>
-                                <p>100% Job Success</p>
-                                <p>|</p>
-                                <p>100+ Jobs taken</p>
-                                <p>|</p>
-                                <p>5+ years of experience</p>
-                                <p>|</p>
-                                <p>$1K+ Earned</p>
-                            </section>
-                            <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
-                            <div className="p-4 flex gap-5">
-                                {selectedTalent.skills.map((skill) => {
-                                    return (
-                                        <span className="px-6 py-1 bg-blue-800 dark:bg-blue-600 rounded-md text-white">
-                                            {skill}
-                                        </span>
-                                    );
-                                })}
-                            </div>
-                            <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
-                            <p
-                                className="p-4 leading-5 max-w-fit dark:text-white"
-                                style={{ whiteSpace: "pre-line" }}
-                            >
-                                {selectedTalent.description}
-                            </p>
-                            <div />
-                            <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
-                            <section className="p-4 flex flex-col items-center justify-between">
-                                <div className="flex flex-row justify-between w-full">
-                                    <button className="bg-yellow-500 hover:bg-yellow-600 dark:hover:bg-yellow-400 px-6 py-2 rounded-xl">
-                                        Add Review
-                                    </button>
-                                    <div className="flex flex-row gap-1 items-center text-xl dark:text-white">
-                                        Average Rating:{" "}
-                                        {selectedTalent.averageRating}{" "}
-                                        <FaStar className="text-yellow-500 text-xl" />
-                                    </div>
-                                </div>
-                                <div className="w-full justify-start mt-5">
-                                    <div>
-                                        {(currentReviews.length === 0 && (
-                                            <p className="text-gray-500 dark:text-gray-400">
-                                                No reviews yet
-                                            </p>
-                                        )) || (
-                                            <div>
-                                                <p className="dark:text-white text-md mb-5">
-                                                    total Reviews:{" "}
-                                                    {currentReviews.length}
-                                                </p>
-                                                <ReviewSlider
-                                                    props={currentReviews}
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                )}
+                <TalentSidePanel
+                    {...{
+                        selectedTalent,
+                        isSidePanelOpen,
+                        handleClosePanel,
+                        currentReviews,
+                        handleAddReviewClick,
+                    }}
+                />
             </div>
         );
     };
@@ -437,6 +383,76 @@ export default function Talents() {
                         </select>
                     </div>
                 </div>
+                {showReviewForm && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
+                        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-lg mx-4 dark:text-white">
+                            <h2 className="text-3xl font-semibold mb-4">
+                                Add a Review
+                            </h2>
+                            <div className="flex mb-4  items-center">
+                                <h2 className="mr-3 text-xl">Stars:</h2>
+                                {[...Array(5)].map((_, index) => {
+                                    const starValue = index + 1;
+                                    return (
+                                        <FaStar
+                                            key={starValue}
+                                            className={`cursor-pointer text-xl ${
+                                                starValue <=
+                                                (hoverStars || stars)
+                                                    ? "text-yellow-500"
+                                                    : "text-gray-400"
+                                            }`}
+                                            onMouseEnter={() =>
+                                                setHoverStars(starValue)
+                                            }
+                                            onMouseLeave={() =>
+                                                setHoverStars(0)
+                                            }
+                                            onClick={() => setStars(starValue)}
+                                        />
+                                    );
+                                })}
+                            </div>
+                            <label htmlFor="title" className="text-xl">
+                                Title
+                            </label>
+                            <input
+                                className="w-full p-2 mb-4 border border-gray-300 rounded dark:text-black"
+                                type="text"
+                                id="title"
+                                name="title"
+                                placeholder="Title"
+                                value={reviewData.title}
+                                onChange={handleReviewDataChange}
+                            />
+                            <label htmlFor="description" className="text-xl">
+                                Description
+                            </label>
+                            <textarea
+                                className="w-full p-2 mb-4 border h-32 border-gray-300 rounded dark:text-black"
+                                placeholder="Description"
+                                name="description"
+                                id="description"
+                                value={reviewData.description}
+                                onChange={handleReviewDataChange}
+                            />
+                            <div className="flex justify-end">
+                                <button
+                                    className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mr-2"
+                                    onClick={handleCloseReviewForm}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                                    onClick={handleSubmitReview}
+                                >
+                                    Submit Review
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 <TalentList />
             </div>
             <ToastContainer limit={1} />
