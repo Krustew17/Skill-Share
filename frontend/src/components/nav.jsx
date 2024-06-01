@@ -14,7 +14,6 @@ export default function NavBar() {
             window.matchMedia("(prefers-color-scheme: dark)").matches
         );
     });
-    console.log(currentUser);
     const test = (data) => {
         if (data === "close") {
             setIsModalOpen(false);

@@ -101,6 +101,12 @@ export class TalentService {
       });
     }
 
+    if (query.rating) {
+      qb.andWhere('talent.averageRating >= :rating', {
+        rating: query.rating,
+      });
+    }
+
     const filteredTalents = await talents.getMany();
 
     return { data: filteredTalents, total: filteredTalents.length };

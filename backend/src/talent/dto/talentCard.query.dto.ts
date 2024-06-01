@@ -18,4 +18,9 @@ export class TalentCardsQueryDto {
   @IsNumber()
   @Min(0)
   maxPrice?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  rating: number;
 }

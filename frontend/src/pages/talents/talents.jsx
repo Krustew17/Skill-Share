@@ -23,11 +23,24 @@ export default function Talents() {
     const [reviewDataFromChild, setReviewDataFromChild] = useState(null);
 
     const handleAddReviewClick = useCallback(() => {
+        if (!authenticated) {
+            toast.error("Please login to add a review", {
+                position: "bottom-left",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+            return;
+        }
         setIsSidePanelOpen(false);
         setShowReviewForm(true);
     }, []);
 
-    // Function to receive reviewData from the child component
     const handleReviewDataFromChildAndSubmit = (e, data) => {
         setReviewDataFromChild(data);
         handleSubmitReview(e, reviewDataFromChild);
@@ -318,7 +331,7 @@ export default function Talents() {
                 )}
                 <Search />
             </div>
-            <div className="flex flex-col lg:flex-row mt-16 px-10 ml-48">
+            <div className="flex flex-col lg:flex-row mt-16 px-10 mx-auto max-w-screen-2xl">
                 <TalentCardFilters />
                 {showReviewForm && (
                     <ReviewForm
