@@ -9,6 +9,7 @@ import truncateDescription from "../../utils/truncateDescriptions";
 import { toast, Bounce, ToastContainer } from "react-toastify";
 import TalentSidePanel from "./sidePanel";
 import ReviewForm from "./reviewForm";
+import TalentCardFilters from "./talentCardFilters";
 
 export default function Talents() {
     const { authenticated, currentUser } = useContext(AuthContext);
@@ -17,35 +18,23 @@ export default function Talents() {
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
     const [currentReviews, setCurrentReviews] = useState([]);
     const [showReviewForm, setShowReviewForm] = useState(false);
-    const [stars, setStars] = useState(0);
-    const [hoverStars, setHoverStars] = useState(0);
-
-    const [reviewData, setReviewData] = useState({
-        title: "",
-        description: "",
-    });
-
-    const handleReviewDataChange = useCallback((name, value) => {
-        setReviewData((prevData) => ({ ...prevData, [name]: value }));
-    }, []);
-
     const handleAddReviewClick = useCallback(() => {
-        setStars(0);
         setIsSidePanelOpen(false);
-        reviewData.title = "";
-        reviewData.description = "";
         setShowReviewForm(true);
     }, []);
 
-    const handleCloseReviewForm = () => {
-        setShowReviewForm(false);
+    const [reviewDataFromChild, setReviewDataFromChild] = useState(null);
+
+    // Function to receive reviewData from the child component
+    const handleReviewDataFromChildAndSubmit = (e, data) => {
+        setReviewDataFromChild(data);
+        handleSubmitReview(e, reviewDataFromChild);
     };
 
-    const handleSubmitReview = async (e) => {
+    const handleSubmitReview = async (e, reviewData) => {
         e.preventDefault();
         const submitData = {
             ...reviewData,
-            rating: stars,
             talentCardId: selectedTalent.id,
         };
         console.log(submitData);
@@ -351,62 +340,14 @@ export default function Talents() {
                 </form>
             </div>
             <div className="flex flex-col lg:flex-row mt-16 px-10 ml-48">
-                <div className="w-full lg:w-1/5 p-4 bg-white shadow-lg border-2">
-                    <div className="mb-6">
-                        <h4 className="mb-2 text-lg font-semibold">Category</h4>
-                        <select className="w-full p-2 border rounded">
-                            <option value="">Select Category</option>
-                            <option value="web-design">Web Design</option>
-                            <option value="graphic-design">
-                                Graphic Design
-                            </option>
-                            <option value="writing">Writing</option>
-                        </select>
-                    </div>
-                    <div className="mb-6">
-                        <h4 className="mb-2 text-lg font-semibold">
-                            Price Range
-                        </h4>
-                        <label className="block mb-2" htmlFor="min-price">
-                            Min Price
-                        </label>
-                        <input
-                            type="number"
-                            id="min-price"
-                            className="w-full p-2 mb-4 border rounded"
-                            placeholder="Min Price"
-                        />
-                        <label className="block mb-2" htmlFor="max-price">
-                            Max Price
-                        </label>
-                        <input
-                            type="number"
-                            id="max-price"
-                            className="w-full p-2 border rounded"
-                            placeholder="Max Price"
-                        />
-                    </div>
-                    <div className="mb-6">
-                        <h4 className="mb-2 text-lg font-semibold">Rating</h4>
-                        <select className="w-full p-2 border rounded">
-                            <option value="">Select Rating</option>
-                            <option value="4">4 stars & up</option>
-                            <option value="3">3 stars & up</option>
-                            <option value="2">2 stars & up</option>
-                            <option value="1">1 star & up</option>
-                        </select>
-                    </div>
-                </div>
+                <TalentCardFilters />
                 {showReviewForm && (
                     <ReviewForm
+                        onClose={setShowReviewForm}
                         onSubmit={handleSubmitReview}
-                        onClose={handleCloseReviewForm}
-                        reviewData={reviewData}
-                        handleReviewDataChange={handleReviewDataChange}
-                        stars={stars}
-                        setStars={setStars}
-                        hoverStars={hoverStars}
-                        setHoverStars={setHoverStars}
+                        passReviewDataToParent={
+                            handleReviewDataFromChildAndSubmit
+                        }
                     />
                 )}
                 <TalentList />
