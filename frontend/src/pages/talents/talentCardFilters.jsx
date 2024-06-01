@@ -1,21 +1,53 @@
 import { useState, useCallback } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function TalentCardFilters() {
+    const location = useLocation();
+    const navigate = useNavigate();
     const [filterData, setFilterData] = useState({
         minPrice: 0,
         maxPrice: 0,
         rating: "",
     });
 
-    const handleFilterDataChange = useCallback((e) => {
-        const { name, value } = e.target;
-        setFilterData({ ...filterData, [name]: value });
-        console.log(filterData);
-    });
+    const handleFilterDataChange = useCallback(
+        (e) => {
+            const { name, value } = e.target;
+            setFilterData({ ...filterData, [name]: value });
+        },
+        [filterData]
+    );
 
     const handleFilterFormSubmit = async (e) => {
         e.preventDefault();
-        console.log("submitted");
+        const searchParams = new URLSearchParams(location.search);
+
+        searchParams.set("minPrice", filterData.minPrice);
+        searchParams.set("maxPrice", filterData.maxPrice);
+        searchParams.set("rating", filterData.rating);
+
+        if (filterData.minPrice === 0) {
+            searchParams.delete("minPrice");
+        }
+
+        if (filterData.maxPrice === 0) {
+            searchParams.delete("maxPrice");
+        }
+
+        if (filterData.rating === "") {
+            searchParams.delete("rating");
+        }
+        const newUrl = `${location.pathname}?${searchParams.toString()}`;
+        navigate(newUrl);
+    };
+
+    const clearFilters = () => {
+        setFilterData({
+            minPrice: 0,
+            maxPrice: 0,
+            rating: "",
+        });
+        navigate(location.pathname);
     };
 
     return (
@@ -65,17 +97,32 @@ export default function TalentCardFilters() {
                 <h4 className="mb-2 text-lg font-semibold dark:text-gray-200">
                     Rating
                 </h4>
-                <select className="w-full p-2 border rounded">
+                <select
+                    className="w-full p-2 border rounded"
+                    name="rating"
+                    value={filterData.rating}
+                    onChange={handleFilterDataChange}
+                >
                     <option value="">Select Rating</option>
+                    <option value="5">5 stars only</option>
                     <option value="4">4 stars & up</option>
                     <option value="3">3 stars & up</option>
                     <option value="2">2 stars & up</option>
                     <option value="1">1 star & up</option>
                 </select>
             </div>
-            <button className="px-8 py-2 bg-red-500 hover:bg-red-600 rounded-md text-center">
-                Filter
-            </button>
+            <div className="flex justify-between">
+                <button className="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-md text-center">
+                    Filter
+                </button>
+                <button
+                    className="px-4 py-2 bg-blue-500 hover:bg-blue-400 rounded-md text-center"
+                    type="button"
+                    onClick={clearFilters}
+                >
+                    Clear Filters
+                </button>
+            </div>
         </form>
     );
 }
