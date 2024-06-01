@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect, useCallback, memo } from "react";
+import { useLocation } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import TalentCardForm from "./talentCardForm";
 import Modal from "./modal";
@@ -10,6 +11,7 @@ import { toast, Bounce, ToastContainer } from "react-toastify";
 import TalentSidePanel from "./sidePanel";
 import ReviewForm from "./reviewForm";
 import TalentCardFilters from "./talentCardFilters";
+import Search from "./search";
 
 export default function Talents() {
     const { authenticated, currentUser } = useContext(AuthContext);
@@ -18,12 +20,12 @@ export default function Talents() {
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
     const [currentReviews, setCurrentReviews] = useState([]);
     const [showReviewForm, setShowReviewForm] = useState(false);
+    const [reviewDataFromChild, setReviewDataFromChild] = useState(null);
+
     const handleAddReviewClick = useCallback(() => {
         setIsSidePanelOpen(false);
         setShowReviewForm(true);
     }, []);
-
-    const [reviewDataFromChild, setReviewDataFromChild] = useState(null);
 
     // Function to receive reviewData from the child component
     const handleReviewDataFromChildAndSubmit = (e, data) => {
@@ -124,20 +126,36 @@ export default function Talents() {
 
     const TalentList = memo(() => {
         const [talents, setTalents] = useState([]);
+        const location = useLocation();
         useEffect(() => {
             const fetchTalents = async () => {
                 try {
-                    const response = await fetch(
-                        "http://localhost:3000/talent/all",
-                        {
-                            headers: {
-                                Authorization: `Bearer ${localStorage.getItem(
-                                    "token"
-                                )}`,
-                            },
-                        }
-                    );
-                    const data = await response.json();
+                    const queryParams = new URLSearchParams(location.search);
+                    let url = "http://127.0.0.1:3000/";
+
+                    if (
+                        queryParams.has("keywords") ||
+                        queryParams.has("skills") ||
+                        queryParams.has("minPrice") ||
+                        queryParams.has("maxPrice")
+                    ) {
+                        url += `talent/search?${queryParams.toString()}`;
+                    } else {
+                        url += "talent/all";
+                    }
+
+                    const response = await fetch(url, {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "token"
+                            )}`,
+                        },
+                    });
+                    let data = await response.json();
+
+                    if (data.data) {
+                        data = data.data;
+                    }
 
                     const talentsWithRatings = await Promise.all(
                         data.map(async (talent) => {
@@ -159,7 +177,7 @@ export default function Talents() {
             };
 
             fetchTalents();
-        }, []);
+        }, [location.search]);
 
         if (talents.message === "No talents found") {
             return <div>Loading...</div>;
@@ -298,46 +316,7 @@ export default function Talents() {
                         )}
                     </Modal>
                 )}
-                <form className="flex-grow">
-                    <label
-                        htmlFor="default-search"
-                        className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-                    >
-                        Search
-                    </label>
-                    <div className="relative">
-                        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <svg
-                                className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 20 20"
-                            >
-                                <path
-                                    stroke="currentColor"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                                />
-                            </svg>
-                        </div>
-                        <input
-                            type="search"
-                            id="default-search"
-                            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Search services..."
-                            required
-                        />
-                        <button
-                            type="submit"
-                            className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        >
-                            Search
-                        </button>
-                    </div>
-                </form>
+                <Search />
             </div>
             <div className="flex flex-col lg:flex-row mt-16 px-10 ml-48">
                 <TalentCardFilters />

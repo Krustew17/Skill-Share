@@ -18,8 +18,6 @@ const ReviewForm = memo(({ onClose, onSubmit, passReviewDataToParent }) => {
         e.preventDefault();
         reviewData.rating = stars;
         passReviewDataToParent(e, reviewData);
-        // Optionally, you can reset the form state here
-        // setReviewData({ rating: 0, title: "", description: "" });
     };
 
     const handleReviewDataChange = useCallback((name, value) => {

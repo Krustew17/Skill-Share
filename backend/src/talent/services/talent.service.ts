@@ -55,8 +55,8 @@ export class TalentService {
       .leftJoinAndSelect('talent.user', 'user')
       .leftJoinAndSelect('user.profile', 'profile');
 
-    if (query.keyword) {
-      const keywords = query.keyword.split(' ');
+    if (query.keywords) {
+      const keywords = query.keywords.split(' ');
       const keywordConditions = keywords.map((keyword, index) => {
         const keywordRegex = `\\m${keyword}\\M`;
         return `(talent.title ~* :keywordRegex${index} OR talent.description ~* :keywordRegex${index})`;
