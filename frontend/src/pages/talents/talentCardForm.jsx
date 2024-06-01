@@ -30,12 +30,7 @@ const TalentCardForm = ({ onClose }) => {
 
     const handleFileChange = (e) => {
         const { name, files } = e.target;
-        if (name === "thumbnail") {
-            setFormData({
-                ...formData,
-                thumbnail: files[0],
-            });
-        } else if (name === "portfolio") {
+        if (name === "portfolio") {
             setFormData({
                 ...formData,
                 portfolio: Array.from(files),
