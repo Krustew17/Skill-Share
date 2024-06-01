@@ -3,7 +3,7 @@ import { IsOptional, IsString, IsNumber, Min } from 'class-validator';
 export class TalentCardsQueryDto {
   @IsOptional()
   @IsString()
-  keyword?: string;
+  keywords?: string;
 
   @IsOptional()
   @IsString()
