@@ -23,9 +23,6 @@ export default function Search() {
         } catch (error) {
             console.error("Error fetching data:", error);
         }
-        // Construct the search URL with query parameters
-
-        // Redirect to the search URL
     };
 
     return (

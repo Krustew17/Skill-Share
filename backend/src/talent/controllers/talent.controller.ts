@@ -138,4 +138,6 @@ export class TalentController {
     console.log(body);
     return this.talentService.createTalentReview(body, req);
   }
+
+  // @Get()
 }

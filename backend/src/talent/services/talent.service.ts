@@ -35,6 +35,7 @@ export class TalentService {
   }
 
   async getAllTalents() {
+    // Fetch talents with related user and profile
     const talents = await this.talentRepository
       .createQueryBuilder('talent')
       .leftJoinAndSelect('talent.user', 'user')
@@ -44,7 +45,22 @@ export class TalentService {
     if (!talents || talents.length === 0) {
       throw new HttpException('Talents not found', HttpStatus.NOT_FOUND);
     }
-    return talents;
+
+    // Fetch unique skills directly from the database
+    const uniqueSkillsQuery = this.talentRepository
+      .createQueryBuilder('talent')
+      .select('DISTINCT UNNEST(talent.skills)', 'skill')
+      .getQuery();
+
+    const uniqueSkills = await this.talentRepository.query(uniqueSkillsQuery);
+
+    // Map the result to an array of unique skills
+    const skills = uniqueSkills.map((skillRow) => skillRow.skill);
+
+    return {
+      talents,
+      uniqueSkills: skills,
+    };
   }
 
   async search(query: TalentCardsQueryDto) {
