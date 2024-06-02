@@ -209,8 +209,14 @@ export default function Talents() {
                         >
                             <img
                                 className="w-16 h-16 rounded-full mr-4 border border-black dark:border-gray-50"
-                                src={`${talent.user.profile.profileImage}`}
-                                alt="Profile"
+                                src={`${
+                                    talent.user.profile.profileImage.startsWith(
+                                        "https://lh3.googleusercontent.com"
+                                    )
+                                        ? talent.user.profile.profileImage
+                                        : `http://127.0.0.1:3000/uploads/profileImages/${talent.user.profile.profileImage}`
+                                }`}
+                                alt="Profile image"
                             />
                             <div className="flex-1 border-l-2 dark:border-gray-600 pl-4 border-gray-300">
                                 <div className="flex justify-between items-center mb-2 ">
