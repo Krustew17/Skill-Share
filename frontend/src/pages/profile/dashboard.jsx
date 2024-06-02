@@ -33,7 +33,7 @@ const Dashboard = ({ activeTab, handleTabClick }) => {
                 >
                     <FaStar className="text-3xl" /> Talent Cards
                 </li>
-                <li
+                {/* <li
                     className={`cursor-pointer text-xl mt-1 flex gap-2 ${
                         activeTab === 3
                             ? "text-blue-500"
@@ -42,6 +42,16 @@ const Dashboard = ({ activeTab, handleTabClick }) => {
                     onClick={() => handleTabClick(3)}
                 >
                     <MdBackpack className="text-3xl" /> Jobs
+                </li> */}
+                <li
+                    className={`cursor-pointer text-xl mt-1 flex gap-2  ${
+                        activeTab === 3
+                            ? "text-blue-500"
+                            : "text-gray-700 dark:text-gray-200"
+                    } hover:text-blue-500`}
+                    onClick={() => handleTabClick(3)}
+                >
+                    <RiLockPasswordFill className="text-3xl" /> Change Password
                 </li>
                 <li
                     className={`cursor-pointer text-xl mt-1 flex gap-2  ${
@@ -50,16 +60,6 @@ const Dashboard = ({ activeTab, handleTabClick }) => {
                             : "text-gray-700 dark:text-gray-200"
                     } hover:text-blue-500`}
                     onClick={() => handleTabClick(4)}
-                >
-                    <RiLockPasswordFill className="text-3xl" /> Change Password
-                </li>
-                <li
-                    className={`cursor-pointer text-xl mt-1 flex gap-2  ${
-                        activeTab === 5
-                            ? "text-blue-500"
-                            : "text-gray-700 dark:text-gray-200"
-                    } hover:text-blue-500`}
-                    onClick={() => handleTabClick(5)}
                 >
                     <FaMoneyBillTransfer className="text-3xl" /> Connect Stripe
                 </li>

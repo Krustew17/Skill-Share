@@ -16,6 +16,7 @@ import {
 
 import { Response, Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
+import { changePasswordBodyDto } from '../dto/changePassword.dto';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -74,5 +75,14 @@ export class AuthController {
     if (loginResult) {
       res.redirect('http://127.0.0.1:5173?token=' + loginResult.access_token);
     }
+  }
+
+  @Post('password/change')
+  async changePassword(
+    @Req() req: Request,
+    @Body()
+    body: changePasswordBodyDto,
+  ) {
+    return this.authService.changePassword(body, req);
   }
 }
