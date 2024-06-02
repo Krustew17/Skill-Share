@@ -14,6 +14,10 @@ export default function NavBar() {
             window.matchMedia("(prefers-color-scheme: dark)").matches
         );
     });
+    const hasGmailPhoto = currentUser?.userProfile?.profileImage.startsWith(
+        "https://lh3.googleusercontent.com"
+    );
+    console.log(hasGmailPhoto);
     const test = (data) => {
         if (data === "close") {
             setIsModalOpen(false);
@@ -89,11 +93,11 @@ export default function NavBar() {
                         <div className="flex gap-10 list-none">
                             <CustomLink to="/profile">
                                 <img
-                                    className="h-10 rounded-full border-2 border-gray-800 dark:border-gray-300 hover:cursor-pointer hover:shadow-blue-600 dark:hover:shadow-blue-300 hover:shadow-lg"
+                                    className="h-10 w-10 rounded-full border-2 border-gray-800 dark:border-gray-300 hover:cursor-pointer hover:shadow-blue-600 dark:hover:shadow-blue-300 hover:shadow-lg"
                                     src={
-                                        currentUser?.userProfile?.picture
-                                            ? `${currentUser.userProfile.picture}`
-                                            : "src/assets/default_avatar.png"
+                                        hasGmailPhoto
+                                            ? `${currentUser?.userProfile?.profileImage}`
+                                            : `http://127.0.0.1:3000/uploads/profileImages/${currentUser?.userProfile?.profileImage}`
                                     }
                                 />
                             </CustomLink>

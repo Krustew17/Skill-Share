@@ -22,7 +22,7 @@ export class UserProfile {
   country: string;
 
   @Column({ nullable: true })
-  picture: string;
+  profileImage: string;
 
   @OneToOne(() => User, (user) => user.profile)
   @JoinColumn()

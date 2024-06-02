@@ -2,7 +2,19 @@ import { UserService } from '../services/user.service';
 import { JwtRefreshGuard } from 'src/auth/guards/jwt-refresh-guard';
 
 import { Request } from 'express';
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  UploadedFiles,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Controller('users')
 export class UsersController {
@@ -34,7 +46,31 @@ export class UsersController {
 
   @Post('profile/update')
   @UseGuards(JwtRefreshGuard)
-  updateProfile(
+  @UseInterceptors(
+    FileFieldsInterceptor([{ name: 'profileImage', maxCount: 1 }], {
+      storage: diskStorage({
+        destination: './uploads/profileImages',
+        filename: (req, file, cb) => {
+          const filename = `${Date.now()}-${file.originalname}`;
+          cb(null, filename);
+        },
+      }),
+      fileFilter: (req, file, cb) => {
+        if (file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
+          cb(null, true);
+        } else {
+          cb(
+            new BadRequestException(
+              'Only .png, .jpg and .jpeg format allowed!',
+            ),
+            false,
+          );
+        }
+      },
+    }),
+  )
+  async updateProfile(
+    @UploadedFiles() files: { profileImage?: Express.Multer.File[] },
     @Req() req: Request,
     @Body()
     data: {
@@ -42,8 +78,13 @@ export class UsersController {
       firstName: string;
       lastName: string;
       country: string;
+      useDefaultProfileImage?: boolean;
     },
   ) {
-    return this.userService.updateUser(data, req);
+    const profileImage = files.profileImage
+      ? files.profileImage[0].filename
+      : null;
+    console.log(profileImage);
+    return this.userService.updateUser(data, profileImage, req);
   }
 }
