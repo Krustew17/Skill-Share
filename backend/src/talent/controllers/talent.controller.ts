@@ -135,6 +135,7 @@ export class TalentController {
     },
     @Req() req: Request,
   ) {
+    console.log(body);
     return this.talentService.createTalentReview(body, req);
   }
 }

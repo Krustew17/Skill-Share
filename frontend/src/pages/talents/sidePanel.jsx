@@ -58,7 +58,14 @@ const TalentSidePanel = ({
                         <section className="p-4 flex mt-4">
                             <img
                                 className="w-28 h-28 rounded-full border border-black dark:border-gray-200 mb-5"
-                                src={selectedTalent.user.profile.picture}
+                                src={`${
+                                    selectedTalent.user.profile.profileImage.startsWith(
+                                        "https://lh3.googleusercontent.com"
+                                    )
+                                        ? selectedTalent.user.profile
+                                              .profileImage
+                                        : `http://127.0.0.1:3000/uploads/profileImages/${selectedTalent.user.profile.profileImage}`
+                                }`}
                                 alt="Talent Photo"
                             />
                             <div className="flex flex-col ml-6">
