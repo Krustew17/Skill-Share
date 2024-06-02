@@ -72,7 +72,9 @@ export default function ChangePasswordTabContent() {
             </h3>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <p className="text-red-500">{errorMessage}</p>
+                    <p className="text-red-500 mt-3 mb-3 text-md">
+                        {errorMessage}
+                    </p>
                 </div>
                 <div className="mb-4">
                     <label

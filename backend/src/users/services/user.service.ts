@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import { Repository, DataSource } from 'typeorm';
 import { UserProfile } from '../user.profile.entity';
+import { profile } from 'console';
 
 @Injectable()
 export class UserService {
@@ -68,29 +69,47 @@ export class UserService {
       firstName: string;
       lastName: string;
       country: string;
+      useDefaultProfileImage?: boolean;
     },
+    profileImage: string | null,
     req: Request,
   ) {
-    const { username, firstName, lastName, country } = data;
+    console.log(profileImage);
+    const { username, firstName, lastName, useDefaultProfileImage, country } =
+      data;
 
     const user = await this.userRepository.findOneBy({ username });
     if (user && user.id !== req['user'].id) {
       throw new HttpException('Username is taken', HttpStatus.CONFLICT);
     }
+
     const requestUser = await this.userRepository.findOne({
       where: { id: req['user'].id },
       relations: ['profile'],
     });
-    console.log(requestUser);
-    console.log(req['user']);
+
+    if (!requestUser) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (useDefaultProfileImage) {
+      requestUser.profile.profileImage = 'default_avatar.jpg';
+    }
+
     requestUser.username = username;
     requestUser.profile.firstName = firstName;
     requestUser.profile.lastName = lastName;
     requestUser.profile.country = country;
+
+    if (profileImage) {
+      requestUser.profile.profileImage = profileImage;
+    }
+
     await this.userRepository.save(requestUser);
+
     return {
       message: 'Profile updated successfully',
-      HttpStatus: HttpStatus.OK,
+      statusCode: HttpStatus.OK,
     };
   }
 }

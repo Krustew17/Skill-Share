@@ -42,7 +42,6 @@ const TalentCardForm = ({ onClose }) => {
         e.preventDefault();
 
         const submitData = new FormData();
-        submitData.append("thumbnail", formData.thumbnail);
         submitData.append("title", formData.title);
         submitData.append("description", formData.description);
         submitData.append("price", formData.price);

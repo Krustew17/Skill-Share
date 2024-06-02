@@ -71,7 +71,6 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
     const loginResult = await this.authService.googleLogin(req);
-    console.log(loginResult);
     if (loginResult) {
       res.redirect('http://127.0.0.1:5173?token=' + loginResult.access_token);
     }

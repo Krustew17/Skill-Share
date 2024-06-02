@@ -15,6 +15,7 @@ import { Response, Request } from 'express';
 import Stripe from 'stripe';
 import { changePasswordBodyDto } from '../dto/changePassword.dto';
 import validatePassword from '../utils/validatePassword';
+import { profile } from 'console';
 
 @Injectable()
 export class AuthService {
@@ -71,7 +72,7 @@ export class AuthService {
 
     const userProfile = this.userProfileRepository.create({
       user: savedUser,
-      picture: 'src/assets/default_avatar.jpg',
+      profileImage: 'src/assets/default_avatar.jpg',
     });
     await this.userProfileRepository.save(userProfile);
 
@@ -85,7 +86,6 @@ export class AuthService {
     const user = await this.userRepository.findOneBy({
       username: AuthPayload.username,
     });
-    console.log(user);
     if (!user) {
       throw new HttpException('user not found', HttpStatus.NOT_FOUND);
     }
@@ -156,6 +156,7 @@ export class AuthService {
       where: { user: { id: user.id } },
     });
     await this.jobRepository.remove(jobs);
+    await this.userProfileRepository.remove(user.profile);
     await this.userRepository.delete({ id: user.id });
     return {
       message: 'User deleted successfully',
@@ -169,7 +170,6 @@ export class AuthService {
   }
 
   async sendPasswordResetEmail(email: string) {
-    console.log(email);
     const user = await this.userRepository.findOneBy({ email });
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -222,31 +222,30 @@ export class AuthService {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
 
-    const { email, firstName, lastName, picture, googleId } = req.user;
+    const { email, firstName, lastName, profileImage, googleId } = req.user;
 
-    // Check if user exists
     let user = await this.userRepository.findOne({
       where: { email },
       relations: ['profile'],
     });
 
     if (user) {
-      // Link Google account if not already linked
       if (!user.profile) {
         const userProfile = this.userProfileRepository.create({
           firstName,
           lastName,
-          picture,
+          profileImage,
         });
         user.googleId = googleId;
         user.profile = userProfile;
         await this.userRepository.save(user);
+        console.log(user);
       }
     } else {
       const userProfile = this.userProfileRepository.create({
         firstName,
         lastName,
-        picture,
+        profileImage,
       });
       const customer = await this.stripe.customers.create({ email: email });
 
@@ -255,6 +254,7 @@ export class AuthService {
         profile: userProfile,
         googleId: googleId,
         customerId: customer.id,
+        isActive: true,
       });
       await this.userRepository.save(user);
     }
@@ -292,6 +292,12 @@ export class AuthService {
     if (oldPassword === newPassword) {
       throw new HttpException(
         'New password cannot be the same as old password',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (newPassword.trim() === '') {
+      throw new HttpException(
+        'New password cannot be empty',
         HttpStatus.BAD_REQUEST,
       );
     }
