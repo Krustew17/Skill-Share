@@ -13,6 +13,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Response, Request } from 'express';
 import Stripe from 'stripe';
+import { changePasswordBodyDto } from '../dto/changePassword.dto';
+import validatePassword from '../utils/validatePassword';
 
 @Injectable()
 export class AuthService {
@@ -49,6 +51,7 @@ export class AuthService {
     if (userData.password !== userData.confirmPassword) {
       throw new HttpException('passwords do not match', HttpStatus.BAD_REQUEST);
     }
+    validatePassword(userData.password);
 
     const password = await hashPassword(userData.password);
     const newUser = this.userRepository.create({ ...userData, password });
@@ -198,6 +201,7 @@ export class AuthService {
           HttpStatus.BAD_REQUEST,
         );
       }
+      validatePassword(newPassword);
 
       user.password = await hashPassword(newPassword);
       await this.userRepository.save(user);
@@ -279,5 +283,37 @@ export class AuthService {
     } catch (e) {
       throw new Error('Invalid token');
     }
+  }
+  async changePassword(body: changePasswordBodyDto, req: Request) {
+    const { oldPassword, newPassword, confirmNewPassword } = body;
+    if (newPassword !== confirmNewPassword) {
+      throw new HttpException('Passwords do not match', HttpStatus.BAD_REQUEST);
+    }
+    if (oldPassword === newPassword) {
+      throw new HttpException(
+        'New password cannot be the same as old password',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    validatePassword(newPassword);
+
+    const user = await this.userRepository.findOne({
+      where: { id: req['user'].id },
+    });
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    const isPasswordValid = comparePasswords(oldPassword, user.password);
+    if (!isPasswordValid) {
+      throw new HttpException('Invalid password', HttpStatus.UNAUTHORIZED);
+    }
+    user.password = await hashPassword(newPassword);
+    await this.userRepository.save(user);
+    return {
+      message: 'Password changed successfully',
+      HttpStatus: HttpStatus.OK,
+    };
   }
 }

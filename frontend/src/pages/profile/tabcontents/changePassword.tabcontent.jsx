@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-
+import { toast, Bounce, ToastContainer } from "react-toastify";
 export default function ChangePasswordTabContent() {
     // State to manage form inputs
     const [formData, setFormData] = useState({
-        currentPassword: "",
+        oldPassword: "",
         newPassword: "",
-        confirmPassword: "",
+        confirmNewPassword: "",
     });
+    const [errorMessage, setErrorMessage] = useState("");
 
     // Function to handle form input changes
     const handleInputChange = (e) => {
@@ -14,13 +15,54 @@ export default function ChangePasswordTabContent() {
             ...formData,
             [e.target.name]: e.target.value,
         });
+        console.log(formData);
     };
 
-    // Function to handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Add logic to submit form data to backend or update state
-        console.log("Form submitted:", formData);
+
+        try {
+            const response = await fetch(
+                "http://127.0.0.1:3000/auth/password/change",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                        )}`,
+                    },
+                    body: JSON.stringify(formData),
+                }
+            );
+            const data = await response.json();
+            console.log(data);
+            if (data.HttpStatus !== 200) {
+                setErrorMessage(data.message);
+            } else {
+                toast.success("Password changed successfully", {
+                    position: "bottom-left",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    transition: Bounce,
+                });
+
+                setErrorMessage("");
+
+                setFormData({
+                    oldPassword: "",
+                    newPassword: "",
+                    confirmNewPassword: "",
+                });
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -29,6 +71,9 @@ export default function ChangePasswordTabContent() {
                 Change Password
             </h3>
             <form onSubmit={handleSubmit}>
+                <div>
+                    <p className="text-red-500">{errorMessage}</p>
+                </div>
                 <div className="mb-4">
                     <label
                         htmlFor="currentPassword"
@@ -39,8 +84,8 @@ export default function ChangePasswordTabContent() {
                     <input
                         type="password"
                         id="currentPassword"
-                        name="currentPassword"
-                        value={formData.currentPassword}
+                        name="oldPassword"
+                        value={formData.oldPassword}
                         onChange={handleInputChange}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 dark:text-black focus:ring-blue-500"
                     />
@@ -71,8 +116,8 @@ export default function ChangePasswordTabContent() {
                     <input
                         type="password"
                         id="confirmPassword"
-                        name="confirmPassword"
-                        value={formData.confirmPassword}
+                        name="confirmNewPassword"
+                        value={formData.confirmNewPassword}
                         onChange={handleInputChange}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 dark:text-black focus:ring-blue-500"
                     />
@@ -84,6 +129,7 @@ export default function ChangePasswordTabContent() {
                     Change Password
                 </button>
             </form>
+            <ToastContainer />
         </div>
     );
 }

@@ -8,8 +8,8 @@ export default function ProfileTabContent({ profileData }) {
         lastName: "",
         country: "",
     });
+    const [errorMessage, setErrorMessage] = useState("");
 
-    // Effect to set initial form data when profileData changes
     useEffect(() => {
         setFormData({
             username: profileData?.username,
@@ -25,12 +25,16 @@ export default function ProfileTabContent({ profileData }) {
             ...formData,
             [e.target.name]: e.target.value,
         });
-        console.log(formData);
     };
 
     // Function to handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (formData.username.trim() === "") {
+            setErrorMessage("Username cannot be empty");
+            return;
+        }
 
         const response = await fetch(
             "http://127.0.0.1:3000/users/profile/update",
@@ -55,6 +59,9 @@ export default function ProfileTabContent({ profileData }) {
                 Edit Profile
             </h3>
             <form onSubmit={handleSubmit}>
+                <div className="text-red-500 mt-3 mb-3 text-md">
+                    {errorMessage}
+                </div>
                 <div className="mb-4">
                     <label
                         htmlFor="username"

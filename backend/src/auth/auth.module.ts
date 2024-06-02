@@ -29,6 +29,8 @@ dotenv.config();
 })
 export default class AuthModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(JwtMiddleware).forRoutes('auth/delete');
+    consumer
+      .apply(JwtMiddleware)
+      .forRoutes('auth/delete', 'auth/password/change');
   }
 }
