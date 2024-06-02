@@ -46,14 +46,7 @@ export default function Talents() {
         handleSubmitReview(e, reviewDataFromChild);
     };
 
-    const handleSubmitReview = async (e, reviewData) => {
-        e.preventDefault();
-        const submitData = {
-            ...reviewData,
-            talentCardId: selectedTalent.id,
-        };
-        console.log(submitData);
-
+    const handleSubmitReview = async (reviewData) => {
         const response = await fetch(
             "http://127.0.0.1:3000/talent/review/create",
             {
@@ -62,7 +55,7 @@ export default function Talents() {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
-                body: JSON.stringify(submitData),
+                body: JSON.stringify(reviewData),
             }
         );
         const responseJson = await response.json();
@@ -150,7 +143,8 @@ export default function Talents() {
                         queryParams.has("keywords") ||
                         queryParams.has("skills") ||
                         queryParams.has("minPrice") ||
-                        queryParams.has("maxPrice")
+                        queryParams.has("maxPrice") ||
+                        queryParams.has("rating")
                     ) {
                         url += `talent/search?${queryParams.toString()}`;
                     } else {
@@ -346,6 +340,7 @@ export default function Talents() {
                         passReviewDataToParent={
                             handleReviewDataFromChildAndSubmit
                         }
+                        talentCardId={selectedTalent?.id}
                     />
                 )}
                 <TalentList />

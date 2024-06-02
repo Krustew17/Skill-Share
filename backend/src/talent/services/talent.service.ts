@@ -44,7 +44,6 @@ export class TalentService {
     if (!talents || talents.length === 0) {
       throw new HttpException('Talents not found', HttpStatus.NOT_FOUND);
     }
-    console.log(talents);
     return talents;
   }
 
@@ -193,7 +192,6 @@ export class TalentService {
     talentCard = this.talentRepository.merge(talentCard, {
       averageRating: averageRatingRounded,
     });
-    console.log(talentCard);
     await this.talentRepository.save(talentCard);
     return { data: talentCard.averageRating };
   }

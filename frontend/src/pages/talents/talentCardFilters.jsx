@@ -5,8 +5,8 @@ export default function TalentCardFilters() {
     const location = useLocation();
     const navigate = useNavigate();
     const [filterData, setFilterData] = useState({
-        minPrice: 0,
-        maxPrice: 0,
+        minPrice: "",
+        maxPrice: "",
         rating: "",
     });
 
@@ -26,11 +26,11 @@ export default function TalentCardFilters() {
         searchParams.set("maxPrice", filterData.maxPrice);
         searchParams.set("rating", filterData.rating);
 
-        if (filterData.minPrice === 0) {
+        if (filterData.minPrice === "") {
             searchParams.delete("minPrice");
         }
 
-        if (filterData.maxPrice === 0) {
+        if (filterData.maxPrice === "") {
             searchParams.delete("maxPrice");
         }
 
