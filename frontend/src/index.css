@@ -80,8 +80,10 @@
 
 .slide-panel {
     animation: slide-panel 0.3s ease-in-out forwards;
+    visibility: visible;
 }
 
 .slide-panel-closed {
     animation: slide-panel-closed 0.3s ease-in-out forwards;
+    visibility: none;
 }

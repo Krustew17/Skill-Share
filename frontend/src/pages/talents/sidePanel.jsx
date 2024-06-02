@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import ReviewSlider from "./reviewSlider"; // Assuming this is your slider component
 import { MdLocationPin } from "react-icons/md";
+import ImageSlider from "./portfolioImagesSlider";
+import SkillList from "./skillsComponent";
 const TalentSidePanel = ({
     selectedTalent,
     isSidePanelOpen,
     handleClosePanel,
     currentReviews,
     handleAddReviewClick,
+    setShowReviewForm,
 }) => {
     const handleSubmitReview = () => {
         const reviewData = {
@@ -27,7 +30,7 @@ const TalentSidePanel = ({
             .then((response) => response.json())
             .then((data) => {
                 console.log("Review submitted successfully:", data);
-                // Update the reviews state or UI as needed
+
                 setShowReviewForm(false);
             })
             .catch((error) => {
@@ -100,16 +103,10 @@ const TalentSidePanel = ({
                             <p>$1K+ Earned</p>
                         </section>
                         <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
-                        <div className="p-4 flex gap-5">
-                            {selectedTalent.skills.map((skill) => (
-                                <span
-                                    key={skill}
-                                    className="px-6 py-1 bg-blue-800 dark:bg-blue-600 rounded-md text-white"
-                                >
-                                    {skill}
-                                </span>
-                            ))}
-                        </div>
+                        <SkillList
+                            skills={selectedTalent.skills}
+                            maxSkillsToShow={5}
+                        />
                         <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
                         <p
                             className="p-4 leading-5 max-w-fit dark:text-white"
@@ -121,6 +118,8 @@ const TalentSidePanel = ({
                             {selectedTalent.description}
                         </p>
                         <div />
+                        <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
+                        <ImageSlider images={selectedTalent.portfolio} />
                         <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
                         <section className="p-4 flex flex-col items-center justify-between">
                             <div className="flex flex-row justify-between w-full">
