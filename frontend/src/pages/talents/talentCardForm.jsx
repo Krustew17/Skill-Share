@@ -4,9 +4,45 @@ const TalentCardForm = ({ onClose }) => {
     const [step, setStep] = useState(1);
     const [skills, setSkills] = useState([]);
     const [currentSkill, setCurrentSkill] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const nextStep = () => setStep(step + 1);
-    const prevStep = () => setStep(step - 1);
+    const nextStep = () => {
+        if (step == 1) {
+            if (formData.title.trim() === "") {
+                setErrorMessage("Title is required");
+                return;
+            }
+
+            if (formData.description.trim() === "") {
+                setErrorMessage("Description is required");
+                return;
+            }
+
+            if (formData.price.trim() === "") {
+                setErrorMessage("Price is required");
+                return;
+            }
+
+            if (skills.length < 1) {
+                setErrorMessage("Skills are required");
+                return;
+            }
+            setStep(step + 1);
+            setErrorMessage("");
+        } else if (step == 2) {
+            console.log(formData.portfolio);
+            if (formData.portfolio.length > 5) {
+                setErrorMessage("Maximum 5 portfolio images are allowed");
+                return;
+            }
+            setStep(step + 1);
+            setErrorMessage("");
+        }
+    };
+    const prevStep = () => {
+        setErrorMessage("");
+        setStep(step - 1);
+    };
 
     const [formData, setFormData] = useState({
         thumbnail: null,
@@ -48,6 +84,9 @@ const TalentCardForm = ({ onClose }) => {
 
     const handleFileChange = (e) => {
         const { name, files } = e.target;
+        if (files.length <= 5) {
+            setErrorMessage("");
+        }
         if (name === "portfolio") {
             setFormData({
                 ...formData,
@@ -123,6 +162,9 @@ const TalentCardForm = ({ onClose }) => {
                             Step 1: Talent Information
                         </h2>
                         <form onSubmit={handleSubmit}>
+                            <div className="text-red-500 text-lg">
+                                {errorMessage}
+                            </div>
                             <div className="mb-4"></div>
                             <div className="mb-6">
                                 <label className="block text-lg font-medium text-gray-700">
@@ -194,6 +236,9 @@ const TalentCardForm = ({ onClose }) => {
                         <h2 className="text-2xl font-semibold mb-4">
                             Step 2: Portfolio
                         </h2>
+                        <div className="text-red-500 text-lg">
+                            {errorMessage}
+                        </div>
                         <div>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">
