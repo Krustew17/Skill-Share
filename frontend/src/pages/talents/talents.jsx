@@ -18,33 +18,12 @@ export default function Talents() {
     const { authenticated, currentUser } = useContext(AuthContext);
     const [showModal, setShowModal] = useState(false);
     const [selectedTalent, setSelectedTalent] = useState(null);
-    // const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
     const [currentReviews, setCurrentReviews] = useState([]);
-    const [showReviewForm, setShowReviewForm] = useState(false);
-    const [reviewDataFromChild, setReviewDataFromChild] = useState(null);
 
-    // const handleAddReviewClick = useCallback(() => {
-    //     if (!authenticated) {
-    //         toast.error("Please login to add a review", {
-    //             position: "bottom-left",
-    //             autoClose: 5000,
-    //             hideProgressBar: false,
-    //             closeOnClick: true,
-    //             pauseOnHover: false,
-    //             draggable: true,
-    //             progress: undefined,
-    //             theme: "colored",
-    //             transition: Bounce,
-    //         });
-    //         return;
-    //     }
-    //     setIsSidePanelOpen(false);
-    //     setShowReviewForm(true);
-    // }, []);
+    const [childData, setChildData] = useState("");
 
-    const handleReviewDataFromChildAndSubmit = (e, data) => {
-        setReviewDataFromChild(data);
-        handleSubmitReview(e, reviewDataFromChild);
+    const handleDataFromChild = (data) => {
+        setChildData(data);
     };
 
     const handleButtonClick = async () => {
@@ -81,19 +60,6 @@ export default function Talents() {
     const handleCloseModal = () => {
         setShowModal(false);
     };
-
-    const handleViewDetails = async (talent) => {
-        const response = await fetch(
-            "http://127.0.0.1:3000/talent/reviews?talentCardId=" + talent.id,
-            {}
-        );
-
-        const responseJson = await response.json();
-        setCurrentReviews(responseJson.data);
-        setSelectedTalent(talent);
-        setIsSidePanelOpen(true);
-    };
-
     const handleClosePanel = () => {
         setSelectedTalent(null);
         setCurrentReviews([]);
@@ -140,8 +106,8 @@ export default function Talents() {
                 <Search />
             </div>
             <div className="flex flex-col lg:flex-row mt-16 px-10 mx-auto max-w-screen-2xl">
-                <TalentCardFilters selectedTalent={selectedTalent} />
-                <TalentList />
+                <TalentCardFilters {...childData} />
+                <TalentList onDataSend={handleDataFromChild} />
             </div>
             <ToastContainer limit={1} />
         </div>

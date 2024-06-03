@@ -18,7 +18,7 @@ const ReviewSlider = ({ ...reviews }) => {
 
     return (
         <div className="relative">
-            <div className="absolute top-1/2 left-0 transform -translate-y-1/2">
+            <div className="absolute top-1/2 left-0 flex items-center transform -translate-y-1/2">
                 <button
                     className="text-3xl text-white bg-gray-500 rounded-full w-12 h-12 flex items-center justify-center absolute left-0 z-10"
                     onClick={goToPreviousReview}
@@ -26,7 +26,7 @@ const ReviewSlider = ({ ...reviews }) => {
                     <FaArrowLeft />
                 </button>
             </div>
-            <div className="absolute top-1/2 right-0 transform -translate-y-1/2">
+            <div className="absolute top-1/2 right-0 flex items-center transform -translate-y-1/2">
                 <button
                     className="text-3xl text-white bg-gray-500 rounded-full w-12 h-12 flex items-center justify-center absolute right-0 z-10"
                     onClick={goToNextReview}

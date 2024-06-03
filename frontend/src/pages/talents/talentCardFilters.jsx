@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export default function TalentCardFilters() {
+export default function TalentCardFilters({ skills }) {
     const location = useLocation();
     const navigate = useNavigate();
     const [filterData, setFilterData] = useState({
@@ -46,8 +46,18 @@ export default function TalentCardFilters() {
             minPrice: 0,
             maxPrice: 0,
             rating: "",
+            skills: [],
         });
         navigate(location.pathname);
+    };
+
+    const handleCheckboxChange = (event) => {
+        const { value, checked } = event.target;
+        setSelectedSkills((prevSelectedSkills) =>
+            checked
+                ? [...prevSelectedSkills, value]
+                : prevSelectedSkills.filter((skill) => skill !== value)
+        );
     };
 
     return (
@@ -92,6 +102,33 @@ export default function TalentCardFilters() {
                     className="w-full p-2 border rounded"
                     placeholder="Max Price"
                 />
+            </div>
+            <div className="mb-6">
+                <div>
+                    <h2>Select Skills</h2>
+                    {/* <div>
+                        {skills.map((skill) => (
+                            <div key={skill}>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        value={skill}
+                                        onChange={handleCheckboxChange}
+                                    />
+                                    {skill}
+                                </label>
+                            </div>
+                        ))}
+                    </div> */}
+                    {/* <div>
+                        <h3>Selected Skills</h3>
+                        <ul>
+                            {skills.map((skill) => (
+                                <li key={skill}>{skill}</li>
+                            ))}
+                        </ul>
+                    </div> */}
+                </div>
             </div>
             <div className="mb-6">
                 <h4 className="mb-2 text-lg font-semibold dark:text-gray-200">

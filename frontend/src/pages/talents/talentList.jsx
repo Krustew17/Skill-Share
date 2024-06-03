@@ -8,13 +8,17 @@ import { AuthContext } from "../../contexts/AuthContext";
 import ReviewForm from "./reviewForm";
 import { toast, Bounce, ToastContainer } from "react-toastify";
 
-const TalentList = () => {
+const TalentList = ({ onDataSend }) => {
     const { authenticated } = useContext(AuthContext);
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
     const [currentReviews, setCurrentReviews] = useState([]);
     const [showReviewForm, setShowReviewForm] = useState(false);
     const [reviewDataFromChild, setReviewDataFromChild] = useState(null);
     const [selectedTalent, setSelectedTalent] = useState(null);
+    const [skills, setSkills] = useState([]);
+    const [talents, setTalents] = useState([]);
+    const location = useLocation();
+
     const handleClosePanel = () => {
         setSelectedTalent(null);
         setCurrentReviews([]);
@@ -105,9 +109,6 @@ const TalentList = () => {
         document.body.classList.add("overflow-hidden");
         setIsSidePanelOpen(true);
     };
-
-    const [talents, setTalents] = useState([]);
-    const location = useLocation();
     useEffect(() => {
         const fetchTalents = async () => {
             try {
@@ -133,14 +134,12 @@ const TalentList = () => {
                         )}`,
                     },
                 });
-                let data = await response.json();
-
-                if (data.data) {
-                    data = data.data;
-                }
-
+                const data = await response.json();
+                setSkills(data.uniqueSkills);
+                console.log(data.uniqueSkills);
+                onDataSend(data.uniqueSkills);
                 const talentsWithRatings = await Promise.all(
-                    data.map(async (talent) => {
+                    data.talents.map(async (talent) => {
                         const ratingResponse = await fetch(
                             `http://127.0.0.1:3000/talent/rating/average?talentCardId=${talent.id}`
                         );

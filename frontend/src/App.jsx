@@ -45,6 +45,10 @@ function App() {
                 theme: "colored",
                 transition: Bounce,
             });
+
+            setTimeout(() => {
+                window.location.replace("/");
+            }, 1000);
         } else if (status === "false") {
             toast.error("Payment failed, please try again. ", {
                 position: "bottom-left",
@@ -57,6 +61,9 @@ function App() {
                 theme: "colored",
                 transition: Bounce,
             });
+            setTimeout(() => {
+                window.location.replace("/");
+            }, 1000);
         }
         if (searchParams.get("token")) {
             console.log(searchParams.get("token"));
@@ -101,6 +108,7 @@ function App() {
                         pauseOnHover
                         theme="dark"
                         transition:Bounce
+                        limit={1}
                     />
                 </>
             )}
