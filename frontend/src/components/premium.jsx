@@ -26,6 +26,20 @@ export default function Premium() {
                 transition: Bounce,
             });
         }
+        if (currentUser.user.hasPremium) {
+            return toast.error("You already have premium ", {
+                position: "bottom-left",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+        }
+
         const stripe = await stripePromise;
         const body = {
             name: "Skill Share Premium",
@@ -92,7 +106,10 @@ export default function Premium() {
                             starting out. Showcase your top skill and post one
                             job opportunity to attract the right talent.{" "}
                         </p>
-                        <button className="text-3xl text-black dark:text-white py-2 bg-blue-500 border-2 border-blue-500 rounded mt-6 sm:mt-10">
+                        <button
+                            className="text-3xl text-black dark:text-white py-2 bg-blue-500 border-2 border-blue-500 rounded mt-6 sm:mt-10 hover:cursor-not-allowed"
+                            disabled
+                        >
                             Free
                         </button>
                     </div>

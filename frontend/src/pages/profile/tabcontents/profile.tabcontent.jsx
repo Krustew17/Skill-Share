@@ -98,9 +98,9 @@ export default function ProfileTabContent({ profileData }) {
                 limit: 1,
                 transition: Bounce,
             });
-            // setTimeout(() => {
-            //     window.location.reload();
-            // }, 1000);
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
         } else {
             console.log(data);
         }

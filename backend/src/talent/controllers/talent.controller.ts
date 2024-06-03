@@ -6,6 +6,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -92,7 +93,11 @@ export class TalentController {
     };
 
     const talentCard = await this.talentService.saveTalentCard(talentCardData);
-    return talentCard;
+    return {
+      talentCard,
+      message: 'Talent card created successfully',
+      HttpStatus: HttpStatus.CREATED,
+    };
   }
 
   // @Put('update/:id')

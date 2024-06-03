@@ -46,7 +46,6 @@ export class TalentService {
       throw new HttpException('Talents not found', HttpStatus.NOT_FOUND);
     }
 
-    // Fetch unique skills directly from the database
     const uniqueSkillsQuery = this.talentRepository
       .createQueryBuilder('talent')
       .select('DISTINCT UNNEST(talent.skills)', 'skill')
@@ -54,8 +53,7 @@ export class TalentService {
 
     const uniqueSkills = await this.talentRepository.query(uniqueSkillsQuery);
 
-    // Map the result to an array of unique skills
-    const skills = uniqueSkills.map((skillRow) => skillRow.skill);
+    const skills = uniqueSkills.map((skillRow: any) => skillRow.skill);
 
     return {
       talents,
@@ -88,7 +86,6 @@ export class TalentService {
     if (query.skills) {
       const skills = query.skills.split(',').map((skill) => skill.trim());
 
-      // Modify query to use unnest and ILIKE for case-insensitive matching
       const skillConditions = skills
         .map((_, index) => {
           return `EXISTS (SELECT 1 FROM unnest(talent.skills) AS skill WHERE skill ILIKE :skill${index})`;
@@ -124,7 +121,15 @@ export class TalentService {
 
     const filteredTalents = await talents.getMany();
 
-    return { data: filteredTalents, total: filteredTalents.length };
+    const uniqueSkills = await talents
+      .select('DISTINCT UNNEST(talent.skills)', 'skill')
+      .getRawMany();
+
+    return {
+      uniqueSkills: uniqueSkills.map((skillRow: any) => skillRow.skill),
+      talents: filteredTalents,
+      total: filteredTalents.length,
+    };
   }
 
   // async updateTalentCard(

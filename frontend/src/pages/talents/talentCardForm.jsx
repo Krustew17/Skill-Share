@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-
+import { toast, Bounce, ToastContainer } from "react-toastify";
 const TalentCardForm = ({ onClose }) => {
     const [step, setStep] = useState(1);
+    const [skills, setSkills] = useState([]);
+    const [currentSkill, setCurrentSkill] = useState("");
 
     const nextStep = () => setStep(step + 1);
     const prevStep = () => setStep(step - 1);
@@ -19,13 +21,29 @@ const TalentCardForm = ({ onClose }) => {
         stripeInfo4: "",
     });
 
+    const handleKeyDown = (e) => {
+        if (e.key === " ") {
+            e.preventDefault();
+            console.log(currentSkill);
+            if (currentSkill.trim()) {
+                setSkills([...skills, currentSkill.trim()]);
+                setCurrentSkill("");
+            }
+        }
+    };
+    const handleInputChange = (e) => {
+        setCurrentSkill(e.target.value);
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
+        if (name === "skills") {
+            setCurrentSkill(value);
+        }
         setFormData({
             ...formData,
             [name]: value,
         });
-        console.log(formData);
     };
 
     const handleFileChange = (e) => {
@@ -46,9 +64,7 @@ const TalentCardForm = ({ onClose }) => {
         submitData.append("description", formData.description);
         submitData.append("price", formData.price);
 
-        const skillsArray = formData.skills
-            .split(",")
-            .map((skill) => skill.trim());
+        const skillsArray = skills.map((skill) => skill.trim());
         submitData.append("skills", JSON.stringify(skillsArray));
 
         formData.portfolio.forEach((file) => {
@@ -73,7 +89,20 @@ const TalentCardForm = ({ onClose }) => {
                 }
             );
             const data = await response.json();
-            console.log("Data:", data);
+            if (data.HttpStatus === 201) {
+                onClose();
+                toast.success("Talent created successfully!", {
+                    position: "bottom-left",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colorful",
+                    transition: Bounce,
+                });
+            }
         } catch (error) {
             console.error("Error:", error);
         }
@@ -96,7 +125,7 @@ const TalentCardForm = ({ onClose }) => {
                         <form onSubmit={handleSubmit}>
                             <div className="mb-4"></div>
                             <div className="mb-6">
-                                <label className="block text-sm font-medium text-gray-700">
+                                <label className="block text-lg font-medium text-gray-700">
                                     Title
                                 </label>
                                 <input
@@ -108,7 +137,7 @@ const TalentCardForm = ({ onClose }) => {
                                 />
                             </div>
                             <div className="mb-6">
-                                <label className="block text-sm font-medium text-gray-700">
+                                <label className="block text-lg font-medium text-gray-700">
                                     Description
                                 </label>
                                 <textarea
@@ -119,7 +148,7 @@ const TalentCardForm = ({ onClose }) => {
                                 ></textarea>
                             </div>
                             <div className="mb-6">
-                                <label className="block text-sm font-medium text-gray-700">
+                                <label className="block text-lg font-medium text-gray-700">
                                     Price
                                 </label>
                                 <input
@@ -131,14 +160,22 @@ const TalentCardForm = ({ onClose }) => {
                                 />
                             </div>
                             <div className="mb-6">
-                                <label className="block text-sm font-medium text-gray-700">
+                                <label className="block text-lg font-medium text-gray-700 mb-2">
                                     Skills
                                 </label>
+                                <div className="flex flex-wrap gap-1 mb-4">
+                                    {skills.map((skill) => (
+                                        <span className="px-2 py-1 bg-blue-300 rounded-lg text-sm">
+                                            {skill}
+                                        </span>
+                                    ))}
+                                </div>
                                 <input
                                     type="text"
                                     name="skills"
-                                    value={formData.skills}
+                                    value={currentSkill}
                                     onChange={handleChange}
+                                    onKeyDown={handleKeyDown}
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-lg h-8 px-2"
                                 />
                             </div>
@@ -258,6 +295,7 @@ const TalentCardForm = ({ onClose }) => {
                     </div>
                 )}
             </div>
+            <ToastContainer />
         </div>
     );
 };
