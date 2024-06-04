@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect, useCallback, memo } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import TalentSidePanel from "./sidePanel";
 import { MdLocationPin } from "react-icons/md";
 import { FaStar } from "react-icons/fa";
@@ -7,9 +7,10 @@ import truncateDescription from "../../utils/truncateDescriptions";
 import { AuthContext } from "../../contexts/AuthContext";
 import ReviewForm from "./reviewForm";
 import { toast, Bounce, ToastContainer } from "react-toastify";
+import Cookies from "js-cookie";
 
 const TalentList = ({ onDataSend }) => {
-    const { authenticated } = useContext(AuthContext);
+    const { authenticated, currentUser } = useContext(AuthContext);
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
     const [currentReviews, setCurrentReviews] = useState([]);
     const [showReviewForm, setShowReviewForm] = useState(false);
@@ -17,11 +18,14 @@ const TalentList = ({ onDataSend }) => {
     const [selectedTalent, setSelectedTalent] = useState(null);
     const [skills, setSkills] = useState([]);
     const [talents, setTalents] = useState([]);
+    const navigate = useNavigate();
     const location = useLocation();
+    const AMOUNT_SKILLS_TO_SHOW = 8;
 
     const handleClosePanel = () => {
         setSelectedTalent(null);
         setCurrentReviews([]);
+        Cookies.remove("talentUserId");
         document.body.classList.remove("overflow-hidden");
         setIsSidePanelOpen(false);
     };
@@ -43,7 +47,7 @@ const TalentList = ({ onDataSend }) => {
         if (responseJson.HttpStatus !== 200) {
             toast.error("Please select rating first.", {
                 position: "bottom-left",
-                autoClose: 5000,
+                autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: false,
@@ -59,7 +63,7 @@ const TalentList = ({ onDataSend }) => {
         if (responseJson.message === "Talent review created successfully") {
             toast.success("Review created successfully", {
                 position: "bottom-left",
-                autoClose: 5000,
+                autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: false,
@@ -82,7 +86,7 @@ const TalentList = ({ onDataSend }) => {
         if (!authenticated) {
             toast.error("Please login to add a review", {
                 position: "bottom-left",
-                autoClose: 5000,
+                autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: false,
@@ -93,6 +97,25 @@ const TalentList = ({ onDataSend }) => {
             });
             return;
         }
+        const talentId = Cookies.get("talentUserId");
+
+        console.log(talentId, currentUser?.user?.id);
+        if (talentId == currentUser?.user?.id) {
+            toast.error("You cannot add review to your own talent card.", {
+                position: "bottom-left",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+            console.log("hi");
+            return;
+        }
+
         // setIsSidePanelOpen(false);
         setShowReviewForm(true);
     }, []);
@@ -102,10 +125,10 @@ const TalentList = ({ onDataSend }) => {
             "http://127.0.0.1:3000/talent/reviews?talentCardId=" + talent.id,
             {}
         );
-
         const responseJson = await response.json();
         setCurrentReviews(responseJson.data);
         setSelectedTalent(talent);
+        Cookies.set("talentUserId", talent.user.id, { expires: 1 });
         document.body.classList.add("overflow-hidden");
         setIsSidePanelOpen(true);
     };
@@ -231,14 +254,24 @@ const TalentList = ({ onDataSend }) => {
                                 </p>
                             </div>
                             <div className="flex items-center mb-2">
-                                {talent.skills.map((skill, index) => (
-                                    <span
-                                        key={index}
-                                        className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2"
-                                    >
-                                        {skill}
+                                {talent.skills
+                                    .slice(0, AMOUNT_SKILLS_TO_SHOW)
+                                    .map((skill, index) => (
+                                        <span
+                                            key={index}
+                                            className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2"
+                                        >
+                                            {skill}
+                                        </span>
+                                    ))}
+                                {talent.skills.length >
+                                    AMOUNT_SKILLS_TO_SHOW && (
+                                    <span className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2">
+                                        +
+                                        {talent.skills.length -
+                                            AMOUNT_SKILLS_TO_SHOW}
                                     </span>
-                                ))}
+                                )}
                             </div>
                             <div className="text-gray-700 text-sm max-w-screen-lg dark:text-gray-200">
                                 {truncateDescription(talent.description, 250)}
@@ -266,7 +299,7 @@ const TalentList = ({ onDataSend }) => {
                     talentCardId={selectedTalent?.id}
                 />
             )}
-            <ToastContainer />
+            {/* <ToastContainer limit={3} /> */}
         </div>
     );
 };

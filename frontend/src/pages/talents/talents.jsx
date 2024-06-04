@@ -109,7 +109,7 @@ export default function Talents() {
                 <TalentCardFilters {...childData} />
                 <TalentList onDataSend={handleDataFromChild} />
             </div>
-            <ToastContainer limit={1} />
+            <ToastContainer limit={3} />
         </div>
     );
 }

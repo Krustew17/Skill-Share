@@ -45,7 +45,7 @@ export class TalentController {
 
   @Post('create')
   @UseInterceptors(
-    FileFieldsInterceptor([{ name: 'portfolio', maxCount: 3 }], {
+    FileFieldsInterceptor([{ name: 'portfolio', maxCount: 5 }], {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {

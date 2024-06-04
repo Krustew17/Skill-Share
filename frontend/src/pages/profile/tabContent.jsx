@@ -4,6 +4,7 @@ import ProfileTabContent from "./tabcontents/profile.tabcontent";
 import ChangePasswordTabContent from "./tabcontents/changePassword.tabcontent";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
+import TalentCardsTabContent from "./tabcontents/talentCardsContent";
 const TabContent = ({ activeTab }) => {
     const { currentUser } = useContext(AuthContext);
 
@@ -19,16 +20,7 @@ const TabContent = ({ activeTab }) => {
                     }}
                 />
             )}
-            {activeTab === 2 && (
-                <div>
-                    <h2 className="text-2xl font-semibold mb-4">
-                        Tab 2 Content
-                    </h2>
-                    <p className="text-lg text-gray-700">
-                        This is the content of Tab 2.
-                    </p>
-                </div>
-            )}
+            {activeTab === 2 && <TalentCardsTabContent />}
             {activeTab === 3 && (
                 <div>
                     <ChangePasswordTabContent />

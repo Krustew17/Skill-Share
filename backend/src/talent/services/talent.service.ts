@@ -29,6 +29,7 @@ export class TalentService {
     const talentCards = await this.talentRepository
       .createQueryBuilder('talent')
       .leftJoinAndSelect('talent.user', 'user')
+      .leftJoinAndSelect('user.profile', 'profile')
       .where('user.id = :id', { id: userId })
       .getMany();
     return { data: talentCards, amount: talentCards.length };
