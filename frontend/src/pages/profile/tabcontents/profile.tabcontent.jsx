@@ -107,7 +107,7 @@ export default function ProfileTabContent({ profileData }) {
     };
 
     return (
-        <div className="min-w-xl bg-white dark:bg-gray-700 p-4 rounded-lg">
+        <div className="min-w-xl bg-white dark:bg-gray-800 shadow-lg dark:shadow-slate-700 p-4 rounded-lg">
             <h3 className="text-2xl font-semibold mb-4 dark:text-white">
                 Edit Profile
             </h3>

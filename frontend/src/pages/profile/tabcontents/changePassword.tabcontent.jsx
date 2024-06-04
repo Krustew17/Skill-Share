@@ -66,7 +66,7 @@ export default function ChangePasswordTabContent() {
     };
 
     return (
-        <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+        <div className="bg-gray-100 dark:bg-gray-800 shadow-lg dark:shadow-slate-700 p-4 rounded-lg">
             <h3 className="text-2xl font-semibold mb-4 dark:text-white">
                 Change Password
             </h3>

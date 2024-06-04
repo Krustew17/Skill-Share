@@ -29,6 +29,11 @@ export class TalentModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(JwtMiddleware)
-      .forRoutes('talent/create', 'talent/review/create', 'talent/cards/me');
+      .forRoutes(
+        'talent/create',
+        'talent/review/create',
+        'talent/cards/me',
+        'talent/delete',
+      );
   }
 }

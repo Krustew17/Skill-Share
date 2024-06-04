@@ -8,7 +8,7 @@ import { FaMoneyBillTransfer } from "react-icons/fa6";
 
 const Dashboard = ({ activeTab, handleTabClick }) => {
     return (
-        <div className="w-1/4 bg-white dark:bg-gray-700 dark:text-white p-4 shadow-lg rounded-xl">
+        <div className="w-1/4 bg-white dark:bg-gray-800 dark:shadow-lg max-h-56 dark:shadow-slate-700 dark:text-white p-4 shadow-lg rounded-xl">
             <h2 className="text-2xl font-semibold mb-4 text-center">
                 Dashboard
             </h2>
