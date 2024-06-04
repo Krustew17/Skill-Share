@@ -12,7 +12,7 @@ const AuthProvider = ({ children }) => {
         }
     });
 
-    const [currentUser, setCurrentUser] = useState(null);
+    const [currentUser, setCurrentUser] = useState();
 
     async function getUser() {
         const token = localStorage.getItem("token");
@@ -45,6 +45,7 @@ const AuthProvider = ({ children }) => {
         });
         const res = await request.json();
         localStorage.removeItem("token");
+        window.location.reload();
         return res;
     };
 

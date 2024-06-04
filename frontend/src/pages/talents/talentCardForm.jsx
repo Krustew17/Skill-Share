@@ -340,7 +340,6 @@ const TalentCardForm = ({ onClose }) => {
                     </div>
                 )}
             </div>
-            <ToastContainer />
         </div>
     );
 };

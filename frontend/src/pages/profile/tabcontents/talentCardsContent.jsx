@@ -1,191 +1,64 @@
-import { useContext, useState, useEffect, useCallback, memo } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import TalentSidePanel from "./sidePanel";
+import TalentList from "../../talents/talentList";
+import { useState, useEffect } from "react";
 import { MdLocationPin } from "react-icons/md";
 import { FaStar } from "react-icons/fa";
-import truncateDescription from "../../utils/truncateDescriptions";
-import { AuthContext } from "../../contexts/AuthContext";
-import ReviewForm from "./reviewForm";
+import truncateDescription from "../../../utils/truncateDescriptions";
+import TalentSidePanel from "../../talents/sidePanel";
 import { toast, Bounce, ToastContainer } from "react-toastify";
-import Cookies from "js-cookie";
 
-const TalentList = ({ onDataSend }) => {
-    const { authenticated, currentUser } = useContext(AuthContext);
-    const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
-    const [currentReviews, setCurrentReviews] = useState([]);
-    const [showReviewForm, setShowReviewForm] = useState(false);
-    const [reviewDataFromChild, setReviewDataFromChild] = useState(null);
-    const [selectedTalent, setSelectedTalent] = useState(null);
-    const [skills, setSkills] = useState([]);
+export default function TalentCardsTabContent() {
     const [talents, setTalents] = useState([]);
-    const navigate = useNavigate();
-    const location = useLocation();
+    const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
+    const [selectedTalent, setSelectedTalent] = useState(null);
     const AMOUNT_SKILLS_TO_SHOW = 5;
+    const [currentReviews, setCurrentReviews] = useState([]);
+
+    const handleAddReviewClick = () => {
+        toast.error("You cannot add review to your own talent card.", {
+            position: "bottom-left",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+        });
+    };
 
     const handleClosePanel = () => {
         setSelectedTalent(null);
         setCurrentReviews([]);
-        Cookies.remove("talentUserId");
         document.body.classList.remove("overflow-hidden");
         setIsSidePanelOpen(false);
     };
-
-    const handleSubmitReview = async (reviewData) => {
-        const response = await fetch(
-            "http://127.0.0.1:3000/talent/review/create",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-                body: JSON.stringify(reviewData),
-            }
-        );
-        const responseJson = await response.json();
-
-        if (responseJson.HttpStatus !== 200) {
-            toast.error("Please select rating first.", {
-                position: "bottom-left",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                limit: 1,
-                transition: Bounce,
-            });
-            return;
-        }
-
-        if (responseJson.message === "Talent review created successfully") {
-            toast.success("Review created successfully", {
-                position: "bottom-left",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                limit: 1,
-                transition: Bounce,
-            });
-            setShowReviewForm(false);
-        }
-    };
-
-    const handleReviewDataFromChildAndSubmit = (e, data) => {
-        setReviewDataFromChild(data);
-        handleSubmitReview(e, reviewDataFromChild);
-    };
-
-    const handleAddReviewClick = useCallback(() => {
-        if (!authenticated) {
-            toast.error("Please login to add a review", {
-                position: "bottom-left",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-            });
-            return;
-        }
-        const talentId = Cookies.get("talentUserId");
-
-        console.log(talentId, currentUser?.user?.id);
-        if (talentId == currentUser?.user?.id) {
-            toast.error("You cannot add review to your own talent card.", {
-                position: "bottom-left",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-            });
-            console.log("hi");
-            return;
-        }
-
-        // setIsSidePanelOpen(false);
-        setShowReviewForm(true);
-    }, []);
 
     const handleViewDetails = async (talent) => {
         const response = await fetch(
             "http://127.0.0.1:3000/talent/reviews?talentCardId=" + talent.id,
             {}
         );
+
         const responseJson = await response.json();
         setCurrentReviews(responseJson.data);
         setSelectedTalent(talent);
-        Cookies.set("talentUserId", talent.user.id, { expires: 1 });
         document.body.classList.add("overflow-hidden");
         setIsSidePanelOpen(true);
     };
+
     useEffect(() => {
-        const fetchTalents = async () => {
-            try {
-                const queryParams = new URLSearchParams(location.search);
-                let url = "http://127.0.0.1:3000/";
+        fetch("http://127.0.0.1:3000/talent/cards/me", {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => setTalents(data));
+    }, []);
+    console.log(talents);
 
-                if (
-                    queryParams.has("keywords") ||
-                    queryParams.has("skills") ||
-                    queryParams.has("minPrice") ||
-                    queryParams.has("maxPrice") ||
-                    queryParams.has("rating")
-                ) {
-                    url += `talent/search?${queryParams.toString()}`;
-                } else {
-                    url += "talent/all";
-                }
-
-                const response = await fetch(url, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "token"
-                        )}`,
-                    },
-                });
-                const data = await response.json();
-                setSkills(data.uniqueSkills);
-                console.log(data.uniqueSkills);
-                onDataSend(data.uniqueSkills);
-                const talentsWithRatings = await Promise.all(
-                    data.talents.map(async (talent) => {
-                        const ratingResponse = await fetch(
-                            `http://127.0.0.1:3000/talent/rating/average?talentCardId=${talent.id}`
-                        );
-                        const ratingData = await ratingResponse.json();
-                        const rating = Number(ratingData.data).toFixed(1);
-                        return {
-                            ...talent,
-                            averageRating: rating,
-                        };
-                    })
-                );
-                setTalents(talentsWithRatings);
-            } catch (error) {
-                console.error("Error fetching talents:", error);
-            }
-        };
-
-        fetchTalents();
-    }, [location.search]);
-
-    if (talents.message === "No talents found") {
-        return <div>Loading...</div>;
-    }
     return (
         <div className="w-full lg:w-4/5 px-6 flex-col flex-wrap gap-6">
             {talents.length === 0 ? (
@@ -193,7 +66,7 @@ const TalentList = ({ onDataSend }) => {
                     No talents found
                 </div>
             ) : (
-                talents.map((talent) => (
+                talents.data.map((talent) => (
                     <div
                         className="bg-white dark:bg-gray-800 shadow-lg dark:shadow-md dark:shadow-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-6 mb-6 flex dark:text-white"
                         key={talent.id}
@@ -289,20 +162,9 @@ const TalentList = ({ onDataSend }) => {
                     currentReviews,
                     handleAddReviewClick,
                 }}
-                setShowReviewForm={setShowReviewForm}
+                // setShowReviewForm={setShowReviewForm}
             />
-
-            {showReviewForm && (
-                <ReviewForm
-                    onClose={setShowReviewForm}
-                    onSubmit={handleSubmitReview}
-                    passReviewDataToParent={handleReviewDataFromChildAndSubmit}
-                    talentCardId={selectedTalent?.id}
-                />
-            )}
-            {/* <ToastContainer limit={3} /> */}
+            <ToastContainer limit={3} />
         </div>
     );
-};
-
-export default TalentList;
+}
