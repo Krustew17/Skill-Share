@@ -34,6 +34,7 @@ export class TalentModule {
         'talent/review/create',
         'talent/cards/me',
         'talent/delete',
+        'talent/update',
       );
   }
 }

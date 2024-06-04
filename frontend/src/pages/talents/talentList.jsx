@@ -21,7 +21,6 @@ const TalentList = ({ onDataSend }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const AMOUNT_SKILLS_TO_SHOW = 8;
-
     const handleClosePanel = () => {
         setSelectedTalent(null);
         setCurrentReviews([]);
@@ -98,9 +97,9 @@ const TalentList = ({ onDataSend }) => {
             return;
         }
         const talentId = Cookies.get("talentUserId");
+        const loggedUserId = Cookies.get("loggedUserId");
 
-        console.log(talentId, currentUser?.user?.id);
-        if (talentId == currentUser?.user?.id) {
+        if (talentId == loggedUserId) {
             toast.error("You cannot add review to your own talent card.", {
                 position: "bottom-left",
                 autoClose: 2000,
@@ -121,13 +120,15 @@ const TalentList = ({ onDataSend }) => {
     }, []);
 
     const handleViewDetails = async (talent) => {
+        console.log(talent);
         const response = await fetch(
-            "http://127.0.0.1:3000/talent/reviews?talentCardId=" + talent.id,
-            {}
+            "http://127.0.0.1:3000/talent/reviews?talentCardId=" + talent.id
         );
         const responseJson = await response.json();
+
         setCurrentReviews(responseJson.data);
         setSelectedTalent(talent);
+        console.log(talent);
         Cookies.set("talentUserId", talent.user.id, { expires: 1 });
         document.body.classList.add("overflow-hidden");
         setIsSidePanelOpen(true);
@@ -159,7 +160,6 @@ const TalentList = ({ onDataSend }) => {
                 });
                 const data = await response.json();
                 setSkills(data.uniqueSkills);
-                console.log(data.uniqueSkills);
                 onDataSend(data.uniqueSkills);
                 const talentsWithRatings = await Promise.all(
                     data.talents.map(async (talent) => {
@@ -201,11 +201,11 @@ const TalentList = ({ onDataSend }) => {
                         <img
                             className="w-16 h-16 rounded-full mr-4 border border-black dark:border-gray-50"
                             src={`${
-                                talent.user.profile.profileImage.startsWith(
+                                talent?.user?.profile?.profileImage.startsWith(
                                     "https://lh3.googleusercontent.com"
                                 )
-                                    ? talent.user.profile.profileImage
-                                    : `http://127.0.0.1:3000/uploads/profileImages/${talent.user.profile.profileImage}`
+                                    ? talent?.user?.profile?.profileImage
+                                    : `http://127.0.0.1:3000/uploads/profileImages/${talent?.user?.profile?.profileImage}`
                             }`}
                             alt="Profile image"
                         />
@@ -213,19 +213,19 @@ const TalentList = ({ onDataSend }) => {
                             <div className="flex justify-between items-center mb-2 ">
                                 <div>
                                     <h2 className="text-lg font-semibold dark:text-gray-200">
-                                        {talent.user.profile.firstName &&
-                                        talent.user.profile.lastName
-                                            ? talent.user.profile.firstName +
+                                        {talent?.user?.profile?.firstName &&
+                                        talent?.user?.profile?.lastName
+                                            ? talent?.user?.profile?.firstName +
                                               " " +
-                                              talent.user.profile.lastName
-                                            : talent.user.username}
+                                              talent?.user?.profile?.lastName
+                                            : talent?.user?.username}
                                     </h2>
                                     <p className="text-gray-600 dark:text-white">
-                                        {talent.title}
+                                        {talent?.title}
                                     </p>
                                     <p className="text-xs text-gray-500 flex items-center gap-1">
                                         <MdLocationPin className="text-sm" />{" "}
-                                        {talent.user.profile.country}
+                                        {talent?.user?.profile?.country}
                                     </p>
                                 </div>
                                 <button
@@ -237,7 +237,7 @@ const TalentList = ({ onDataSend }) => {
                             </div>
                             <div className="flex items-center text-sm mb-2">
                                 <p className="mr-2 dark:text-green-500 text-green-600">
-                                    ${talent.price}
+                                    ${talent?.price}
                                 </p>
                                 <p className="mx-2">|</p>
                                 <p className="mx-2 dark:text-green-500 text-green-600">
@@ -249,7 +249,7 @@ const TalentList = ({ onDataSend }) => {
                                 </p>
                                 <p className="mx-2">|</p>
                                 <p className="flex items-center gap-2">
-                                    {talent.averageRating}{" "}
+                                    {talent?.averageRating}{" "}
                                     <FaStar className="text-yellow-500" />
                                 </p>
                             </div>
