@@ -1,7 +1,7 @@
 import TalentList from "../../talents/talentList";
 import { useState, useEffect } from "react";
 import { MdLocationPin } from "react-icons/md";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaPen, FaRegTrashAlt } from "react-icons/fa";
 import truncateDescription from "../../../utils/truncateDescriptions";
 import TalentSidePanel from "../../talents/sidePanel";
 import { toast, Bounce, ToastContainer } from "react-toastify";
@@ -25,6 +25,56 @@ export default function TalentCardsTabContent() {
             theme: "colored",
             transition: Bounce,
         });
+    };
+    const handleDeleteTalentCard = async (talent) => {
+        console.log(talent.id);
+        const response = await fetch(
+            "http://127.0.0.1:3000/talent/delete/" + talent.id,
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            }
+        );
+        const responseJson = await response.json();
+
+        if (responseJson.HttpStatus === 200) {
+            toast.success("Talent card deleted successfully", {
+                position: "bottom-left",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                limit: 1,
+                transition: Bounce,
+            });
+
+            fetch("http://127.0.0.1:3000/talent/cards/me", {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            })
+                .then((response) => response.json())
+                .then((data) => setTalents(data));
+        } else {
+            toast.error("Failed to delete talent card", {
+                position: "bottom-left",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                limit: 1,
+                transition: Bounce,
+            });
+        }
     };
 
     const handleClosePanel = () => {
@@ -57,10 +107,9 @@ export default function TalentCardsTabContent() {
             .then((response) => response.json())
             .then((data) => setTalents(data));
     }, []);
-    console.log(talents);
 
     return (
-        <div className="w-full lg:w-4/5 px-6 flex-col flex-wrap gap-6">
+        <div className="w-full px-6 flex-col py-2 flex-wrap gap-6">
             {talents.length === 0 ? (
                 <div className="text-black text-6xl text-center mt-32 dark:text-white">
                     No talents found
@@ -68,7 +117,7 @@ export default function TalentCardsTabContent() {
             ) : (
                 talents.data.map((talent) => (
                     <div
-                        className="bg-white dark:bg-gray-800 shadow-lg dark:shadow-md dark:shadow-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-6 mb-6 flex dark:text-white"
+                        className="bg-white dark:bg-gray-800 shadow-lg dark:shadow-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-6 mb-5 flex dark:text-white"
                         key={talent.id}
                     >
                         <img
@@ -94,19 +143,34 @@ export default function TalentCardsTabContent() {
                                             : talent.user.username}
                                     </h2>
                                     <p className="text-gray-600 dark:text-white">
-                                        {talent.title}
+                                        {truncateDescription(talent.title, 50)}
                                     </p>
                                     <p className="text-xs text-gray-500 flex items-center gap-1">
                                         <MdLocationPin className="text-sm" />{" "}
                                         {talent.user.profile.country}
                                     </p>
                                 </div>
-                                <button
-                                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-                                    onClick={() => handleViewDetails(talent)}
-                                >
-                                    View profile
-                                </button>
+                                <div className="flex gap-3">
+                                    <button
+                                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                                        onClick={() =>
+                                            handleViewDetails(talent)
+                                        }
+                                    >
+                                        View profile
+                                    </button>
+                                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                                        <FaPen />
+                                    </button>
+                                    <button
+                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                                        onClick={() =>
+                                            handleDeleteTalentCard(talent)
+                                        }
+                                    >
+                                        <FaRegTrashAlt />
+                                    </button>
+                                </div>
                             </div>
                             <div className="flex items-center text-sm mb-2">
                                 <p className="mr-2 dark:text-green-500 text-green-600">
@@ -127,24 +191,23 @@ export default function TalentCardsTabContent() {
                                 </p>
                             </div>
                             <div className="flex items-center mb-2">
-                                {talent.skills.map((skill, index) =>
-                                    index > 5 ? (
-                                        <span
-                                            key={index}
-                                            className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2"
-                                        >
-                                            +
-                                            {talent.skills.length -
-                                                (AMOUNT_SKILLS_TO_SHOW + 1)}
-                                        </span>
-                                    ) : (
+                                {talent.skills
+                                    .slice(0, AMOUNT_SKILLS_TO_SHOW)
+                                    .map((skill, index) => (
                                         <span
                                             key={index}
                                             className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2"
                                         >
                                             {skill}
                                         </span>
-                                    )
+                                    ))}
+                                {talent.skills.length >
+                                    AMOUNT_SKILLS_TO_SHOW && (
+                                    <span className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2">
+                                        +
+                                        {talent.skills.length -
+                                            AMOUNT_SKILLS_TO_SHOW}
+                                    </span>
                                 )}
                             </div>
                             <div className="text-gray-700 text-sm max-w-screen-lg dark:text-gray-200">
