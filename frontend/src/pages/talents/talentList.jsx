@@ -20,7 +20,7 @@ const TalentList = ({ onDataSend }) => {
     const [talents, setTalents] = useState([]);
     const navigate = useNavigate();
     const location = useLocation();
-    const AMOUNT_SKILLS_TO_SHOW = 5;
+    const AMOUNT_SKILLS_TO_SHOW = 8;
 
     const handleClosePanel = () => {
         setSelectedTalent(null);
@@ -254,24 +254,23 @@ const TalentList = ({ onDataSend }) => {
                                 </p>
                             </div>
                             <div className="flex items-center mb-2">
-                                {talent.skills.map((skill, index) =>
-                                    index > 5 ? (
-                                        <span
-                                            key={index}
-                                            className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2"
-                                        >
-                                            +
-                                            {talent.skills.length -
-                                                (AMOUNT_SKILLS_TO_SHOW + 1)}
-                                        </span>
-                                    ) : (
+                                {talent.skills
+                                    .slice(0, AMOUNT_SKILLS_TO_SHOW)
+                                    .map((skill, index) => (
                                         <span
                                             key={index}
                                             className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2"
                                         >
                                             {skill}
                                         </span>
-                                    )
+                                    ))}
+                                {talent.skills.length >
+                                    AMOUNT_SKILLS_TO_SHOW && (
+                                    <span className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2">
+                                        +
+                                        {talent.skills.length -
+                                            AMOUNT_SKILLS_TO_SHOW}
+                                    </span>
                                 )}
                             </div>
                             <div className="text-gray-700 text-sm max-w-screen-lg dark:text-gray-200">
