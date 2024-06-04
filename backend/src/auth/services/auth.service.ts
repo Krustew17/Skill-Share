@@ -58,7 +58,7 @@ export class AuthService {
     const newUser = this.userRepository.create({ ...userData, password });
     const savedUser = await this.userRepository.save(newUser);
     const verificationToken = this.jwtService.sign({
-      userId: savedUser.id,
+      user: savedUser,
     });
     await this.emailService.sendVerificationEmail(
       savedUser.email,
@@ -72,7 +72,7 @@ export class AuthService {
 
     const userProfile = this.userProfileRepository.create({
       user: savedUser,
-      profileImage: 'src/assets/default_avatar.jpg',
+      profileImage: 'default_avatar.jpg',
     });
     await this.userProfileRepository.save(userProfile);
 
@@ -125,7 +125,10 @@ export class AuthService {
       const decoded = this.jwtService.verify(token);
       const userId = decoded.userId;
 
-      const user = await this.userRepository.findOne({ where: { id: userId } });
+      let user = await this.userRepository.findOne({
+        where: { id: userId },
+        relations: ['profile'],
+      });
       if (!user) {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       }

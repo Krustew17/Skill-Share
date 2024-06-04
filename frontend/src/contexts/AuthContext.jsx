@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
 const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
@@ -28,6 +29,9 @@ const AuthProvider = ({ children }) => {
         });
         const res = await user.json();
         setCurrentUser(res);
+        if (res.user) {
+            Cookies.set("loggedUserId", res.user.id);
+        }
         return res;
     }
 

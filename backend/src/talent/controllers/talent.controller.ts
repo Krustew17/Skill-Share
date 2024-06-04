@@ -100,19 +100,19 @@ export class TalentController {
     };
   }
 
-  // @Put('update/:id')
-  // updateTalentCard(
-  //   @Param('id') talentCardId: number,
-  //   @Body() newTalentCardBody: updateTalentDto,
-  //   @Req() req: Request,
-  // ) {
-  //   console.log(talentCardId);
-  //   return this.talentService.updateTalentCard(
-  //     talentCardId,
-  //     newTalentCardBody,
-  //     req,
-  //   );
-  // }
+  @Put('update/:id')
+  updateTalentCard(
+    @Param('id') talentCardId: number,
+    @Body() newTalentCardBody: updateTalentDto,
+    @Req() req: Request,
+  ) {
+    console.log(talentCardId);
+    return this.talentService.updateTalentCard(
+      talentCardId,
+      newTalentCardBody,
+      req,
+    );
+  }
 
   @Delete('delete/:id')
   deleteTalentCard(@Param('id') talentCardId: number, @Req() req: Request) {

@@ -12,6 +12,22 @@ export default function TalentCardsTabContent() {
     const [selectedTalent, setSelectedTalent] = useState(null);
     const AMOUNT_SKILLS_TO_SHOW = 5;
     const [currentReviews, setCurrentReviews] = useState([]);
+    const [formData, setFormData] = useState({});
+    const [isFormOpen, setIsFormOpen] = useState(false);
+
+    const handleEditTalentCard = (talent) => {
+        const { thumbnail, title, description, price, skills, portfolio } =
+            talent;
+        setFormData({
+            thumbnail,
+            title,
+            description,
+            price,
+            skills: skills.join(", "),
+            portfolio,
+        });
+        setIsFormOpen(true);
+    };
 
     const handleAddReviewClick = () => {
         toast.error("You cannot add review to your own talent card.", {
@@ -225,7 +241,6 @@ export default function TalentCardsTabContent() {
                     currentReviews,
                     handleAddReviewClick,
                 }}
-                // setShowReviewForm={setShowReviewForm}
             />
             <ToastContainer limit={3} />
         </div>

@@ -1,6 +1,10 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Request, Response, NextFunction } from 'express';
+import { User } from '../users.entity';
+import { Repository } from 'typeorm';
+import { UserService } from '../services/user.service';
 
 @Injectable()
 export class JwtMiddleware implements NestMiddleware {
@@ -17,9 +21,10 @@ export class JwtMiddleware implements NestMiddleware {
 
     const token = authHeader.split(' ')[1];
     try {
-      const decoded = this.jwtService.verify(token, {
+      let decoded = this.jwtService.verify(token, {
         secret: process.env.JWT_SECRET,
       });
+      console.log(decoded);
       req['user'] = decoded['user'];
       next();
     } catch (error) {

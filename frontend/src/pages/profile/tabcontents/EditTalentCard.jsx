@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast, Bounce, ToastContainer } from "react-toastify";
-const TalentCardForm = ({ onClose }) => {
+const TalentCardForm = ({ onClose, formData, setFormData }) => {
     const [step, setStep] = useState(1);
     const [skills, setSkills] = useState([]);
     const [currentSkill, setCurrentSkill] = useState("");
@@ -29,34 +29,12 @@ const TalentCardForm = ({ onClose }) => {
             }
             setStep(step + 1);
             setErrorMessage("");
-        } else if (step == 2) {
-            console.log(formData.portfolio);
-            if (formData.portfolio.length > 5) {
-                setErrorMessage("Maximum 5 portfolio images are allowed");
-                return;
-            }
-            setStep(step + 1);
-            setErrorMessage("");
         }
     };
     const prevStep = () => {
         setErrorMessage("");
         setStep(step - 1);
     };
-
-    const [formData, setFormData] = useState({
-        thumbnail: null,
-        title: "",
-        description: "",
-        price: "",
-        skills: "",
-        portfolio: [],
-        stripeInfo: "",
-        stripeInfo2: "",
-        stripeInfo3: "",
-        stripeInfo4: "",
-    });
-
     const handleKeyDown = (e) => {
         if (e.key === " ") {
             e.preventDefault();
@@ -109,14 +87,9 @@ const TalentCardForm = ({ onClose }) => {
         formData.portfolio.forEach((file) => {
             submitData.append("portfolio", file);
         });
-        submitData.append("stripeInfo", formData.stripeInfo);
-        submitData.append("stripeInfo2", formData.stripeInfo2);
-        submitData.append("stripeInfo3", formData.stripeInfo3);
-        submitData.append("stripeInfo4", formData.stripeInfo4);
-
         try {
             const response = await fetch(
-                "http://127.0.0.1:3000/talent/create",
+                "http://localhost:3000/talent/create",
                 {
                     method: "POST",
                     body: submitData,
