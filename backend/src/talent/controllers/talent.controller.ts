@@ -101,15 +101,46 @@ export class TalentController {
   }
 
   @Put('update/:id')
+  @UseInterceptors(
+    FileFieldsInterceptor([{ name: 'portfolio', maxCount: 5 }], {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const filename = `${Date.now()}-${file.originalname}`;
+          cb(null, filename);
+        },
+      }),
+      fileFilter: (req, file, cb) => {
+        if (file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
+          cb(null, true);
+        } else {
+          cb(
+            new BadRequestException(
+              'Only .png, .jpg and .jpeg format allowed!',
+            ),
+            false,
+          );
+        }
+      },
+    }),
+  )
   updateTalentCard(
+    @UploadedFiles()
+    files: {
+      portfolio?: Express.Multer.File[];
+    },
     @Param('id') talentCardId: number,
     @Body() newTalentCardBody: updateTalentDto,
     @Req() req: Request,
   ) {
-    console.log(talentCardId);
+    const portfolioPaths = files.portfolio
+      ? files.portfolio.map((file) => file.path)
+      : [];
+    console.log(portfolioPaths);
     return this.talentService.updateTalentCard(
       talentCardId,
       newTalentCardBody,
+      portfolioPaths,
       req,
     );
   }

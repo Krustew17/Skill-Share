@@ -49,6 +49,8 @@ const AuthProvider = ({ children }) => {
         });
         const res = await request.json();
         localStorage.removeItem("token");
+        Cookies.remove("loggedUserId");
+        Cookies.remove("talentUserId");
         window.location.reload();
         return res;
     };

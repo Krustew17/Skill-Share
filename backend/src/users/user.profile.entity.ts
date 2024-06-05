@@ -12,13 +12,13 @@ export class UserProfile {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: '' })
   firstName: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: '' })
   lastName: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: '' })
   country: string;
 
   @Column({ nullable: true })

@@ -17,7 +17,6 @@ export class EmailService {
     });
   }
   async sendVerificationEmail(email: string, token: string) {
-    console.log(process.env.EMAIL_USER, process.env.EMAIL_PASSWORD);
     const url = `${HOST}/verify-email?token=${token}`;
     if (email.includes('gmail.com')) {
       await this.transporter.sendMail({
