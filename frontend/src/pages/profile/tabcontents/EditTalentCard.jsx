@@ -100,10 +100,9 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
                 }
             );
             const data = await response.json();
-            console.log(data);
-            if (data.HttpStatus === 201) {
+            if (data.HttpStatus === 200) {
                 onClose();
-                toast.success("Talent created successfully!", {
+                toast.success(data.message, {
                     position: "bottom-left",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -111,9 +110,11 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
                     pauseOnHover: true,
                     draggable: true,
                     progress: undefined,
-                    theme: "colorful",
+                    theme: "colored",
                     transition: Bounce,
                 });
+            } else {
+                setErrorMessage(data.message);
             }
         } catch (error) {
             console.error("Error:", error);
@@ -236,7 +237,7 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
                                 onClick={handleSubmit}
                                 className="bg-blue-500 text-white px-4 py-2 rounded"
                             >
-                                Next
+                                Save
                             </button>
                         </form>
                     </div>

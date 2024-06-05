@@ -161,12 +161,19 @@ export class TalentService {
       throw new Error('Skills must be an array');
     }
 
-    const talentCardData: Partial<TalentCards> = {
+    let talentCardData: Partial<TalentCards> = {
       ...newTalentCardBody,
       skills,
-      portfolio: portfolioPaths,
       user: req['user'],
     };
+    if (portfolioPaths.length > 1) {
+      talentCardData = {
+        ...newTalentCardBody,
+        skills,
+        portfolio: portfolioPaths,
+        user: req['user'],
+      };
+    }
 
     const updatedCard = await this.talentRepository.update(
       { id: talentCardId },

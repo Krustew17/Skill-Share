@@ -222,10 +222,12 @@ const TalentList = ({ onDataSend }) => {
                                     <p className="text-gray-600 dark:text-white">
                                         {talent?.title}
                                     </p>
-                                    <p className="text-xs text-gray-500 flex items-center gap-1">
-                                        <MdLocationPin className="text-sm" />{" "}
-                                        {talent?.user?.profile?.country}
-                                    </p>
+                                    {talent?.user?.profile?.country && (
+                                        <p className="text-xs text-gray-500 flex items-center gap-1">
+                                            <MdLocationPin className="text-sm" />{" "}
+                                            {talent?.user?.profile?.country}
+                                        </p>
+                                    )}
                                 </div>
                                 <button
                                     className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
@@ -298,7 +300,6 @@ const TalentList = ({ onDataSend }) => {
                     talentCardId={selectedTalent?.id}
                 />
             )}
-            {/* <ToastContainer limit={3} /> */}
         </div>
     );
 };
