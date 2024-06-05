@@ -67,9 +67,6 @@ const TalentCardForm = ({ onClose }) => {
             }
         }
     };
-    const handleInputChange = (e) => {
-        setCurrentSkill(e.target.value);
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;

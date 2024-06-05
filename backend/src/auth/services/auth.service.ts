@@ -1,8 +1,10 @@
 import { registerUserDto } from '../dto/register.dto';
+import { changePasswordBodyDto } from '../dto/changePassword.dto';
 import { comparePasswords, hashPassword } from '../utils/bcrypt';
 import { User } from 'src/users/users.entity';
 import { Job } from 'src/jobs/jobs.entity';
 import { EmailService } from './email.service';
+import validatePassword from '../utils/validatePassword';
 import { loginPayloadDto } from '../dto/login.dto';
 import { UserProfile } from 'src/users/user.profile.entity';
 
@@ -13,9 +15,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Response, Request } from 'express';
 import Stripe from 'stripe';
-import { changePasswordBodyDto } from '../dto/changePassword.dto';
-import validatePassword from '../utils/validatePassword';
-import { profile } from 'console';
 
 @Injectable()
 export class AuthService {
@@ -53,7 +52,6 @@ export class AuthService {
       throw new HttpException('passwords do not match', HttpStatus.BAD_REQUEST);
     }
     validatePassword(userData.password);
-
     const password = await hashPassword(userData.password);
     const newUser = this.userRepository.create({ ...userData, password });
     const savedUser = await this.userRepository.save(newUser);
@@ -123,12 +121,8 @@ export class AuthService {
   async verifyUser(token: string) {
     try {
       const decoded = this.jwtService.verify(token);
-      const userId = decoded.userId;
 
-      let user = await this.userRepository.findOne({
-        where: { id: userId },
-        relations: ['profile'],
-      });
+      const user = decoded.user;
       if (!user) {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       }
@@ -242,7 +236,6 @@ export class AuthService {
         user.googleId = googleId;
         user.profile = userProfile;
         await this.userRepository.save(user);
-        console.log(user);
       }
     } else {
       const userProfile = this.userProfileRepository.create({

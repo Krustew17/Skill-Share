@@ -136,6 +136,7 @@ export class TalentService {
   async updateTalentCard(
     talentCardId: number,
     newTalentCardBody: updateTalentDto,
+    portfolioPaths: string[],
     req: Request,
   ) {
     const user = req['user'];
@@ -152,11 +153,26 @@ export class TalentService {
     if (user.id !== talentCard.user.id) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
+    const skills =
+      typeof newTalentCardBody.skills === 'string'
+        ? JSON.parse(newTalentCardBody.skills)
+        : newTalentCardBody.skills;
+    if (!Array.isArray(skills)) {
+      throw new Error('Skills must be an array');
+    }
 
-    await this.talentRepository.update(
+    const talentCardData: Partial<TalentCards> = {
+      ...newTalentCardBody,
+      skills,
+      portfolio: portfolioPaths,
+      user: req['user'],
+    };
+
+    const updatedCard = await this.talentRepository.update(
       { id: talentCardId },
-      { ...newTalentCardBody },
+      { ...talentCardData },
     );
+    console.log(updatedCard);
     return {
       message: 'Talent card updated successfully',
       HttpStatus: HttpStatus.OK,

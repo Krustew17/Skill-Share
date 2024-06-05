@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { toast, Bounce, ToastContainer } from "react-toastify";
 const TalentCardForm = ({ onClose, formData, setFormData }) => {
     const [step, setStep] = useState(1);
-    const [skills, setSkills] = useState([]);
+    const [skills, setSkills] = useState(formData.skills);
     const [currentSkill, setCurrentSkill] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -18,12 +18,12 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
                 return;
             }
 
-            if (formData.price.trim() === "") {
+            if (formData.price === "") {
                 setErrorMessage("Price is required");
                 return;
             }
 
-            if (skills.length < 1) {
+            if (formData.skills.length < 1) {
                 setErrorMessage("Skills are required");
                 return;
             }
@@ -38,17 +38,12 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
     const handleKeyDown = (e) => {
         if (e.key === " ") {
             e.preventDefault();
-            console.log(currentSkill);
             if (currentSkill.trim()) {
                 setSkills([...skills, currentSkill.trim()]);
                 setCurrentSkill("");
             }
         }
     };
-    const handleInputChange = (e) => {
-        setCurrentSkill(e.target.value);
-    };
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === "skills") {
@@ -75,6 +70,10 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (formData.portfolio.length > 5) {
+            setErrorMessage("Maximum 5 portfolio images are allowed");
+            return;
+        }
 
         const submitData = new FormData();
         submitData.append("title", formData.title);
@@ -89,9 +88,9 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
         });
         try {
             const response = await fetch(
-                "http://localhost:3000/talent/create",
+                "http://localhost:3000/talent/update/" + formData.id,
                 {
-                    method: "POST",
+                    method: "PUT",
                     body: submitData,
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem(
@@ -101,6 +100,7 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
                 }
             );
             const data = await response.json();
+            console.log(data);
             if (data.HttpStatus === 201) {
                 onClose();
                 toast.success("Talent created successfully!", {
@@ -212,7 +212,7 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
                         <div className="text-red-500 text-lg">
                             {errorMessage}
                         </div>
-                        <div>
+                        <form>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">
                                     Upload Images
@@ -233,81 +233,10 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
                                 Previous
                             </button>
                             <button
-                                type="button"
-                                onClick={nextStep}
+                                onClick={handleSubmit}
                                 className="bg-blue-500 text-white px-4 py-2 rounded"
                             >
                                 Next
-                            </button>
-                        </div>
-                    </div>
-                )}
-                {step === 3 && (
-                    <div>
-                        <h2 className="text-2xl font-semibold mb-4">
-                            Step 3: Payment Information
-                        </h2>
-                        <form onSubmit={handleSubmit}>
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                    Stripe Account
-                                </label>
-                                <input
-                                    type="text"
-                                    name="stripeInfo"
-                                    value={formData.stripeInfo}
-                                    onChange={handleChange}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                    Additional Info 1
-                                </label>
-                                <input
-                                    type="text"
-                                    name="stripeInfo2"
-                                    value={formData.stripeInfo2}
-                                    onChange={handleChange}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                    Additional Info 2
-                                </label>
-                                <input
-                                    type="text"
-                                    name="stripeInfo3"
-                                    value={formData.stripeInfo3}
-                                    onChange={handleChange}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                    Additional Info 3
-                                </label>
-                                <input
-                                    type="text"
-                                    name="stripeInfo4"
-                                    value={formData.stripeInfo4}
-                                    onChange={handleChange}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                                />
-                            </div>
-                            <button
-                                type="button"
-                                onClick={prevStep}
-                                className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
-                            >
-                                Previous
-                            </button>
-                            <button
-                                type="submit"
-                                className="bg-green-500 text-white px-4 py-2 rounded"
-                            >
-                                Submit
                             </button>
                         </form>
                     </div>

@@ -18,7 +18,6 @@ const TalentList = ({ onDataSend }) => {
     const [selectedTalent, setSelectedTalent] = useState(null);
     const [skills, setSkills] = useState([]);
     const [talents, setTalents] = useState([]);
-    const navigate = useNavigate();
     const location = useLocation();
     const AMOUNT_SKILLS_TO_SHOW = 8;
     const handleClosePanel = () => {

@@ -5,6 +5,7 @@ import { FaStar, FaPen, FaRegTrashAlt } from "react-icons/fa";
 import truncateDescription from "../../../utils/truncateDescriptions";
 import TalentSidePanel from "../../talents/sidePanel";
 import { toast, Bounce, ToastContainer } from "react-toastify";
+import EditTalentCard from "../../profile/tabcontents/EditTalentCard";
 
 export default function TalentCardsTabContent() {
     const [talents, setTalents] = useState([]);
@@ -16,14 +17,14 @@ export default function TalentCardsTabContent() {
     const [isFormOpen, setIsFormOpen] = useState(false);
 
     const handleEditTalentCard = (talent) => {
-        const { thumbnail, title, description, price, skills, portfolio } =
-            talent;
+        const { id, title, description, price, skills, portfolio } = talent;
+        console.log(talent);
         setFormData({
-            thumbnail,
+            id,
             title,
             description,
             price,
-            skills: skills.join(", "),
+            skills: skills,
             portfolio,
         });
         setIsFormOpen(true);
@@ -175,7 +176,12 @@ export default function TalentCardsTabContent() {
                                     >
                                         View profile
                                     </button>
-                                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                                    <button
+                                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                                        onClick={() =>
+                                            handleEditTalentCard(talent)
+                                        }
+                                    >
                                         <FaPen />
                                     </button>
                                     <button
@@ -242,6 +248,13 @@ export default function TalentCardsTabContent() {
                     handleAddReviewClick,
                 }}
             />
+            {isFormOpen && (
+                <EditTalentCard
+                    onClose={() => setIsFormOpen(false)}
+                    formData={formData}
+                    setFormData={setFormData}
+                />
+            )}
             <ToastContainer limit={3} />
         </div>
     );

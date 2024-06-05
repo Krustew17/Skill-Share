@@ -23,7 +23,6 @@ export class AuthController {
 
   @Post('register')
   createUser(@Body() userData: registerUserDto) {
-    console.log(userData);
     return this.authService.createUser(userData);
   }
 
