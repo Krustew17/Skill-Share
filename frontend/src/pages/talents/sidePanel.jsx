@@ -4,6 +4,16 @@ import ReviewSlider from "./reviewSlider"; // Assuming this is your slider compo
 import { MdLocationPin } from "react-icons/md";
 import ImageSlider from "./portfolioImagesSlider";
 import SkillList from "./skillsComponent";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+
+import CheckoutForm from "../talents/checkoutForm";
+import "../../index.css";
+
+const stripePromise = loadStripe(
+    "pk_test_51PHWiFIK3rKcTeQQZeLQQmN3QgdcxdIGV5rc8Xki77jOo40EJQ9BMyDd22Ip7BOTgzJJMJAynkTF1ktpjV3M1jJq002JKrzbst"
+);
+
 const TalentSidePanel = ({
     selectedTalent,
     isSidePanelOpen,
@@ -12,30 +22,50 @@ const TalentSidePanel = ({
     handleAddReviewClick,
     setShowReviewForm,
 }) => {
-    const handleSubmitReview = () => {
-        const reviewData = {
-            talentCardId: selectedTalent.id,
-            title,
-            description,
-            amountStars: stars,
-        };
+    const [clientSecret, setClientSecret] = useState("");
+    const handleHireClick = async () => {
+        const stripe = await stripePromise;
 
-        fetch("http://127.0.0.1:3000/review/create", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(reviewData),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log("Review submitted successfully:", data);
+        // Create PaymentIntent
+        const response = await fetch(
+            "http://127.0.0.1:3000/stripe/create-payment-intent",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify({
+                    amount: selectedTalent.price,
+                    talentId: selectedTalent.id,
+                    description: selectedTalent.description,
+                }),
+            }
+        );
 
-                setShowReviewForm(false);
-            })
-            .catch((error) => {
-                console.error("Error submitting review:", error);
-            });
+        const { clientSecret } = await response.json();
+        setClientSecret(clientSecret);
+        console.log("hi");
+
+        // const { error } = await stripe.confirmCardPayment(clientSecret, {
+        //     payment_method: {
+        //         card: {},
+        //     },
+        // });
+
+        // if (error) {
+        //     console.error("Payment failed:", error.message);
+        // } else {
+        //     console.log("Payment succeeded!");
+        //     // You can show a success message to the user
+        // }
+    };
+    const appearance = {
+        theme: "stripe",
+    };
+    const options = {
+        clientSecret,
+        appearance,
     };
 
     return (
@@ -86,7 +116,10 @@ const TalentSidePanel = ({
                                     {selectedTalent.user.profile.country}
                                 </h3>
                             </div>
-                            <button className="ml-auto mt-5 px-8 max-h-12 text-2xl bg-green-600 hover:bg-green-700 text-white rounded-lg">
+                            <button
+                                className="ml-auto mt-5 px-8 max-h-12 text-2xl bg-green-600 hover:bg-green-700 text-white rounded-lg"
+                                onClick={handleHireClick}
+                            >
                                 Hire
                             </button>
                         </section>
@@ -157,6 +190,11 @@ const TalentSidePanel = ({
                         </section>
                     </div>
                 </div>
+            )}
+            {clientSecret && (
+                <Elements options={options} stripe={stripePromise}>
+                    <CheckoutForm />
+                </Elements>
             )}
         </div>
     );
