@@ -109,7 +109,7 @@ export default function NavBar() {
                             </button>
                         </div>
                     ) : (
-                        <div className="list-none flex gap-5">
+                        <div className="list-none flex gap-5 items-center">
                             <CustomLink
                                 // to="/sign-up"
                                 onClick={openModal}
