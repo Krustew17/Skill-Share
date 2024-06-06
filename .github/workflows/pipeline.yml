@@ -1,6 +1,3 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
 name: Node.js CI
 
 on:
@@ -11,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -20,15 +16,41 @@ jobs:
       with:
         node-version: 20.x
         cache: 'npm'
-    - name: install dependencies
+    - name: Install dependencies
       run: npm install
-  deploy:
+    - name: Build backend
+      run: |
+        cd backend
+        npm install
+        npm run build
+    - name: Build frontend
+      run: |
+        cd frontend
+        npm install
+        npm run build
+
+  deploy-backend:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Deploy to production
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Deploy Backend to Render
         uses: JorgeLNJunior/render-deploy@v1.4.4
         with:
-          service_id: ${{ secrets.MY_RENDER_SERVICE_ID }}
-          api_key: ${{ secrets.MY_RENDER_API_KEY }}
+          service_id: ${{ secrets.RENDER_SERVICE_ID_BACKEND }}
+          api_key: ${{ secrets.RENDER_API_KEY }}
+          wait_deploy: true
+
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Deploy Frontend to Render
+        uses: JorgeLNJunior/render-deploy@v1.4.4
+        with:
+          service_id: ${{ secrets.RENDER_SERVICE_ID_FRONTEND }}
+          api_key: ${{ secrets.RENDER_API_KEY }}
           wait_deploy: true
