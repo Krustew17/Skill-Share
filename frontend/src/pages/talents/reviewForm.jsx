@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { toast, Bounce } from "react-toastify";
 

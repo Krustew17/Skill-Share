@@ -8,6 +8,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import ReviewForm from "./reviewForm";
 import { toast, Bounce, ToastContainer } from "react-toastify";
 import Cookies from "js-cookie";
+import React from "react";
 
 const TalentList = ({ onDataSend }) => {
     const { authenticated, currentUser } = useContext(AuthContext);

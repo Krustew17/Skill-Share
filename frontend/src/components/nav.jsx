@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import React from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { Link, useResolvedPath, useMatch } from "react-router-dom";
 import { DarkModeSwitch } from "react-toggle-dark-mode";

@@ -21,6 +21,38 @@ const TalentSidePanel = ({
     currentReviews,
     handleAddReviewClick,
 }) => {
+    const [clientSecret, setClientSecret] = useState("");
+    const handleHireClick = async () => {
+        const stripe = await stripePromise;
+
+        // Create PaymentIntent
+        const response = await fetch(
+            "http://127.0.0.1:3000/stripe/create-payment-intent",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify({
+                    amount: selectedTalent.price,
+                    talentId: selectedTalent.id,
+                    description: selectedTalent.description,
+                }),
+            }
+        );
+
+        const { clientSecret } = await response.json();
+        setClientSecret(clientSecret);
+        console.log("hi");
+    };
+    const appearance = {
+        theme: "stripe",
+    };
+    const options = {
+        clientSecret,
+        appearance,
+    };
     return (
         <div>
             {isSidePanelOpen && selectedTalent && (
