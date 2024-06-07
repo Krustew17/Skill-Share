@@ -1,7 +1,15 @@
 import { StripeService } from '../services/stripe.service';
 import { RawBodyRequest } from '../types/raw-body-request.interface';
 
-import { Body, Controller, HttpStatus, Post, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpStatus,
+  Param,
+  Post,
+  Req,
+  Res,
+} from '@nestjs/common';
 
 import { Response, Request } from 'express';
 import Stripe from 'stripe';
@@ -68,6 +76,19 @@ export class StripeController {
 
     res.status(HttpStatus.OK).send('Received');
   }
+
+  @Post('create-payment-intent')
+  async createPaymentIntent(
+    @Body('amount') amount: number,
+    @Body('talentId') talentId: number,
+  ) {
+    return this.stripeService.createPaymentIntent(amount, talentId);
+  }
+
+  // @Post('confirm/:id')
+  // async confirmPaymentIntent(@Param('id') id: string) {
+  //   return this.stripeService.confirmPaymentIntent(id);
+  // }
 
   private async handleCheckoutSessionCompleted(
     session: Stripe.Checkout.Session,
