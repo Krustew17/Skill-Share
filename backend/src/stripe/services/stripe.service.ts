@@ -47,21 +47,39 @@ export class StripeService {
     return session;
   }
 
-  async createPaymentIntent(
-    amount: number,
-    currency: string,
-    customerEmail: string,
-  ): Promise<Stripe.PaymentIntent> {
+  async createPaymentIntent(amount: number, talentId: number) {
     const paymentIntent = await this.stripe.paymentIntents.create({
-      amount,
-      currency,
-      automatic_payment_methods: { enabled: true },
-      // payment_method_types: ['card'],
-      receipt_email: customerEmail,
+      amount: amount * 100,
+      currency: 'usd',
     });
-    return paymentIntent;
+    return {
+      clientSecret: paymentIntent.client_secret,
+    };
   }
+  // async confirmPaymentIntent(paymentIntentId: string) {
+  //   const paymentIntent = await this.paymentIntentRepository.findOne({
+  //     where: { paymentIntentId },
+  //     relations: ['talent'],
+  //   });
 
+  //   if (
+  //     paymentIntent.clientStatus === 'completed' &&
+  //     paymentIntent.talentStatus === 'completed'
+  //   ) {
+  //     await this.stripe.paymentIntents.confirm(paymentIntentId);
+  //     paymentIntent.paymentStatus = 'paid';
+  //     await this.paymentIntentRepository.save(paymentIntent);
+
+  //     // Transfer the amount to the talent's Stripe account
+  //     await this.stripe.transfers.create({
+  //       amount: paymentIntent.amount * 100, // Stripe expects the amount in cents
+  //       currency: 'usd',
+  //       destination: paymentIntent.talent.stripeAccountId, // Assuming the Talent entity has a stripeAccountId field
+  //     });
+  //   }
+
+  //   return paymentIntent;
+  // }
   async updateUserToPremium(email: string) {
     console.log(email);
     const user = await this.userRepository.findOneBy({ email });
