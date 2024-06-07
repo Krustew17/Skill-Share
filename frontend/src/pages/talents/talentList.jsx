@@ -18,7 +18,14 @@ const TalentList = ({ onDataSend }) => {
     const [selectedTalent, setSelectedTalent] = useState(null);
     const [skills, setSkills] = useState([]);
     const [talents, setTalents] = useState([]);
+
+    const [total, setTotal] = useState(0);
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(2);
+
+    const navigate = useNavigate();
     const location = useLocation();
+
     const AMOUNT_SKILLS_TO_SHOW = 8;
     const handleClosePanel = () => {
         setSelectedTalent(null);
@@ -118,6 +125,11 @@ const TalentList = ({ onDataSend }) => {
         setShowReviewForm(true);
     }, []);
 
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+        window.scrollTo(0, 0);
+    };
+
     const handleViewDetails = async (talent) => {
         console.log(talent);
         const response = await fetch(
@@ -145,9 +157,10 @@ const TalentList = ({ onDataSend }) => {
                     queryParams.has("maxPrice") ||
                     queryParams.has("rating")
                 ) {
-                    url += `talent/search?${queryParams.toString()}`;
+                    setPage(1);
+                    url += `talent/search?${queryParams.toString()}&page=${page}&limit=${limit}`;
                 } else {
-                    url += "talent/all";
+                    url += `talent/all?page=${page}&limit=${limit}`;
                 }
 
                 const response = await fetch(url, {
@@ -159,6 +172,7 @@ const TalentList = ({ onDataSend }) => {
                 });
                 const data = await response.json();
                 setSkills(data.uniqueSkills);
+                setTotal(data.total);
                 onDataSend(data.uniqueSkills);
                 const talentsWithRatings = await Promise.all(
                     data.talents.map(async (talent) => {
@@ -180,7 +194,7 @@ const TalentList = ({ onDataSend }) => {
         };
 
         fetchTalents();
-    }, [location.search]);
+    }, [location.search, page, limit]);
 
     if (talents.message === "No talents found") {
         return <div>Loading...</div>;
@@ -280,6 +294,27 @@ const TalentList = ({ onDataSend }) => {
                         </div>
                     </div>
                 ))
+            )}
+            {talents.length > 0 && (
+                <div className="flex gap-5 items-center justify-center mt-8">
+                    <button
+                        className="bg-blue-500 px-5 py-2 rounded text-white"
+                        onClick={() => handlePageChange(page - 1)}
+                        disabled={page === 1}
+                    >
+                        previous
+                    </button>
+                    <span className="dark:text-white">
+                        Page {page} of {Math.ceil(total / limit)}
+                    </span>
+                    <button
+                        className="bg-blue-500 px-5 py-2 rounded text-white"
+                        onClick={() => handlePageChange(page + 1)}
+                        disabled={page * limit >= total}
+                    >
+                        next
+                    </button>
+                </div>
             )}
             <TalentSidePanel
                 {...{

@@ -35,13 +35,15 @@ export class TalentService {
     return { data: talentCards, amount: talentCards.length };
   }
 
-  async getAllTalents() {
-    // Fetch talents with related user and profile
-    const talents = await this.talentRepository
+  async getAllTalents(page: number = 1, limit: number = 2) {
+    console.log(page, limit);
+    const [talents, total] = await this.talentRepository
       .createQueryBuilder('talent')
       .leftJoinAndSelect('talent.user', 'user')
       .leftJoinAndSelect('user.profile', 'profile')
-      .getMany();
+      .skip((Number(page) - 1) * Number(limit))
+      .take(Number(limit))
+      .getManyAndCount();
 
     if (!talents || talents.length === 0) {
       throw new HttpException('Talents not found', HttpStatus.NOT_FOUND);
@@ -58,11 +60,16 @@ export class TalentService {
 
     return {
       talents,
+      total,
       uniqueSkills: skills,
     };
   }
 
-  async search(query: TalentCardsQueryDto) {
+  async search(
+    query: TalentCardsQueryDto,
+    page: number = 1,
+    limit: number = 2,
+  ) {
     const qb = this.talentRepository.createQueryBuilder('talent');
 
     const talents = qb
@@ -120,7 +127,11 @@ export class TalentService {
       });
     }
 
-    const filteredTalents = await talents.getMany();
+    const [filteredTalents, total] = await qb
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .getManyAndCount();
+    console.log(filteredTalents);
 
     const uniqueSkills = await talents
       .select('DISTINCT UNNEST(talent.skills)', 'skill')

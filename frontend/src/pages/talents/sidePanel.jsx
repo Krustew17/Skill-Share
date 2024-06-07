@@ -20,54 +20,7 @@ const TalentSidePanel = ({
     handleClosePanel,
     currentReviews,
     handleAddReviewClick,
-    setShowReviewForm,
 }) => {
-    const [clientSecret, setClientSecret] = useState("");
-    const handleHireClick = async () => {
-        const stripe = await stripePromise;
-
-        // Create PaymentIntent
-        const response = await fetch(
-            "http://127.0.0.1:3000/stripe/create-payment-intent",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-                body: JSON.stringify({
-                    amount: selectedTalent.price,
-                    talentId: selectedTalent.id,
-                    description: selectedTalent.description,
-                }),
-            }
-        );
-
-        const { clientSecret } = await response.json();
-        setClientSecret(clientSecret);
-        console.log("hi");
-
-        // const { error } = await stripe.confirmCardPayment(clientSecret, {
-        //     payment_method: {
-        //         card: {},
-        //     },
-        // });
-
-        // if (error) {
-        //     console.error("Payment failed:", error.message);
-        // } else {
-        //     console.log("Payment succeeded!");
-        //     // You can show a success message to the user
-        // }
-    };
-    const appearance = {
-        theme: "stripe",
-    };
-    const options = {
-        clientSecret,
-        appearance,
-    };
-
     return (
         <div>
             {isSidePanelOpen && selectedTalent && (
@@ -151,9 +104,9 @@ const TalentSidePanel = ({
                             {selectedTalent.description}
                         </p>
                         <div />
-                        <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
+                        <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700 mb-5"></span>
                         <ImageSlider images={selectedTalent.portfolio} />
-                        <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
+                        <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700 mt-5"></span>
                         <section className="p-4 flex flex-col items-center justify-between">
                             <div className="flex flex-row justify-between w-full">
                                 <button
