@@ -27,8 +27,11 @@ export class TalentController {
   constructor(private readonly talentService: TalentService) {}
 
   @Get('all')
-  getAllTalentCards() {
-    return this.talentService.getAllTalents();
+  getAllTalentCards(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 2,
+  ) {
+    return this.talentService.getAllTalents(page, limit);
   }
 
   @Get('cards/me')
@@ -39,8 +42,12 @@ export class TalentController {
   }
 
   @Get('search')
-  search(@Query() query: TalentCardsQueryDto) {
-    return this.talentService.search(query);
+  search(
+    @Query() query: TalentCardsQueryDto,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 2,
+  ) {
+    return this.talentService.search(query, page, limit);
   }
 
   @Post('create')

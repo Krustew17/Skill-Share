@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function AboutUs() {
     return (
         <section className="bg-white dark:bg-gray-800 py-4 flex flex-col gap-5">

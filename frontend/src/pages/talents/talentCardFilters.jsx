@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function TalentCardFilters({ skills }) {
@@ -105,7 +106,7 @@ export default function TalentCardFilters({ skills }) {
             </div>
             <div className="mb-6">
                 <div>
-                    <h2>Select Skills</h2>
+                    {/* <h2>Select Skills</h2> */}
                     {/* <div>
                         {skills.map((skill) => (
                             <div key={skill}>
@@ -149,11 +150,11 @@ export default function TalentCardFilters({ skills }) {
                 </select>
             </div>
             <div className="flex justify-between">
-                <button className="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-md text-center">
+                <button className="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-md text-center text-white">
                     Filter
                 </button>
                 <button
-                    className="px-4 py-2 bg-blue-500 hover:bg-blue-400 rounded-md text-center"
+                    className="px-4 py-2 bg-blue-500 hover:bg-blue-400 rounded-md text-center text-white"
                     type="button"
                     onClick={clearFilters}
                 >

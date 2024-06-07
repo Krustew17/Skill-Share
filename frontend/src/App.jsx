@@ -18,6 +18,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { useContext } from "react";
+import React from "react";
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedElement from "./components/protectedRouteComponent.jsx";

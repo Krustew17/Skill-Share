@@ -1,6 +1,6 @@
 import { FaStar } from "react-icons/fa";
 import truncateDescription from "../../utils/truncateDescriptions";
-import { useState } from "react";
+import React, { useState } from "react";
 import formatDate from "../../utils/formatDate";
 const ReviewCard = ({ review }) => {
     const [showMore, setShowMore] = useState(false);

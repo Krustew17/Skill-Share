@@ -1,5 +1,5 @@
 import TalentList from "../../talents/talentList";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { MdLocationPin } from "react-icons/md";
 import { FaStar, FaPen, FaRegTrashAlt } from "react-icons/fa";
 import truncateDescription from "../../../utils/truncateDescriptions";

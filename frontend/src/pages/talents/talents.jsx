@@ -1,18 +1,13 @@
-import { useContext, useState, useEffect, useCallback, memo } from "react";
-import { useLocation } from "react-router-dom";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import TalentCardForm from "./talentCardForm";
 import Modal from "./modal";
 import Login from "../login/login";
-import { MdLocationPin } from "react-icons/md";
-import { FaStar } from "react-icons/fa";
-import truncateDescription from "../../utils/truncateDescriptions";
 import { toast, Bounce, ToastContainer } from "react-toastify";
-import TalentSidePanel from "./sidePanel";
-import ReviewForm from "./reviewForm";
 import TalentCardFilters from "./talentCardFilters";
 import Search from "./search";
 import TalentList from "./talentList";
+import React from "react";
 
 export default function Talents() {
     const { authenticated, currentUser } = useContext(AuthContext);
