@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { toast, Bounce } from "react-toastify";
 export default function SignUp({ setter }) {
     const [formData, setFormData] = useState({

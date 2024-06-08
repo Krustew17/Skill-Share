@@ -63,7 +63,7 @@ export default function TalentCardFilters({ skills }) {
 
     return (
         <form
-            className="w-full lg:w-1/5 p-4 bg-white dark:bg-gray-800 max-h-screen shadow-lg dark:shadow-slate-600 border-2 dark:border-gray-700"
+            className="md:w-full mb-5 lg:w-1/5 p-4 bg-white dark:bg-gray-800 max-h-screen shadow-lg dark:shadow-slate-600 border-2 dark:border-gray-700"
             onSubmit={handleFilterFormSubmit}
         >
             <h1 className="text-center text-3xl font-semibold mb-3 dark:text-white">

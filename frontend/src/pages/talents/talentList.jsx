@@ -209,23 +209,25 @@ const TalentList = ({ onDataSend }) => {
             ) : (
                 talents.map((talent) => (
                     <div
-                        className="bg-white dark:bg-gray-800 shadow-lg dark:shadow-md dark:shadow-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-6 mb-6 flex dark:text-white"
+                        className="bg-white dark:bg-gray-800 shadow-lg dark:shadow-md dark:shadow-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6 flex flex-col sm:flex-row dark:text-white"
                         key={talent.id}
                     >
-                        <img
-                            className="w-16 h-16 rounded-full mr-4 border border-black dark:border-gray-50"
-                            src={`${
-                                talent?.user?.profile?.profileImage.startsWith(
-                                    "https://lh3.googleusercontent.com"
-                                )
-                                    ? talent?.user?.profile?.profileImage
-                                    : `http://127.0.0.1:3000/uploads/profileImages/${talent?.user?.profile?.profileImage}`
-                            }`}
-                            alt="Profile image"
-                        />
-                        <div className="flex-1 border-l-2 dark:border-gray-600 pl-4 border-gray-300">
-                            <div className="flex justify-between items-center mb-2 ">
-                                <div>
+                        <div className="flex justify-center sm:justify-start">
+                            <img
+                                className="w-16 h-16 sm:w-24 sm:h-24 rounded-full border border-black dark:border-gray-50"
+                                src={`${
+                                    talent?.user?.profile?.profileImage.startsWith(
+                                        "https://lh3.googleusercontent.com"
+                                    )
+                                        ? talent?.user?.profile?.profileImage
+                                        : `http://127.0.0.1:3000/uploads/profileImages/${talent?.user?.profile?.profileImage}`
+                                }`}
+                                alt="Profile image"
+                            />
+                        </div>
+                        <div className="flex-1 border-l-0 sm:border-l-2 dark:border-gray-600 pl-0 sm:pl-4 border-gray-300">
+                            <div className="flex flex-col sm:flex-row justify-between items-center mb-2 ">
+                                <div className="text-center sm:text-left">
                                     <h2 className="text-lg font-semibold dark:text-gray-200">
                                         {talent?.user?.profile?.firstName &&
                                         talent?.user?.profile?.lastName
@@ -238,51 +240,51 @@ const TalentList = ({ onDataSend }) => {
                                         {talent?.title}
                                     </p>
                                     {talent?.user?.profile?.country && (
-                                        <p className="text-xs text-gray-500 flex items-center gap-1">
+                                        <p className="text-xs text-gray-500 flex items-center justify-center sm:justify-start gap-1">
                                             <MdLocationPin className="text-sm" />{" "}
                                             {talent?.user?.profile?.country}
                                         </p>
                                     )}
                                 </div>
                                 <button
-                                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                                    className="mt-4 sm:mt-0 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
                                     onClick={() => handleViewDetails(talent)}
                                 >
                                     View profile
                                 </button>
                             </div>
-                            <div className="flex items-center text-sm mb-2">
-                                <p className="mr-2 dark:text-green-500 text-green-600">
+                            <div className="flex flex-col sm:flex-row items-center text-sm mb-2">
+                                <p className="mr-0 sm:mr-2 dark:text-green-500 text-green-600">
                                     ${talent?.price}
                                 </p>
-                                <p className="mx-2">|</p>
-                                <p className="mx-2 dark:text-green-500 text-green-600">
+                                <p className="hidden sm:block mx-2">|</p>
+                                <p className="mt-2 sm:mt-0 mx-2 dark:text-green-500 text-green-600">
                                     100% Job Success
                                 </p>
-                                <p className="mx-2">|</p>
-                                <p className="dark:text-green-500 text-green-600">
+                                <p className="hidden sm:block mx-2">|</p>
+                                <p className="mt-2 sm:mt-0 dark:text-green-500 text-green-600">
                                     $1K+ earned{" "}
                                 </p>
-                                <p className="mx-2">|</p>
-                                <p className="flex items-center gap-2">
+                                <p className="hidden sm:block mx-2">|</p>
+                                <p className="mt-2 sm:mt-0 flex items-center gap-2">
                                     {talent?.averageRating}{" "}
                                     <FaStar className="text-yellow-500" />
                                 </p>
                             </div>
-                            <div className="flex items-center mb-2">
+                            <div className="flex flex-wrap justify-center sm:justify-start items-center mb-2">
                                 {talent.skills
                                     .slice(0, AMOUNT_SKILLS_TO_SHOW)
                                     .map((skill, index) => (
                                         <span
                                             key={index}
-                                            className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2"
+                                            className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2 mt-2"
                                         >
                                             {skill}
                                         </span>
                                     ))}
                                 {talent.skills.length >
                                     AMOUNT_SKILLS_TO_SHOW && (
-                                    <span className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2">
+                                    <span className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2 mt-2">
                                         +
                                         {talent.skills.length -
                                             AMOUNT_SKILLS_TO_SHOW}
