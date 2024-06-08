@@ -56,12 +56,9 @@ const TalentSidePanel = ({
     return (
         <div>
             {isSidePanelOpen && selectedTalent && (
-                <div
-                    className="fixed inset-0 bg-gray-900 bg-opacity-70 flex justify-end"
-                    key={selectedTalent.id}
-                >
+                <div className="fixed inset-0 bg-gray-900 bg-opacity-70 flex justify-end">
                     <div
-                        className={`bg-gray-100 dark:bg-gray-800 border-l border-gray-600 shadow-xl shadow-gray-600 w-2/4 h-full p-4 overflow-y-auto ${
+                        className={`bg-gray-100 dark:bg-gray-800 border-l border-gray-600 shadow-xl shadow-gray-600 w-full md:w-2/4 h-full p-4 overflow-y-auto ${
                             isSidePanelOpen
                                 ? "slide-panel"
                                 : "slide-panel-closed"
@@ -73,20 +70,22 @@ const TalentSidePanel = ({
                         >
                             Close
                         </button>
-                        <section className="p-4 flex mt-4">
-                            <img
-                                className="w-28 h-28 rounded-full border border-black dark:border-gray-200 mb-5"
-                                src={`${
-                                    selectedTalent.user.profile.profileImage.startsWith(
-                                        "https://lh3.googleusercontent.com"
-                                    )
-                                        ? selectedTalent.user.profile
-                                              .profileImage
-                                        : `http://127.0.0.1:3000/uploads/profileImages/${selectedTalent.user.profile.profileImage}`
-                                }`}
-                                alt="Talent Photo"
-                            />
-                            <div className="flex flex-col ml-6">
+                        <section className="p-4 flex flex-col sm:flex-row mt-4">
+                            <div className="flex justify-center sm:justify-start mb-4 sm:mb-0">
+                                <img
+                                    className="w-28 h-28 rounded-full border border-black dark:border-gray-200"
+                                    src={`${
+                                        selectedTalent.user.profile.profileImage.startsWith(
+                                            "https://lh3.googleusercontent.com"
+                                        )
+                                            ? selectedTalent.user.profile
+                                                  .profileImage
+                                            : `http://127.0.0.1:3000/uploads/profileImages/${selectedTalent.user.profile.profileImage}`
+                                    }`}
+                                    alt="Talent Photo"
+                                />
+                            </div>
+                            <div className="flex flex-col sm:ml-6 text-center sm:text-left">
                                 <h3 className="text-2xl font-semibold dark:text-white">
                                     {selectedTalent.user.profile.firstName &&
                                     selectedTalent.user.profile.lastName
@@ -96,38 +95,40 @@ const TalentSidePanel = ({
                                 <h3 className="dark:text-white text-xl">
                                     {selectedTalent.title}
                                 </h3>
-                                <h3 className="dark:text-gray-400 text-sm flex items-center">
-                                    <MdLocationPin />
-                                    {selectedTalent.user.profile.country}
-                                </h3>
+                                {selectedTalent.user.profile.country && (
+                                    <h3 className="dark:text-gray-400 text-sm flex items-center justify-center sm:justify-start">
+                                        <MdLocationPin />
+                                        {selectedTalent.user.profile.country}
+                                    </h3>
+                                )}
                             </div>
                             <button
-                                className="ml-auto mt-5 px-8 max-h-12 text-2xl bg-green-600 hover:bg-green-700 text-white rounded-lg"
+                                className="mt-4 sm:mt-0 ml-auto px-8 max-h-12 text-xl bg-green-600 hover:bg-green-700 text-white rounded-lg"
                                 onClick={handleHireClick}
                             >
                                 Hire
                             </button>
                         </section>
-                        <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
-                        <section className="flex p-4 gap-5 dark:text-white">
+                        <span className="block w-full h-1 bg-gray-300 dark:bg-gray-700 my-4"></span>
+                        <section className="flex flex-col sm:flex-row sm:justify-center items-center sm:gap-5 dark:text-white">
                             <p>Price ${selectedTalent.price}</p>
-                            <p>|</p>
+                            <p className="hidden sm:block mx-2">|</p>
                             <p>100% Job Success</p>
-                            <p>|</p>
+                            <p className="hidden sm:block mx-2">|</p>
                             <p>100+ Jobs taken</p>
-                            <p>|</p>
+                            <p className="hidden sm:block mx-2">|</p>
                             <p>5+ years of experience</p>
-                            <p>|</p>
+                            <p className="hidden sm:block mx-2">|</p>
                             <p>$1K+ Earned</p>
                         </section>
-                        <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
+                        <span className="block w-full h-1 bg-gray-300 dark:bg-gray-700 my-4"></span>
                         <SkillList
                             skills={selectedTalent.skills}
                             maxSkillsToShow={5}
                         />
-                        <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700"></span>
+                        <span className="block w-full h-1 bg-gray-300 dark:bg-gray-700 my-4"></span>
                         <p
-                            className="p-4 leading-5 max-w-fit dark:text-white"
+                            className="p-4 leading-5 max-w-full dark:text-white"
                             style={{
                                 whiteSpace: "pre-line",
                                 wordBreak: "break-word",
@@ -135,42 +136,37 @@ const TalentSidePanel = ({
                         >
                             {selectedTalent.description}
                         </p>
-                        <div />
-                        <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700 mb-5"></span>
+                        <span className="block w-full h-1 bg-gray-300 dark:bg-gray-700 my-4"></span>
                         <ImageSlider images={selectedTalent.portfolio} />
-                        <span className="block w-full h-spanHeight bg-gray-300 dark:bg-gray-700 mt-5"></span>
-                        <section className="p-4 flex flex-col items-center justify-between">
-                            <div className="flex flex-row justify-between w-full">
+                        <span className="block w-full h-1 bg-gray-300 dark:bg-gray-700 my-4"></span>
+                        <section className="p-4 flex flex-col items-center">
+                            <div className="flex flex-col sm:flex-row justify-between w-full">
                                 <button
                                     className="bg-yellow-500 hover:bg-yellow-600 dark:hover:bg-yellow-400 px-6 py-2 rounded-xl"
                                     onClick={handleAddReviewClick}
                                 >
                                     Add Review
                                 </button>
-                                <div className="flex flex-row gap-1 items-center text-xl dark:text-white">
+                                <div className="flex flex-row gap-1 items-center text-xl dark:text-white mt-4 sm:mt-0">
                                     Average Rating:{" "}
                                     {selectedTalent.averageRating}{" "}
                                     <FaStar className="text-yellow-500 text-xl" />
                                 </div>
                             </div>
-                            <div className="w-full justify-start mt-5">
-                                <div>
-                                    {currentReviews.length === 0 ? (
-                                        <p className="text-gray-500 dark:text-gray-400">
-                                            No reviews yet
+                            <div className="w-full mt-5">
+                                {currentReviews.length === 0 ? (
+                                    <p className="text-gray-500 dark:text-gray-400">
+                                        No reviews yet
+                                    </p>
+                                ) : (
+                                    <div>
+                                        <p className="dark:text-white text-md mb-5">
+                                            Total Reviews:{" "}
+                                            {currentReviews.length}
                                         </p>
-                                    ) : (
-                                        <div>
-                                            <p className="dark:text-white text-md mb-5">
-                                                Total Reviews:{" "}
-                                                {currentReviews.length}
-                                            </p>
-                                            <ReviewSlider
-                                                props={currentReviews}
-                                            />
-                                        </div>
-                                    )}
-                                </div>
+                                        <ReviewSlider props={currentReviews} />
+                                    </div>
+                                )}
                             </div>
                         </section>
                     </div>
