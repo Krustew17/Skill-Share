@@ -5,7 +5,7 @@ import {
     useElements,
 } from "@stripe/react-stripe-js";
 
-export default function CheckoutForm() {
+export default function CheckoutForm({ onClose }) {
     const stripe = useStripe();
     const elements = useElements();
 
@@ -45,31 +45,6 @@ export default function CheckoutForm() {
         });
     }, [stripe]);
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-
-    //     if (!stripe || !elements) {
-    //         return;
-    //     }
-
-    //     setIsLoading(true);
-
-    //     const { error } = await stripe.confirmPayment({
-    //         elements,
-    //         confirmParams: {
-    //             return_url: "http://127.0.0.1:5173",
-    //         },
-    //     });
-
-    //     if (error.type === "card_error" || error.type === "validation_error") {
-    //         setMessage(error.message);
-    //     } else {
-    //         setMessage("An unexpected error occurred.");
-    //     }
-
-    //     setIsLoading(false);
-    // };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -106,6 +81,13 @@ export default function CheckoutForm() {
                 onSubmit={handleSubmit}
                 className="checkoutForm"
             >
+                <button
+                    className="mb-5 hover:bg-red-500 rounded-md px-4 py-1 "
+                    type="button"
+                    onClick={onClose}
+                >
+                    Close
+                </button>
                 <PaymentElement
                     id="payment-element"
                     options={paymentElementOptions}

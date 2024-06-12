@@ -12,7 +12,7 @@ export default function Hero() {
                 <p className="mt-4 text-xl sm:text-3xl lg:text-4xl text-gray-400">
                     Find the best professionals and services for your needs.
                 </p>
-                <div className="mt-16 flex justify-center md:-translate-x-10 gap-5 ">
+                <div className="mt-16 flex justify-center md:-translate-x-5 gap-5 ">
                     <Link
                         to="/sign-up"
                         className="bg-blue-500 text-white px-8 py-4 text-xs md:px-16 md:py-6 rounded-lg hover:bg-blue-400  md:text-3xl"

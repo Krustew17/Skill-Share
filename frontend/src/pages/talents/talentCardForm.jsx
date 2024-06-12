@@ -67,6 +67,13 @@ const TalentCardForm = ({ onClose }) => {
             }
         }
     };
+    const handleSkillClick = (skill) => {
+        if (skills.includes(skill)) {
+            setSkills(skills.filter((s) => s !== skill));
+        } else {
+            setSkills([...skills, skill]);
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -210,7 +217,12 @@ const TalentCardForm = ({ onClose }) => {
                                 </label>
                                 <div className="flex flex-wrap gap-1 mb-4">
                                     {skills.map((skill) => (
-                                        <span className="px-2 py-1 bg-blue-300 rounded-lg text-sm">
+                                        <span
+                                            className="px-2 py-1 bg-blue-300 rounded-lg text-sm"
+                                            onClick={() =>
+                                                handleSkillClick(skill)
+                                            }
+                                        >
                                             {skill}
                                         </span>
                                     ))}
