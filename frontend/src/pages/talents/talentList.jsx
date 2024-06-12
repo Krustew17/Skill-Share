@@ -209,7 +209,7 @@ const TalentList = ({ onDataSend }) => {
             ) : (
                 talents.map((talent) => (
                     <div
-                        className="bg-white dark:bg-gray-800 shadow-lg dark:shadow-md dark:shadow-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6 flex flex-col sm:flex-row dark:text-white"
+                        className="bg-white dark:bg-gray-800 shadow-lg dark:shadow-md dark:shadow-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6 flex flex-col sm:flex-row dark:text-white"
                         key={talent.id}
                     >
                         <div className="flex justify-center sm:justify-start">

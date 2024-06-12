@@ -44,7 +44,6 @@ const TalentSidePanel = ({
 
         const { clientSecret } = await response.json();
         setClientSecret(clientSecret);
-        console.log("hi");
     };
     const appearance = {
         theme: "stripe",
@@ -53,6 +52,11 @@ const TalentSidePanel = ({
         clientSecret,
         appearance,
     };
+
+    const closeCheckoutForm = () => {
+        setClientSecret("");
+    };
+
     return (
         <div>
             {isSidePanelOpen && selectedTalent && (
@@ -174,7 +178,7 @@ const TalentSidePanel = ({
             )}
             {clientSecret && (
                 <Elements options={options} stripe={stripePromise}>
-                    <CheckoutForm />
+                    <CheckoutForm onClose={closeCheckoutForm} />
                 </Elements>
             )}
         </div>
