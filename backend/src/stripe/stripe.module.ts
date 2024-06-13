@@ -9,10 +9,11 @@ import { JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import * as dotenv from 'dotenv';
+import AuthModule from 'src/auth/auth.module';
 dotenv.config();
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User]), AuthModule],
   providers: [StripeService, JwtService, EmailService],
   controllers: [StripeController],
 })

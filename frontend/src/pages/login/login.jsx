@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { toast, Bounce } from "react-toastify";
+import Cookies from "js-cookie";
+
 export default function Login({ onClose }) {
     const [formData, setFormData] = useState({
         username: "",
@@ -56,10 +58,11 @@ export default function Login({ onClose }) {
 
         if (responseJson.access_token) {
             localStorage.setItem("token", responseJson.access_token);
-            // Reload the location first
+            const expires = new Date(new Date().getTime() + 30 * 1000);
+            Cookies.set("refreshToken", responseJson.refresh_token, {
+                expires,
+            });
             setTimeout(() => window.location.reload(), 3000);
-
-            // Display success notification after a timeout
             toast.success("Successful Login", {
                 position: "bottom-left",
                 autoClose: 2000,

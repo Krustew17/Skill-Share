@@ -4,13 +4,13 @@ import { UserService } from './services/user.service';
 import { UserProfile } from './user.profile.entity';
 import { TalentStatistics } from './user.statistics.entity';
 import AuthModule from 'src/auth/auth.module';
+import { JwtMiddleware } from './middlewares/middlewares.middleware';
+import { TalentReviews } from 'src/talent/talentReviews.entity';
 
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
-import { JwtMiddleware } from './middlewares/middlewares.middleware';
-import { TalentReviews } from 'src/talent/talentReviews.entity';
 
 dotenv.config();
 
