@@ -1,16 +1,17 @@
+import { AuthService } from 'src/auth/services/auth.service';
+
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Request, Response, NextFunction } from 'express';
-import { User } from '../users.entity';
-import { Repository } from 'typeorm';
-import { UserService } from '../services/user.service';
 
 @Injectable()
 export class JwtMiddleware implements NestMiddleware {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly authService: AuthService,
+  ) {}
 
-  use(req: Request, res: Response, next: NextFunction) {
+  async use(req: Request, res: Response, next: NextFunction) {
     console.log('inside middleware');
     const authHeader = req.headers['authorization'];
     if (!authHeader || !authHeader.startsWith('Bearer')) {
@@ -27,9 +28,42 @@ export class JwtMiddleware implements NestMiddleware {
       req['user'] = decoded['user'];
       next();
     } catch (error) {
-      return res
-        .status(401)
-        .json({ message: 'Unauthorized: Invalid or expired token', error });
+      if (error.name === 'TokenExpiredError') {
+        const refreshToken = req.cookies['refreshToken'];
+
+        if (!refreshToken) {
+          return res
+            .status(401)
+            .json({ message: 'Unauthorized: No refresh token provided' });
+        }
+
+        try {
+          const newAccessToken =
+            await this.authService.refreshToken(refreshToken);
+          res.setHeader(
+            'Authorization',
+            `Bearer ${newAccessToken.access_token}`,
+          );
+
+          // Verify the new access token and attach user to request
+          let decoded = this.jwtService.verify(newAccessToken.access_token, {
+            secret: process.env.JWT_SECRET,
+          });
+          req['user'] = decoded['user'];
+          next();
+        } catch (refreshError) {
+          return res
+            .status(401)
+            .json({
+              message: 'Unauthorized: Invalid refresh token',
+              refreshError,
+            });
+        }
+      } else {
+        return res
+          .status(401)
+          .json({ message: 'Unauthorized: Invalid or expired token', error });
+      }
     }
   }
 }

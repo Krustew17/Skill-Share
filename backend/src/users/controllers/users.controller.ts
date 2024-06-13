@@ -38,9 +38,10 @@ export class UsersController {
   }
 
   @Get('me')
-  @UseGuards(JwtRefreshGuard)
+  // @UseGuards(JwtRefreshGuard)
   getMe(@Req() req: Request) {
     const token = req.headers.authorization.split(' ')[1];
+    console.log(`token: ${token}`);
     return this.userService.getMe(token);
   }
 

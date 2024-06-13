@@ -13,6 +13,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { jobsService } from './services/jobs.service';
 import { jobsController } from './controllers/jobs.controller';
 import * as dotenv from 'dotenv';
+import AuthModule from 'src/auth/auth.module';
 
 dotenv.config();
 @Module({
@@ -22,6 +23,7 @@ dotenv.config();
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1d' },
     }),
+    AuthModule,
   ],
   controllers: [jobsController],
   providers: [jobsService, JwtService],

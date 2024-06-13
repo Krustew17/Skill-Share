@@ -46,21 +46,28 @@ export class UserService {
     if (!token) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
-    const decoded = this.jwtService.verify(token);
-    if (!decoded) {
-      throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
+    try {
+      const decoded = this.jwtService.verify(token);
+      if (!decoded) {
+        throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
+      }
+
+      const userId = decoded.userId ? decoded.userId : decoded.user.id;
+      const user = await this.userRepository.findOne({
+        where: { id: userId },
+        relations: ['profile'],
+      });
+      const data = {
+        user,
+        userProfile: user.profile,
+      };
+      return data;
+    } catch (error) {
+      throw new HttpException(
+        'Invalid or expired token',
+        HttpStatus.BAD_REQUEST,
+      );
     }
-    const userId = decoded.userId ? decoded.userId : decoded.user.id;
-    const user = await this.userRepository.findOne({
-      where: { id: userId },
-      relations: ['profile'],
-    });
-    const data = {
-      user,
-      userProfile: user.profile,
-    };
-    console.log('data', data);
-    return data;
   }
 
   async updateUser(

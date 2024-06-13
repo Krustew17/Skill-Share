@@ -11,6 +11,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtMiddleware } from '../users/middlewares/middlewares.middleware';
 import { JwtService } from '@nestjs/jwt';
 import { TalentReviews } from './talentReviews.entity';
+import { AuthService } from 'src/auth/services/auth.service';
+import AuthModule from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -21,6 +23,7 @@ import { TalentReviews } from './talentReviews.entity';
       TalentStatistics,
       TalentReviews,
     ]),
+    AuthModule,
   ],
   providers: [TalentService, JwtService],
   controllers: [TalentController],

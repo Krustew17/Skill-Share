@@ -103,9 +103,16 @@ export class AuthService {
     }
 
     const data = {
-      access_token: this.jwtService.sign({ user }),
-      refresh_token: this.jwtService.sign({ user }, { expiresIn: '7d' }),
+      access_token: this.jwtService.sign({ user }, { expiresIn: '5s' }),
+      refresh_token: this.jwtService.sign({ user }, { expiresIn: '30s' }),
     };
+
+    res.cookie('refreshToken', data.refresh_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
     return data;
   }
 
@@ -269,15 +276,27 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
-  async refreshToken(oldToken: string) {
+  async refreshToken(refreshToken: string) {
     try {
-      const payload = this.jwtService.verify(oldToken, {
-        ignoreExpiration: true,
-      });
-      const newToken = this.generateAccessToken(payload);
-      return newToken;
+      const payload = this.jwtService.verify(refreshToken);
+      console.log(payload);
+      const user = await this.userRepository.findOneBy({ id: payload.user.id });
+
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+
+      const newAccessToken = this.jwtService.sign(
+        { user },
+        { expiresIn: '10s' },
+      );
+      console.log(newAccessToken);
+
+      return {
+        access_token: newAccessToken,
+      };
     } catch (e) {
-      throw new Error('Invalid token');
+      throw new HttpException('Invalid refresh token', HttpStatus.UNAUTHORIZED);
     }
   }
   async changePassword(body: changePasswordBodyDto, req: Request) {
