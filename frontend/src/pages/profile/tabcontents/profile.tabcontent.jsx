@@ -82,6 +82,7 @@ export default function ProfileTabContent({ profileData }) {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
                 body: form,
+                credentials: "include",
             }
         );
         const data = await response.json();

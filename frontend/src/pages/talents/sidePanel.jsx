@@ -39,6 +39,7 @@ const TalentSidePanel = ({
                     talentId: selectedTalent.id,
                     description: selectedTalent.description,
                 }),
+                credentials: "include",
             }
         );
 

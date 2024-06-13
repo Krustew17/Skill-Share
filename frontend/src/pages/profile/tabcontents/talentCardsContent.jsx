@@ -6,6 +6,7 @@ import truncateDescription from "../../../utils/truncateDescriptions";
 import TalentSidePanel from "../../talents/sidePanel";
 import { toast, Bounce, ToastContainer } from "react-toastify";
 import EditTalentCard from "../../profile/tabcontents/EditTalentCard";
+import tryRefreshToken from "../../../utils/tryRefreshToken";
 
 export default function TalentCardsTabContent() {
     const [talents, setTalents] = useState([]);
@@ -43,6 +44,21 @@ export default function TalentCardsTabContent() {
             transition: Bounce,
         });
     };
+
+    const fetchTalentCards = async () => {
+        const response = await fetch("http://127.0.0.1:3000/talent/cards/me", {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            credentials: "include",
+        });
+        const data = await response.json();
+
+        tryRefreshToken(data);
+        setTalents(data);
+    };
+
     const handleDeleteTalentCard = async (talent) => {
         console.log(talent.id);
         const response = await fetch(
@@ -52,9 +68,12 @@ export default function TalentCardsTabContent() {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
+                credentials: "include",
             }
         );
         const responseJson = await response.json();
+
+        fetchTalentCards();
 
         if (responseJson.HttpStatus === 200) {
             toast.success("Talent card deleted successfully", {
@@ -75,6 +94,7 @@ export default function TalentCardsTabContent() {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
+                credentials: "include",
             })
                 .then((response) => response.json())
                 .then((data) => setTalents(data));
@@ -115,14 +135,7 @@ export default function TalentCardsTabContent() {
     };
 
     useEffect(() => {
-        fetch("http://127.0.0.1:3000/talent/cards/me", {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => setTalents(data));
+        fetchTalentCards();
     }, []);
 
     return (

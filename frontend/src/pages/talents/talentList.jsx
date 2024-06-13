@@ -46,12 +46,13 @@ const TalentList = ({ onDataSend }) => {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
                 body: JSON.stringify(reviewData),
+                credentials: "include",
             }
         );
         const responseJson = await response.json();
 
         if (responseJson.HttpStatus !== 200) {
-            toast.error("Please select rating first.", {
+            toast.error(responseJson.message, {
                 position: "bottom-left",
                 autoClose: 3000,
                 hideProgressBar: false,

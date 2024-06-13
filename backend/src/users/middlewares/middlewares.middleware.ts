@@ -40,24 +40,22 @@ export class JwtMiddleware implements NestMiddleware {
         try {
           const newAccessToken =
             await this.authService.refreshToken(refreshToken);
+          console.log(`newAccessToken: ${newAccessToken}`);
           res.setHeader(
             'Authorization',
             `Bearer ${newAccessToken.access_token}`,
           );
 
-          // Verify the new access token and attach user to request
           let decoded = this.jwtService.verify(newAccessToken.access_token, {
             secret: process.env.JWT_SECRET,
           });
           req['user'] = decoded['user'];
           next();
         } catch (refreshError) {
-          return res
-            .status(401)
-            .json({
-              message: 'Unauthorized: Invalid refresh token',
-              refreshError,
-            });
+          return res.status(401).json({
+            message: 'Unauthorized: Invalid refresh token',
+            refreshError,
+          });
         }
       } else {
         return res
