@@ -81,7 +81,6 @@ export class UserService {
     profileImage: string | null,
     req: Request,
   ) {
-    console.log(profileImage);
     const { username, firstName, lastName, useDefaultProfileImage, country } =
       data;
 

@@ -16,10 +16,8 @@ export default function ChangePasswordTabContent() {
         });
     };
 
-    // Function to handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Add logic to submit form data to backend or update state
         console.log("Form submitted:", formData);
     };
 

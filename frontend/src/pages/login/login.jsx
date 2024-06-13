@@ -58,9 +58,9 @@ export default function Login({ onClose }) {
 
         if (responseJson.access_token) {
             localStorage.setItem("token", responseJson.access_token);
-            const expires = new Date(new Date().getTime() + 30 * 1000);
+            // const expires = new Date(new Date().getTime() + 30 * 1000);
             Cookies.set("refreshToken", responseJson.refresh_token, {
-                expires,
+                expires: 7,
             });
             setTimeout(() => window.location.reload(), 3000);
             toast.success("Successful Login", {

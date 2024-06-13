@@ -33,6 +33,7 @@ export default function ChangePasswordTabContent() {
                         )}`,
                     },
                     body: JSON.stringify(formData),
+                    credentials: "include",
                 }
             );
             const data = await response.json();

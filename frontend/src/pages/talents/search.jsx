@@ -11,14 +11,13 @@ export default function Search() {
             const response = await fetch(
                 "http://127.0.0.1:3000/talent/search?keywords=" + keywords,
                 {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "token"
-                        )}`,
-                    },
+                    // headers: {
+                    //     // Authorization: `Bearer ${localStorage.getItem(
+                    //     //     "token"
+                    //     // )}`,
+                    // },
                 }
             );
-            const data = await response.json();
             navigate(`?keywords=${encodeURIComponent(keywords)}`);
         } catch (error) {
             console.error("Error fetching data:", error);

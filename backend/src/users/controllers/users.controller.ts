@@ -85,7 +85,6 @@ export class UsersController {
     const profileImage = files.profileImage
       ? files.profileImage[0].filename
       : null;
-    console.log(profileImage);
     return this.userService.updateUser(data, profileImage, req);
   }
 }

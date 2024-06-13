@@ -55,11 +55,11 @@ export default function Talents() {
     const handleCloseModal = () => {
         setShowModal(false);
     };
-    const handleClosePanel = () => {
-        setSelectedTalent(null);
-        setCurrentReviews([]);
-        setIsSidePanelOpen(false);
-    };
+    // const handleClosePanel = () => {
+    //     setSelectedTalent(null);
+    //     setCurrentReviews([]);
+    //     setIsSidePanelOpen(false);
+    // };
 
     return (
         <div className="">

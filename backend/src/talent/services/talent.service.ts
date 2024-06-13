@@ -32,6 +32,11 @@ export class TalentService {
       .leftJoinAndSelect('user.profile', 'profile')
       .where('user.id = :id', { id: userId })
       .getMany();
+
+    if (!talentCards || talentCards.length === 0) {
+      throw new HttpException('Talents not found', HttpStatus.NOT_FOUND);
+    }
+
     return { data: talentCards, amount: talentCards.length };
   }
 
