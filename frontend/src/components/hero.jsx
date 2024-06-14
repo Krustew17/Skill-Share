@@ -2,6 +2,10 @@ import { Link } from "react-router-dom";
 import React from "react";
 
 export default function Hero() {
+    const handleLearnMore = () => {
+        window.scrollTo({ top: 1000, behavior: "smooth" });
+    };
+
     return (
         <section className="bg-white dark:bg-gray-800 mt-10 md:mt-32 ">
             <div className="container mx-auto py-8 px-4 text-center lg:py-8 lg:px-12">
@@ -19,7 +23,10 @@ export default function Hero() {
                     >
                         Get Started
                     </Link>
-                    <button className="bg-blue-500 text-white px-8 py-4 text-xs  md:px-16 md:py-6 rounded-lg hover:bg-blue-400 md:text-3xl">
+                    <button
+                        className="bg-blue-500 text-white px-8 py-4 text-xs  md:px-16 md:py-6 rounded-lg hover:bg-blue-400 md:text-3xl"
+                        onClick={handleLearnMore}
+                    >
                         Learn More
                     </button>
                 </div>

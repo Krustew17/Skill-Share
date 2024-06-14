@@ -2,7 +2,6 @@ import React from "react";
 
 import { GoPersonFill } from "react-icons/go";
 import { FaStar } from "react-icons/fa";
-import { MdBackpack } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 
@@ -33,16 +32,6 @@ const Dashboard = ({ activeTab, handleTabClick }) => {
                 >
                     <FaStar className="text-3xl" /> Talent Cards
                 </li>
-                {/* <li
-                    className={`cursor-pointer text-xl mt-1 flex gap-2 ${
-                        activeTab === 3
-                            ? "text-blue-500"
-                            : "text-gray-700 dark:text-gray-200"
-                    } hover:text-blue-500`}
-                    onClick={() => handleTabClick(3)}
-                >
-                    <MdBackpack className="text-3xl" /> Jobs
-                </li> */}
                 <li
                     className={`cursor-pointer text-xl mt-1 flex gap-2  ${
                         activeTab === 3
