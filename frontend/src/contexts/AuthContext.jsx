@@ -27,6 +27,7 @@ const AuthProvider = ({ children }) => {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
+            credentials: "include",
         });
 
         const responseJson = await request.json();

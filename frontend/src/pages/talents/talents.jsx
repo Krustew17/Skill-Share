@@ -63,7 +63,7 @@ export default function Talents() {
 
     return (
         <div className="">
-            <div className="max-w-2xl mx-auto mt-10 flex items-center">
+            <div className="max-w-2xl mx-auto mt-10 flex items-center px-4">
                 <button
                     type="button"
                     onClick={handleButtonClick}
