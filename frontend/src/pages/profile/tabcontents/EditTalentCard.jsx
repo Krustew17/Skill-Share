@@ -190,7 +190,7 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
                                 <div className="flex flex-wrap gap-1 mb-4">
                                     {skills.map((skill) => (
                                         <span
-                                            className="px-2 py-1 bg-blue-300 rounded-lg text-sm"
+                                            className="px-2 py-1 bg-blue-300 rounded-lg text-sm cursor-pointer hover:bg-blue-400"
                                             onClick={() =>
                                                 handleSkillClick(skill)
                                             }
@@ -211,7 +211,7 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
                             <button
                                 type="button"
                                 onClick={nextStep}
-                                className="bg-blue-500 text-white px-4 py-2 rounded"
+                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
                             >
                                 Next
                             </button>
@@ -242,13 +242,13 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
                             <button
                                 type="button"
                                 onClick={prevStep}
-                                className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+                                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mr-2"
                             >
                                 Previous
                             </button>
                             <button
                                 onClick={handleSubmit}
-                                className="bg-blue-500 text-white px-4 py-2 rounded"
+                                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
                             >
                                 Save
                             </button>

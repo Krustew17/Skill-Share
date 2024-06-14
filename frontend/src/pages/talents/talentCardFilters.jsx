@@ -10,7 +10,7 @@ export default function TalentCardFilters({ skills }) {
         maxPrice: "",
         rating: "",
     });
-
+    console.log(skills);
     const handleFilterDataChange = useCallback(
         (e) => {
             const { name, value } = e.target;
@@ -106,21 +106,23 @@ export default function TalentCardFilters({ skills }) {
             </div>
             <div className="mb-6">
                 <div>
-                    {/* <h2>Select Skills</h2> */}
-                    {/* <div>
-                        {skills.map((skill) => (
-                            <div key={skill}>
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        value={skill}
-                                        onChange={handleCheckboxChange}
-                                    />
-                                    {skill}
-                                </label>
-                            </div>
-                        ))}
-                    </div> */}
+                    <h2>Select Skills</h2>
+                    {skills && (
+                        <div>
+                            {skills?.map((skill) => (
+                                <div key={skill}>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            value={skill}
+                                            onChange={handleCheckboxChange}
+                                        />
+                                        {skill}
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                     {/* <div>
                         <h3>Selected Skills</h3>
                         <ul>

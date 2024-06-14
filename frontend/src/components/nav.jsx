@@ -1,12 +1,14 @@
 import { useState, useEffect, useContext } from "react";
 import React from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { Link, useResolvedPath, useMatch } from "react-router-dom";
+import { Link, useResolvedPath, useMatch, useNavigate } from "react-router-dom";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import SignUp from "../pages/sign up/signup";
 import Login from "../pages/login/login";
 
 export default function NavBar() {
+    const navigate = useNavigate();
+
     const { authenticated, logout, currentUser } = useContext(AuthContext);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [DarkMode, setDarkMode] = useState(() => {
@@ -75,7 +77,9 @@ export default function NavBar() {
                     </CustomLink>
                     <div className="hidden md:flex space-x-4 text-xl list-none">
                         <CustomLink to="/talents">Talents</CustomLink>
-                        {/* <CustomLink to="/jobs">Jobs</CustomLink> */}
+                        <CustomLink to="/" scrollTo={2000}>
+                            Premium
+                        </CustomLink>
                         <CustomLink to="/FAQ">FAQ</CustomLink>
                     </div>
                 </div>
@@ -186,8 +190,12 @@ export default function NavBar() {
                     <CustomLink to="/talents" className="block text-lg">
                         Talents
                     </CustomLink>
-                    <CustomLink to="/jobs" className="block text-lg">
-                        Jobs
+                    <CustomLink
+                        to="/"
+                        scrollTo={2150}
+                        className="block text-lg"
+                    >
+                        Premium
                     </CustomLink>
                     <CustomLink to="/FAQ" className="block text-lg">
                         FAQ
@@ -223,13 +231,29 @@ export default function NavBar() {
     );
 }
 
-function CustomLink({ to, children, ...props }) {
+function CustomLink({ to, children, scrollTo, ...props }) {
+    const navigate = useNavigate();
     const resolvedPath = useResolvedPath(to);
     const isActive = useMatch({ path: resolvedPath.pathname });
 
+    const handleClick = (e) => {
+        e.preventDefault();
+        if (scrollTo !== undefined) {
+            navigate("/");
+            setTimeout(() => {
+                window.scrollTo({
+                    top: scrollTo,
+                    behavior: "smooth",
+                });
+            }, 300);
+        } else {
+            navigate(to);
+        }
+    };
+
     return (
         <li className={isActive ? `text-blue-500` : ""}>
-            <Link to={to} {...props}>
+            <Link to={to} onClick={handleClick} {...props}>
                 {children}
             </Link>
         </li>

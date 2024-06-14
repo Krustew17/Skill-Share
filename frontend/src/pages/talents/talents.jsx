@@ -31,9 +31,11 @@ export default function Talents() {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
+                credentials: "include",
             }
         );
         const responseJson = await talentCards.json();
+        console.log(responseJson);
         if (!currentUser?.user?.hasPremium && responseJson.amount === 3) {
             toast.error("You need premium to post more than 3 talent cards", {
                 position: "bottom-left",
@@ -55,11 +57,6 @@ export default function Talents() {
     const handleCloseModal = () => {
         setShowModal(false);
     };
-    // const handleClosePanel = () => {
-    //     setSelectedTalent(null);
-    //     setCurrentReviews([]);
-    //     setIsSidePanelOpen(false);
-    // };
 
     return (
         <div className="">

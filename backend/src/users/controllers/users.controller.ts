@@ -1,5 +1,4 @@
 import { UserService } from '../services/user.service';
-import { JwtRefreshGuard } from 'src/auth/guards/jwt-refresh-guard';
 
 import { Request } from 'express';
 import {
@@ -10,7 +9,6 @@ import {
   Post,
   Req,
   UploadedFiles,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
