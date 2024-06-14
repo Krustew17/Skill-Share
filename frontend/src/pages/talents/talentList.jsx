@@ -293,7 +293,7 @@ const TalentList = ({ onDataSend }) => {
                                 )}
                             </div>
                             <div className="text-gray-700 text-sm max-w-screen-lg dark:text-gray-200">
-                                {truncateDescription(talent.description, 250)}
+                                {truncateDescription(talent.description, 50)}
                             </div>
                         </div>
                     </div>

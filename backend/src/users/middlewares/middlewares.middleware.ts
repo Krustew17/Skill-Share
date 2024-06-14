@@ -52,6 +52,7 @@ export class JwtMiddleware implements NestMiddleware {
           req['user'] = decoded['user'];
           next();
         } catch (refreshError) {
+          console.log('refreshError: ', refreshError);
           return res.status(401).json({
             message: 'Unauthorized: Invalid refresh token',
             refreshError,

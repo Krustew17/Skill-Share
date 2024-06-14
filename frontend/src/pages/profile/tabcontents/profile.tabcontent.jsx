@@ -103,7 +103,7 @@ export default function ProfileTabContent({ profileData }) {
                 window.location.reload();
             }, 1000);
         } else {
-            console.log(data);
+            console.log(`data`, data);
         }
     };
 

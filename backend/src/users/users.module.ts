@@ -34,6 +34,6 @@ dotenv.config();
 })
 export class UsersModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(JwtMiddleware).forRoutes('users/profile/update');
+    consumer.apply(JwtMiddleware).forRoutes('users/profile/update', 'users/me');
   }
 }

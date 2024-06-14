@@ -38,15 +38,12 @@ export class UsersController {
   }
 
   @Get('me')
-  // @UseGuards(JwtRefreshGuard)
   getMe(@Req() req: Request) {
     const token = req.headers.authorization.split(' ')[1];
-    console.log(`token: ${token}`);
     return this.userService.getMe(token);
   }
 
   @Post('profile/update')
-  @UseGuards(JwtRefreshGuard)
   @UseInterceptors(
     FileFieldsInterceptor([{ name: 'profileImage', maxCount: 1 }], {
       storage: diskStorage({
