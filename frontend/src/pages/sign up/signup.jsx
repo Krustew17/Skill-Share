@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast, Bounce } from "react-toastify";
-export default function SignUp({ setter }) {
+export default function SignUp({ setter, handleSignIn }) {
     const [formData, setFormData] = useState({
         username: "",
         email: "",
@@ -196,12 +196,13 @@ export default function SignUp({ setter }) {
                 <div className="flex items-center justify-between mt-4">
                     <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
 
-                    <a
-                        href="#"
+                    <button
+                        type="button"
                         className="text-xs text-gray-500 uppercase dark:text-gray-400 hover:underline mt-2"
+                        onClick={handleSignIn}
                     >
-                        or sign up
-                    </a>
+                        or sign in
+                    </button>
 
                     <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
                 </div>

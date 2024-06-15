@@ -5,7 +5,13 @@ import { FaStar } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+
 const Dashboard = ({ activeTab, handleTabClick }) => {
+    const { currentUser } = useContext(AuthContext);
+    console.log(currentUser);
+
     return (
         <div className="w-1/4 bg-white dark:bg-gray-800 dark:shadow-lg max-h-56 dark:shadow-slate-700 dark:text-white p-4 shadow-lg rounded-xl">
             <h2 className="text-2xl font-semibold mb-4 text-center">
@@ -32,6 +38,21 @@ const Dashboard = ({ activeTab, handleTabClick }) => {
                 >
                     <FaStar className="text-3xl" /> Talent Cards
                 </li>
+                {currentUser?.user?.password ? (
+                    <li
+                        className={`cursor-pointer text-xl mt-1 flex gap-2 ${
+                            activeTab === 3
+                                ? "text-blue-500"
+                                : "text-gray-700 dark:text-gray-200"
+                        } hover:text-blue-500`}
+                        onClick={() => handleTabClick(3)}
+                    >
+                        <RiLockPasswordFill className="text-3xl" /> Change
+                        Password
+                    </li>
+                ) : null}
+                {/*                     
+                
                 <li
                     className={`cursor-pointer text-xl mt-1 flex gap-2  ${
                         activeTab === 3
@@ -39,9 +60,9 @@ const Dashboard = ({ activeTab, handleTabClick }) => {
                             : "text-gray-700 dark:text-gray-200"
                     } hover:text-blue-500`}
                     onClick={() => handleTabClick(3)}
-                >
-                    <RiLockPasswordFill className="text-3xl" /> Change Password
-                </li>
+                >} */}
+                {/* <RiLockPasswordFill className="text-3xl" /> Change Password */}
+                {/* </li> */}
                 <li
                     className={`cursor-pointer text-xl mt-1 flex gap-2  ${
                         activeTab === 4
