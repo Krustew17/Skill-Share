@@ -2,26 +2,12 @@ import React, { useState } from "react";
 import { toast, Bounce } from "react-toastify";
 import Cookies from "js-cookie";
 
-export default function Login({ onClose }) {
+export default function Login({ onClose, handleSignUp }) {
     const [formData, setFormData] = useState({
         username: "",
         password: "",
     });
     const [errorMessage, setErrorMessage] = useState("");
-
-    const Notify = () => {
-        toast.success("Successful Login ", {
-            position: "bottom-left",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            transition: Bounce,
-        });
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -58,7 +44,6 @@ export default function Login({ onClose }) {
 
         if (responseJson.access_token) {
             localStorage.setItem("token", responseJson.access_token);
-            // const expires = new Date(new Date().getTime() + 30 * 1000);
             Cookies.set("refreshToken", responseJson.refresh_token, {
                 expires: 7,
             });
@@ -182,12 +167,13 @@ export default function Login({ onClose }) {
                 <div className="flex items-center justify-between mt-4">
                     <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
 
-                    <a
-                        href="#"
+                    <button
+                        type="button"
                         className="text-xs text-gray-500 uppercase dark:text-gray-400 hover:underline"
+                        onClick={handleSignUp}
                     >
                         or sign up
-                    </a>
+                    </button>
 
                     <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
                 </div>

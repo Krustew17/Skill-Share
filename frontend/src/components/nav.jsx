@@ -46,6 +46,15 @@ export default function NavBar() {
     const closeModal = () => {
         setIsModalOpen(false);
     };
+    const handleSignUp = () => {
+        setIsModalOpen(true);
+        setIsLoginOpen(false);
+    };
+
+    const handleSignIn = () => {
+        setIsLoginOpen(true);
+        setIsModalOpen(false);
+    };
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -76,10 +85,10 @@ export default function NavBar() {
                         Skill Share
                     </CustomLink>
                     <div className="hidden md:flex space-x-4 text-xl list-none">
-                        <CustomLink to="/talents">Talents</CustomLink>
-                        <CustomLink to="/" scrollTo={2000}>
+                        <CustomScroll to="/" scrollTo={2000}>
                             Premium
-                        </CustomLink>
+                        </CustomScroll>
+                        <CustomLink to="/talents">Talents</CustomLink>
                         <CustomLink to="/FAQ">FAQ</CustomLink>
                     </div>
                 </div>
@@ -168,7 +177,7 @@ export default function NavBar() {
                         onClick={closeLogin}
                     ></div>
                     <div className="relative z-10 px-4">
-                        <Login />
+                        <Login handleSignUp={handleSignUp} />
                     </div>
                 </div>
             )}
@@ -180,22 +189,22 @@ export default function NavBar() {
                         onClick={closeModal}
                     ></div>
                     <div className="relative z-10 px-4">
-                        <SignUp setter={test} />
+                        <SignUp setter={test} handleSignIn={handleSignIn} />
                     </div>
                 </div>
             )}
 
             {isMenuOpen && (
                 <div className="md:hidden mt-4 space-y-2 list-none flex flex-col gap-4 h-full text-center dark:text-white">
-                    <CustomLink to="/talents" className="block text-lg">
-                        Talents
-                    </CustomLink>
-                    <CustomLink
+                    <CustomScroll
                         to="/"
                         scrollTo={2150}
                         className="block text-lg"
                     >
                         Premium
+                    </CustomScroll>
+                    <CustomLink to="/talents" className="block text-lg">
+                        Talents
                     </CustomLink>
                     <CustomLink to="/FAQ" className="block text-lg">
                         FAQ
@@ -228,6 +237,34 @@ export default function NavBar() {
                 </div>
             )}
         </nav>
+    );
+}
+function CustomScroll({ to, children, scrollTo, ...props }) {
+    const navigate = useNavigate();
+    const resolvedPath = useResolvedPath(to);
+    const isActive = useMatch({ path: resolvedPath.pathname });
+
+    const handleClick = (e) => {
+        e.preventDefault();
+        if (scrollTo !== undefined) {
+            navigate("/");
+            setTimeout(() => {
+                window.scrollTo({
+                    top: scrollTo,
+                    behavior: "smooth",
+                });
+            }, 300);
+        } else {
+            navigate(to);
+        }
+    };
+
+    return (
+        <li>
+            <Link to={to} onClick={handleClick} {...props}>
+                {children}
+            </Link>
+        </li>
     );
 }
 

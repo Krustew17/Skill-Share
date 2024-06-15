@@ -54,8 +54,14 @@ export default function TalentCardsTabContent() {
             credentials: "include",
         });
         const data = await response.json();
+        console.log(data);
 
-        tryRefreshToken(data);
+        // tryRefreshToken(data);
+
+        if (data.statusCode === 404) {
+            setTalents([]);
+            return;
+        }
         setTalents(data);
     };
 
@@ -137,6 +143,7 @@ export default function TalentCardsTabContent() {
     useEffect(() => {
         fetchTalentCards();
     }, []);
+    console.log(talents);
 
     return (
         <div className="w-full px-6 flex-col py-2 flex-wrap gap-6">
