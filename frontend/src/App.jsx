@@ -23,9 +23,7 @@ import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedElement from "./components/protectedRouteComponent.jsx";
 
-const stripePromise = loadStripe(
-    "pk_test_51PHWiFIK3rKcTeQQZeLQQmN3QgdcxdIGV5rc8Xki77jOo40EJQ9BMyDd22Ip7BOTgzJJMJAynkTF1ktpjV3M1jJq002JKrzbst"
-);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
 function App() {
     const location = useLocation();
@@ -79,7 +77,7 @@ function App() {
             <NavBar />
             <Routes>
                 <Route path="/" element={<Hero />} />
-                <Route path="/talents" element={<Talents />} />
+                <Route path="/talent" element={<Talents />} />
                 <Route path="/jobs" element={<Jobs />} />
                 <Route path="/FAQ" element={<FAQ />} />
                 <Route

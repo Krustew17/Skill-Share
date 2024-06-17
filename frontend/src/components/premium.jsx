@@ -6,9 +6,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { loadStripe } from "@stripe/stripe-js";
 import { toast, Bounce } from "react-toastify";
 import React from "react";
-const stripePromise = loadStripe(
-    "pk_test_51PHWiFIK3rKcTeQQZeLQQmN3QgdcxdIGV5rc8Xki77jOo40EJQ9BMyDd22Ip7BOTgzJJMJAynkTF1ktpjV3M1jJq002JKrzbst"
-);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
 export default function Premium() {
     const { currentUser } = useContext(AuthContext);
@@ -52,7 +50,7 @@ export default function Premium() {
         };
 
         const request = await fetch(
-            "http://127.0.0.1:3000/stripe/create-checkout-session",
+            import.meta.env.VITE_API_URL + "/stripe/create-checkout-session",
             {
                 method: "POST",
                 headers: headers,

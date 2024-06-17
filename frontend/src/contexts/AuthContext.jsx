@@ -23,12 +23,16 @@ const AuthProvider = ({ children }) => {
             return;
         }
 
-        const request = await fetch("http://127.0.0.1:3000/users/me", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            credentials: "include",
-        });
+        const request = await fetch(
+            import.meta.env.VITE_API_URL + "/users/me",
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                credentials: "include",
+            }
+        );
 
         const responseJson = await request.json();
         if (responseJson.user) {
@@ -45,12 +49,15 @@ const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         setAuthenticated(false);
-        const request = await fetch("http://127.0.0.1:3000/auth/logout", {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-        });
+        const request = await fetch(
+            import.meta.env.VITE_API_URL + "/auth/logout",
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            }
+        );
         const res = await request.json();
         localStorage.removeItem("token");
         Cookies.remove("refreshToken");

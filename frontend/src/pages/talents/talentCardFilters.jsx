@@ -1,16 +1,17 @@
 import { useState, useCallback } from "react";
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 export default function TalentCardFilters({ skills }) {
+    const [searchParams, setSearchParams] = useSearchParams();
     const location = useLocation();
     const navigate = useNavigate();
+    const [selectedSkills, setSelectedSkills] = useState([]);
     const [filterData, setFilterData] = useState({
         minPrice: "",
         maxPrice: "",
         rating: "",
     });
-    console.log(skills);
     const handleFilterDataChange = useCallback(
         (e) => {
             const { name, value } = e.target;
@@ -38,17 +39,26 @@ export default function TalentCardFilters({ skills }) {
         if (filterData.rating === "") {
             searchParams.delete("rating");
         }
+
+        if (selectedSkills.length > 0) {
+            searchParams.set("skills", selectedSkills.join(","));
+        }
+
         const newUrl = `${location.pathname}?${searchParams.toString()}`;
-        navigate(newUrl);
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.set("page", 1);
+        setSearchParams(newSearchParams);
     };
 
     const clearFilters = () => {
         setFilterData({
-            minPrice: 0,
-            maxPrice: 0,
+            minPrice: "",
+            maxPrice: "",
             rating: "",
             skills: [],
         });
+        history.pushState(null, null, location.pathname);
+        setSelectedSkills([]);
         navigate(location.pathname);
     };
 
@@ -105,10 +115,12 @@ export default function TalentCardFilters({ skills }) {
                 />
             </div>
             <div className="mb-6">
-                <div>
-                    <h2>Select Skills</h2>
+                <div className="text-white">
+                    <label className="mb-2 text-lg font-semibold dark:text-gray-200">
+                        Select Skills
+                    </label>
                     {skills && (
-                        <div>
+                        <div className="flex flex-col max-h-36 overflow-auto">
                             {skills?.map((skill) => (
                                 <div key={skill}>
                                     <label>
@@ -123,14 +135,6 @@ export default function TalentCardFilters({ skills }) {
                             ))}
                         </div>
                     )}
-                    {/* <div>
-                        <h3>Selected Skills</h3>
-                        <ul>
-                            {skills.map((skill) => (
-                                <li key={skill}>{skill}</li>
-                            ))}
-                        </ul>
-                    </div> */}
                 </div>
             </div>
             <div className="mb-6">

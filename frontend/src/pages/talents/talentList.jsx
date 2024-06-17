@@ -1,12 +1,12 @@
-import { useContext, useState, useEffect, useCallback, memo } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useContext, useState, useEffect, useCallback } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import TalentSidePanel from "./sidePanel";
 import { MdLocationPin } from "react-icons/md";
 import { FaStar } from "react-icons/fa";
 import truncateDescription from "../../utils/truncateDescriptions";
 import { AuthContext } from "../../contexts/AuthContext";
 import ReviewForm from "./reviewForm";
-import { toast, Bounce, ToastContainer } from "react-toastify";
+import { toast, Bounce } from "react-toastify";
 import Cookies from "js-cookie";
 import React from "react";
 
@@ -19,6 +19,7 @@ const TalentList = ({ onDataSend }) => {
     const [selectedTalent, setSelectedTalent] = useState(null);
     const [skills, setSkills] = useState([]);
     const [talents, setTalents] = useState([]);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(1);
@@ -38,7 +39,7 @@ const TalentList = ({ onDataSend }) => {
 
     const handleSubmitReview = async (reviewData) => {
         const response = await fetch(
-            "http://127.0.0.1:3000/talent/review/create",
+            import.meta.env.VITE_API_URL + "/talent/review/create",
             {
                 method: "POST",
                 headers: {
@@ -122,20 +123,30 @@ const TalentList = ({ onDataSend }) => {
             console.log("hi");
             return;
         }
-
-        // setIsSidePanelOpen(false);
         setShowReviewForm(true);
     }, []);
 
     const handlePageChange = (newPage) => {
-        setPage(newPage);
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.set("page", newPage);
+        setSearchParams(newSearchParams);
         window.scrollTo(0, 0);
     };
+    useEffect(() => {
+        const currentPage = new URLSearchParams(location.search).get("page");
+        if (currentPage !== page) {
+            console.log(currentPage, page);
+            setPage(currentPage ? parseInt(currentPage) : 1);
+        }
+        // console.log(currentPage, page);
+    }, [location]);
 
     const handleViewDetails = async (talent) => {
         console.log(talent);
         const response = await fetch(
-            "http://127.0.0.1:3000/talent/reviews?talentCardId=" + talent.id
+            import.meta.env.VITE_API_URL +
+                "/talent/reviews?talentCardId=" +
+                talent.id
         );
         const responseJson = await response.json();
 
@@ -150,7 +161,7 @@ const TalentList = ({ onDataSend }) => {
         const fetchTalents = async () => {
             try {
                 const queryParams = new URLSearchParams(location.search);
-                let url = "http://127.0.0.1:3000/";
+                let url = import.meta.env.VITE_API_URL;
 
                 if (
                     queryParams.has("keywords") ||
@@ -159,12 +170,11 @@ const TalentList = ({ onDataSend }) => {
                     queryParams.has("maxPrice") ||
                     queryParams.has("rating")
                 ) {
-                    setPage(1);
-                    url += `talent/search?${queryParams.toString()}&page=${page}&limit=${limit}`;
+                    const params = `/talent/search?${queryParams.toString()}&limit=${limit}`;
+                    url += params;
                 } else {
-                    url += `talent/all?page=${page}&limit=${limit}`;
+                    url += `/talent/all?page=${page}&limit=${limit}`;
                 }
-
                 const response = await fetch(url, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem(
@@ -173,14 +183,15 @@ const TalentList = ({ onDataSend }) => {
                     },
                 });
                 const data = await response.json();
+                console.log(data);
                 setSkills(data.uniqueSkills);
-                console.log(data.uniqueSkills);
                 setTotal(data.total);
                 onDataSend(data.uniqueSkills);
                 const talentsWithRatings = await Promise.all(
                     data.talents.map(async (talent) => {
                         const ratingResponse = await fetch(
-                            `http://127.0.0.1:3000/talent/rating/average?talentCardId=${talent.id}`
+                            import.meta.env.VITE_API_URL +
+                                `/talent/rating/average?talentCardId=${talent.id}`
                         );
                         const ratingData = await ratingResponse.json();
                         const rating = Number(ratingData.data).toFixed(1);

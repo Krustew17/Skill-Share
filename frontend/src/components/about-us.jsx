@@ -10,7 +10,7 @@ export default function AboutUs() {
                 </h2>
                 <article className="flex flex-col md:flex-row md:gap-32 gap-2 sm:pr-24 px-10">
                     <img
-                        src="src/assets/test.png"
+                        src="images/test.png"
                         alt="remote work"
                         className="h-64 md:h-96 lg:ml-32 self-center"
                     />
@@ -29,7 +29,7 @@ export default function AboutUs() {
                         potential clients.
                     </p>
                     <img
-                        src="src/assets/people-connecting.png"
+                        src="images/people-connecting.png"
                         alt="star"
                         className="h-48 md:h-64 ml32"
                     />

@@ -46,17 +46,20 @@ export default function TalentCardsTabContent() {
     };
 
     const fetchTalentCards = async () => {
-        const response = await fetch("http://127.0.0.1:3000/talent/cards/me", {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-            credentials: "include",
-        });
+        const response = await fetch(
+            import.meta.env.VITE_API_URL + "/talent/cards/me",
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+                credentials: "include",
+            }
+        );
         const data = await response.json();
         console.log(data);
 
-        // tryRefreshToken(data);
+        tryRefreshToken(data);
 
         if (data.statusCode === 404) {
             setTalents([]);
@@ -68,7 +71,7 @@ export default function TalentCardsTabContent() {
     const handleDeleteTalentCard = async (talent) => {
         console.log(talent.id);
         const response = await fetch(
-            "http://127.0.0.1:3000/talent/delete/" + talent.id,
+            import.meta.env.VITE_API_URL + "/talent/delete/" + talent.id,
             {
                 method: "DELETE",
                 headers: {
@@ -95,7 +98,7 @@ export default function TalentCardsTabContent() {
                 transition: Bounce,
             });
 
-            fetch("http://127.0.0.1:3000/talent/cards/me", {
+            fetch(import.meta.env.VITE_API_URL + "/talent/cards/me", {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -129,8 +132,9 @@ export default function TalentCardsTabContent() {
 
     const handleViewDetails = async (talent) => {
         const response = await fetch(
-            "http://127.0.0.1:3000/talent/reviews?talentCardId=" + talent.id,
-            {}
+            import.meta.env.VITE_API_URL +
+                "/talent/reviews?talentCardId=" +
+                talent.id
         );
 
         const responseJson = await response.json();

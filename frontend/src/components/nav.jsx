@@ -88,7 +88,7 @@ export default function NavBar() {
                         <CustomScroll to="/" scrollTo={2000}>
                             Premium
                         </CustomScroll>
-                        <CustomLink to="/talents">Talents</CustomLink>
+                        <CustomLink to="/talent">Talents</CustomLink>
                         <CustomLink to="/FAQ">FAQ</CustomLink>
                     </div>
                 </div>

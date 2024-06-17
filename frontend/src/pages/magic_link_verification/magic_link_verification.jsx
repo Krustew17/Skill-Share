@@ -11,7 +11,8 @@ export default function MagicLinkVerification() {
         const verifyToken = async () => {
             try {
                 const response = await fetch(
-                    `http://127.0.0.1:3000/auth/verify-email?token=${token}`,
+                    import.meta.env.VITE_API_URL +
+                        `/auth/verify-email?token=${token}`,
                     {
                         method: "GET",
                     }
