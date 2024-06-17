@@ -3,13 +3,11 @@ import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import * as cookieParser from 'cookie-parser';
 import { raw } from 'body-parser';
-import path, { join } from 'path';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import * as express from 'express';
 
 dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const port = process.env.PORT || 3000;
   app.use(
     '/stripe/webhook/events',
     raw({ type: 'application/json' }),
@@ -20,10 +18,11 @@ async function bootstrap() {
   );
   app.use(cookieParser());
   app.enableCors({
-    origin: 'http://127.0.0.1:5173',
+    origin: process.env.FRONTEND_URL,
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   });
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(port);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
