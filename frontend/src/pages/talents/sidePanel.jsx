@@ -10,9 +10,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../talents/checkoutForm";
 import "../../index.css";
 
-const stripePromise = loadStripe(
-    "pk_test_51PHWiFIK3rKcTeQQZeLQQmN3QgdcxdIGV5rc8Xki77jOo40EJQ9BMyDd22Ip7BOTgzJJMJAynkTF1ktpjV3M1jJq002JKrzbst"
-);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
 const TalentSidePanel = ({
     selectedTalent,
@@ -27,7 +25,7 @@ const TalentSidePanel = ({
 
         // Create PaymentIntent
         const response = await fetch(
-            "http://127.0.0.1:3000/stripe/create-payment-intent",
+            import.meta.env.VITE_API_URL + "/stripe/create-payment-intent",
             {
                 method: "POST",
                 headers: {

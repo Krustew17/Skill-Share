@@ -121,7 +121,7 @@ const TalentCardForm = ({ onClose }) => {
 
         try {
             const response = await fetch(
-                "http://127.0.0.1:3000/talent/create",
+                import.meta.env.VITE_API_URL + "/talent/create",
                 {
                     method: "POST",
                     body: submitData,

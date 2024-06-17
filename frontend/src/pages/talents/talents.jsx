@@ -20,13 +20,13 @@ export default function Talents() {
     const handleDataFromChild = (data) => {
         setChildData(data);
     };
-
+    console.log(childData);
     const handleButtonClick = async () => {
         if (!authenticated) {
             return setShowModal(true);
         }
         const talentCards = await fetch(
-            "http://127.0.0.1:3000/talent/cards/me",
+            import.meta.env.VITE_API_URL + "/talent/cards/me",
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -98,7 +98,7 @@ export default function Talents() {
                 <Search />
             </div>
             <div className="flex flex-col lg:flex-row mt-16 px-10 mx-auto max-w-screen-2xl">
-                <TalentCardFilters {...childData} />
+                <TalentCardFilters skills={childData} />
                 <TalentList onDataSend={handleDataFromChild} />
             </div>
             <ToastContainer limit={3} />

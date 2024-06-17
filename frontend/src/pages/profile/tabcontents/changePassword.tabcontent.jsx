@@ -23,7 +23,7 @@ export default function ChangePasswordTabContent() {
 
         try {
             const response = await fetch(
-                "http://127.0.0.1:3000/auth/password/change",
+                import.meta.env.VITE_API_URL + "/auth/password/change",
                 {
                     method: "POST",
                     headers: {

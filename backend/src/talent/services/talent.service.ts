@@ -81,6 +81,10 @@ export class TalentService {
       .leftJoinAndSelect('talent.user', 'user')
       .leftJoinAndSelect('user.profile', 'profile');
 
+    // const uniqueSkills = await qb
+    //   .select('DISTINCT UNNEST(talent.skills)', 'skill')
+    //   .getRawMany();
+
     if (query.keywords) {
       const keywords = query.keywords.split(' ');
       const keywordConditions = keywords.map((keyword, index) => {
@@ -134,18 +138,14 @@ export class TalentService {
 
     const [filteredTalents, total] = await qb
       .skip((page - 1) * limit)
-      .limit(limit)
+      .take(limit)
       .getManyAndCount();
-    console.log(filteredTalents);
 
-    const uniqueSkills = await talents
-      .select('DISTINCT UNNEST(talent.skills)', 'skill')
-      .getRawMany();
+    console.log(page, limit, filteredTalents);
 
     return {
-      uniqueSkills: uniqueSkills.map((skillRow: any) => skillRow.skill),
       talents: filteredTalents,
-      total: filteredTalents.length,
+      total: total,
     };
   }
 

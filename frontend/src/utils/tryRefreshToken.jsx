@@ -8,7 +8,7 @@ export default async function tryRefreshToken(responseJson, setCurrentUser) {
         const refreshToken = Cookies.get("refreshToken");
 
         const refreshResponse = await fetch(
-            "http://127.0.0.1:3000/auth/refresh-token",
+            import.meta.env.VITE_API_URL + "/auth/refresh-token",
             {
                 method: "POST",
                 headers: {
@@ -23,11 +23,14 @@ export default async function tryRefreshToken(responseJson, setCurrentUser) {
 
         if (refreshResponseJson.access_token) {
             localStorage.setItem("token", refreshResponseJson.access_token);
-            const userResponse = await fetch("http://127.0.0.1:3000/users/me", {
-                headers: {
-                    Authorization: `Bearer ${refreshResponseJson.access_token}`,
-                },
-            });
+            const userResponse = await fetch(
+                import.meta.env.VITE_API_URL + "/users/me",
+                {
+                    headers: {
+                        Authorization: `Bearer ${refreshResponseJson.access_token}`,
+                    },
+                }
+            );
             console.log("refreshed");
             const user = await userResponse.json();
             setCurrentUser(user);

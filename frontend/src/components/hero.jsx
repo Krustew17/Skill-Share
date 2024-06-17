@@ -35,17 +35,17 @@ export default function Hero() {
                 </h2>
                 <div className="flex flex-wrap gap-16 md:gap-32 flex-row mb-10">
                     <img
-                        src="/src/assets/Airbnb_Logo.png"
+                        src="images/Airbnb_Logo.png"
                         alt="airbnb logo"
                         className="h-4 sm:h-10 xl:h-12"
                     />
                     <img
-                        src="/src/assets/Microsoft_logo.png"
+                        src="images/Microsoft_logo.png"
                         alt="microsoft logo"
                         className="h-4 sm:h-10 xl:h-12"
                     />
                     <img
-                        src="/src/assets/Nike-Logo.png"
+                        src="images/Nike-Logo.png"
                         alt="nike logo"
                         className="h-6 sm:h-10 xl:h-12"
                     />

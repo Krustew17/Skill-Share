@@ -42,12 +42,18 @@ const ImageSlider = ({ images }) => {
             </button>
             <div>
                 <a
-                    href={`http://127.0.0.1:3000/${images[currentIndex]}`}
+                    href={
+                        import.meta.env.VITE_API_URL +
+                        `/${images[currentIndex]}`
+                    }
                     target="_blank"
                 >
                     <img
                         className="w-full h-96 rounded-md border border-black dark:border-gray-200 cursor-pointer"
-                        src={`http://127.0.0.1:3000/${images[currentIndex]}`}
+                        src={
+                            import.meta.env.VITE_API_URL +
+                            `/${images[currentIndex]}`
+                        }
                         alt="portfolio image"
                         // onClick={() => handleClick(currentIndex)}
                     />
@@ -65,7 +71,7 @@ const ImageSlider = ({ images }) => {
                     onClick={handleClose}
                 >
                     <img
-                        src={`http://127.0.0.1:3000/${expandedImage}`}
+                        src={import.meta.env.VITE_API_URL + `/${expandedImage}`}
                         alt="expanded image"
                         className="max-w-full max-h-full"
                     />

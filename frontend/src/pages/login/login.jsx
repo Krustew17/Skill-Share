@@ -15,19 +15,25 @@ export default function Login({ onClose, handleSignUp }) {
     };
 
     const handleSubmit = async (event) => {
+        const apiUrl = `${import.meta.env.VITE_API_URL}/auth/login`;
+        console.log(apiUrl);
         setErrorMessage("");
         event.preventDefault();
         const formData = new FormData(event.target);
-        const response = await fetch("http://localhost:3000/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                username: formData.get("username"),
-                password: formData.get("password"),
-            }),
-        });
+        console.log(import.meta.env.VITE_API_URL);
+        const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/auth/login`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username: formData.get("username"),
+                    password: formData.get("password"),
+                }),
+            }
+        );
         const responseJson = await response.json();
         console.log(responseJson);
         if (responseJson.message === "user not verified") {

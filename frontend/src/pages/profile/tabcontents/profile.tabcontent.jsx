@@ -19,10 +19,10 @@ export default function ProfileTabContent({ profileData }) {
 
     useEffect(() => {
         setFormData({
-            username: profileData?.username,
-            firstName: profileData?.firstName,
-            lastName: profileData?.lastName,
-            country: profileData?.country,
+            username: profileData?.username || "",
+            firstName: profileData?.firstName || "",
+            lastName: profileData?.lastName || "",
+            country: profileData?.country || "",
         });
     }, [profileData]);
 
@@ -75,7 +75,7 @@ export default function ProfileTabContent({ profileData }) {
         }
 
         const response = await fetch(
-            "http://127.0.0.1:3000/users/profile/update",
+            import.meta.env.VITE_API_URL + "/users/profile/update",
             {
                 method: "POST",
                 headers: {

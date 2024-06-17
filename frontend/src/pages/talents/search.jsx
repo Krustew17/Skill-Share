@@ -9,7 +9,9 @@ export default function Search() {
         e.preventDefault();
         try {
             const response = await fetch(
-                "http://127.0.0.1:3000/talent/search?keywords=" + keywords,
+                import.meta.env.VITE_API_URL +
+                    "/talent/search?keywords=" +
+                    keywords,
                 {
                     // headers: {
                     //     // Authorization: `Bearer ${localStorage.getItem(
