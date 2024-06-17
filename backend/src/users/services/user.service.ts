@@ -6,7 +6,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import { Repository, DataSource } from 'typeorm';
 import { UserProfile } from '../user.profile.entity';
-import { profile } from 'console';
 
 @Injectable()
 export class UserService {
