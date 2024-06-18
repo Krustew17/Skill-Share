@@ -111,7 +111,12 @@ export default function NavBar() {
                                     src={
                                         hasGmailPhoto
                                             ? `${currentUser?.userProfile?.profileImage}`
-                                            : `http://127.0.0.1:3000/uploads/profileImages/${currentUser?.userProfile?.profileImage}`
+                                            : `${
+                                                  import.meta.env.VITE_API_URL
+                                              }/uploads/profileImages/${
+                                                  currentUser?.userProfile
+                                                      ?.profileImage
+                                              }`
                                     }
                                 />
                             </CustomLink>

@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 
-const HOST = 'http://127.0.0.1:5173';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
+const HOST = process.env.DOMAIN;
 
 @Injectable()
 export class EmailService {

@@ -233,7 +233,12 @@ const TalentList = ({ onDataSend }) => {
                                         "https://lh3.googleusercontent.com"
                                     )
                                         ? talent?.user?.profile?.profileImage
-                                        : `http://127.0.0.1:3000/uploads/profileImages/${talent?.user?.profile?.profileImage}`
+                                        : `${
+                                              import.meta.env.VITE_API_URL
+                                          }/uploads/profileImages/${
+                                              talent?.user?.profile
+                                                  ?.profileImage
+                                          }`
                                 }`}
                                 alt="Profile image"
                             />
