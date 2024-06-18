@@ -68,7 +68,7 @@ export default function SignUp({ setter, handleSignIn }) {
                 </p>
 
                 <a
-                    href="http://127.0.0.1:3000/auth/google"
+                    href={`${import.meta.env.VITE_API_URL}/auth/google`}
                     className="flex items-center justify-center mt-4 text-gray-600 transition-colors duration-300 transform border rounded-lg dark:border-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
                 >
                     <div className="px-4 py-2">

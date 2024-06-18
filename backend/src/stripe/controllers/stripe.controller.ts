@@ -72,6 +72,10 @@ export class StripeController {
         const checkoutSession = event.data.object as Stripe.Checkout.Session;
         this.handleCheckoutSessionCompleted(checkoutSession);
         break;
+      case 'payment_intent.succeeded':
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        console.log(paymentIntent);
+        break;
     }
 
     res.status(HttpStatus.OK).send('Received');
