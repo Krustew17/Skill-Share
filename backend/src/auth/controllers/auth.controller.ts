@@ -80,7 +80,7 @@ export class AuthController {
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
     const loginResult = await this.authService.googleLogin(req);
     if (loginResult) {
-      res.redirect('http://127.0.0.1:5173?token=' + loginResult.access_token);
+      res.redirect(`${process.env.DOMAIN}?token=` + loginResult.access_token);
     }
   }
 

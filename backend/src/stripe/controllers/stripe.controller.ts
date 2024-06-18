@@ -14,6 +14,10 @@ import {
 import { Response, Request } from 'express';
 import Stripe from 'stripe';
 
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
 @Controller('stripe')
 export class StripeController {
   private stripe: Stripe;
@@ -43,8 +47,8 @@ export class StripeController {
       line_items: [lineItems],
       mode: 'payment',
       customer_email: product.email,
-      success_url: `http://127.0.0.1:5173?successful_payment=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `http://127.0.0.1:5173?successful_payment=false&session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${process.env.DOMAIN}?successful_payment=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.DOMAIN}?successful_payment=false&session_id={CHECKOUT_SESSION_ID}`,
     });
     return res.json({ session: session });
   }

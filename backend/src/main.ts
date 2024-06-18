@@ -19,7 +19,7 @@ async function bootstrap() {
   );
   app.use(cookieParser());
   app.enableCors({
-    origin: process.env.FRONTEND_URL,
+    origin: process.env.DOMAIN,
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   });

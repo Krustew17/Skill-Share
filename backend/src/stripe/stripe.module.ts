@@ -24,6 +24,7 @@ export class StripeModule {
       .forRoutes(
         'stripe/create-payment-intent',
         'stripe/confirm-payment-intent',
+        'stripe/create-checkout-session',
       );
   }
 }

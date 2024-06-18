@@ -83,7 +83,12 @@ const TalentSidePanel = ({
                                         )
                                             ? selectedTalent.user.profile
                                                   .profileImage
-                                            : `http://127.0.0.1:3000/uploads/profileImages/${selectedTalent.user.profile.profileImage}`
+                                            : `${
+                                                  import.meta.env.VITE_API_URL
+                                              }/uploads/profileImages/${
+                                                  selectedTalent.user.profile
+                                                      .profileImage
+                                              }`
                                     }`}
                                     alt="Talent Photo"
                                 />
