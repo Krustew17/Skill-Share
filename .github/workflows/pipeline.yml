@@ -16,12 +16,10 @@ jobs:
         cache: 'npm'
     - name: install backend dependencies
       run: 
-        cd backend
-        npm install
+        npm run installDeps:backend
     - name: build backend
       run: 
-        cd backend
-        npm run build
+        npm run build:backend
   deploy-backend:
     runs-on: ubuntu-latest
     needs: build-backend
@@ -43,12 +41,10 @@ jobs:
           cache: 'npm'
       - name: install frontend dependencies
         run: 
-          cd frontend
-          npm install
-      - name: build backend
+          npm run installDeps:frontend
+      - name: build frontend
         run: 
-          cd frontend
-          npm run build
+          npm run build:frontend
   deploy-frontend:
     runs-on: ubuntu-latest
     needs: build-frontend
