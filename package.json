@@ -4,6 +4,7 @@
     },
     "scripts": {
         "start": "concurrently \"npm run start:backend:dev\" \"npm run start:frontend\"",
+        "start:prod": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
         "installDeps:backend": "cd backend && npm install",
         "installDeps:frontend": "cd frontend && npm install",
         "build:backend": "cd backend && npm install && npm run build",
