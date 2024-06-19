@@ -80,6 +80,7 @@ export default function ProfileTabContent({ profileData }) {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    refreshToken: Cookies.get("refreshToken"),
                 },
                 body: form,
                 credentials: "include",

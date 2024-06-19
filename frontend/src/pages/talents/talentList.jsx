@@ -45,6 +45,7 @@ const TalentList = ({ onDataSend }) => {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    refreshToken: Cookies.get("refreshToken"),
                 },
                 body: JSON.stringify(reviewData),
                 credentials: "include",
