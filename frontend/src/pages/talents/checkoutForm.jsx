@@ -53,11 +53,12 @@ export default function CheckoutForm({ onClose }) {
         }
 
         setIsLoading(true);
+        console.log(import.meta.env.VITE_FRONTEND_URL);
 
         const { error } = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: import.meta.env.DOMAIN,
+                return_url: import.meta.env.VITE_FRONTEND_URL,
             },
         });
 
