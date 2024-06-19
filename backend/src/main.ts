@@ -35,11 +35,13 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  app.useStaticAssets(join(__dirname, '..', '../frontend/build'));
+  // app.useStaticAssets(join(__dirname, '..', '../frontend/build'));
 
-  app.getHttpAdapter().get('*', (req, res: Response) => {
-    res.sendFile(join(__dirname, '..', '../frontend/build', 'index.html'));
-  });
+  // app.getHttpAdapter().get('*', (req, res: Response) => {
+  //   res.sendFile(join(__dirname, '..', '../frontend/build', 'index.html'));
+  // });
+
+  app.setGlobalPrefix('api');
 
   await app.listen(port);
   console.log(`Application is running on: ${await app.getUrl()}`);

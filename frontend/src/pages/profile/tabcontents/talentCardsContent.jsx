@@ -173,7 +173,7 @@ export default function TalentCardsTabContent() {
                                 )
                                     ? talent.user.profile.profileImage
                                     : `${
-                                          import.meta.env.VITE_API_URL
+                                          import.meta.env.VITE_IMAGE_URL
                                       }/uploads/profileImages/${
                                           talent.user.profile.profileImage
                                       }`

@@ -86,7 +86,7 @@ const TalentSidePanel = ({
                                             ? selectedTalent.user.profile
                                                   .profileImage
                                             : `${
-                                                  import.meta.env.VITE_API_URL
+                                                  import.meta.env.VITE_IMAGE_URL
                                               }/uploads/profileImages/${
                                                   selectedTalent.user.profile
                                                       .profileImage

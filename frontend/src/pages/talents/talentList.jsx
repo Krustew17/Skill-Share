@@ -196,7 +196,12 @@ const TalentList = ({ onDataSend }) => {
                     data.talents.map(async (talent) => {
                         const ratingResponse = await fetch(
                             import.meta.env.VITE_API_URL +
-                                `/talent/rating/average?talentCardId=${talent.id}`
+                                `/talent/rating/average?talentCardId=${talent.id}`,
+                            {
+                                headers: {
+                                    "content-type": "application/json",
+                                },
+                            }
                         );
                         const ratingData = await ratingResponse.json();
                         const rating = Number(ratingData.data).toFixed(1);
@@ -239,7 +244,7 @@ const TalentList = ({ onDataSend }) => {
                                     )
                                         ? talent?.user?.profile?.profileImage
                                         : `${
-                                              import.meta.env.VITE_API_URL
+                                              import.meta.env.VITE_IMAGE_URL
                                           }/uploads/profileImages/${
                                               talent?.user?.profile
                                                   ?.profileImage

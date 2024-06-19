@@ -46,10 +46,16 @@ dotenv.config();
     TalentModule,
     LeaderboardModule,
     StripeModule,
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads'),
-      serveRoot: '/uploads',
-    }),
+    ServeStaticModule.forRoot(
+      {
+        rootPath: join(__dirname, '..', '../frontend/build'),
+        exclude: ['/api/(.*)'],
+      },
+      {
+        rootPath: join(__dirname, '..', 'uploads'),
+        serveRoot: '/uploads',
+      },
+    ),
   ],
   controllers: [AppController],
   providers: [AppService],

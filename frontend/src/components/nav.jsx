@@ -112,7 +112,7 @@ export default function NavBar() {
                                         hasGmailPhoto
                                             ? `${currentUser?.userProfile?.profileImage}`
                                             : `${
-                                                  import.meta.env.VITE_API_URL
+                                                  import.meta.env.VITE_IMAGE_URL
                                               }/uploads/profileImages/${
                                                   currentUser?.userProfile
                                                       ?.profileImage
