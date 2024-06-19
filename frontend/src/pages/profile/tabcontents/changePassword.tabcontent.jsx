@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { toast, Bounce, ToastContainer } from "react-toastify";
+import Cookies from "js-cookie";
 export default function ChangePasswordTabContent() {
     // State to manage form inputs
     const [formData, setFormData] = useState({

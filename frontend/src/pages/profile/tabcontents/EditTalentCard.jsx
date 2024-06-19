@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { toast, Bounce, ToastContainer } from "react-toastify";
+import Cookies from "js-cookie";
 const TalentCardForm = ({ onClose, formData, setFormData }) => {
     const [step, setStep] = useState(1);
     const [skills, setSkills] = useState(formData.skills);
