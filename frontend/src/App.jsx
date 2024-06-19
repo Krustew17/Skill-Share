@@ -81,7 +81,7 @@ function App() {
                 <Route path="/jobs" element={<Jobs />} />
                 <Route path="/FAQ" element={<FAQ />} />
                 <Route
-                    path="verify-email"
+                    path="/verify-email"
                     element={<MagicLinkVerification />}
                 />
                 <Route
