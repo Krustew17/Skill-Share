@@ -7,8 +7,8 @@ import path from 'path';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('*')
-  serveApp(@Req() req: Request, @Res() res: Response): void {
-    res.sendFile(path.resolve(__dirname, '../../frontend/build/index.html'));
-  }
+  // @Get('*')
+  // serveApp(@Req() req: Request, @Res() res: Response): void {
+  //   res.sendFile(path.resolve(__dirname, '../../frontend/build/index.html'));
+  // }
 }
