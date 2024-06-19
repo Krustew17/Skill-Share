@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast, Bounce, ToastContainer } from "react-toastify";
+import Cookies from "js-cookie";
 
 export default function ProfileTabContent({ profileData }) {
     const [profileImage, setProfileImage] = useState(false);

@@ -8,6 +8,7 @@ import TalentCardFilters from "./talentCardFilters";
 import Search from "./search";
 import TalentList from "./talentList";
 import React from "react";
+import Cookies from "js-cookie";
 
 export default function Talents() {
     const { authenticated, currentUser } = useContext(AuthContext);

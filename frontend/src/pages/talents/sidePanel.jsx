@@ -9,6 +9,7 @@ import { Elements } from "@stripe/react-stripe-js";
 
 import CheckoutForm from "../talents/checkoutForm";
 import "../../index.css";
+import Cookies from "js-cookie";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 

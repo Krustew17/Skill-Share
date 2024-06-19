@@ -7,6 +7,7 @@ import TalentSidePanel from "../../talents/sidePanel";
 import { toast, Bounce, ToastContainer } from "react-toastify";
 import EditTalentCard from "../../profile/tabcontents/EditTalentCard";
 import tryRefreshToken from "../../../utils/tryRefreshToken";
+import Cookies from "js-cookie";
 
 export default function TalentCardsTabContent() {
     const [talents, setTalents] = useState([]);
