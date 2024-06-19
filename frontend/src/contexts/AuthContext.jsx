@@ -29,6 +29,7 @@ const AuthProvider = ({ children }) => {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
+                    refreshToken: Cookies.get("refreshToken"),
                 },
                 credentials: "include",
             }
