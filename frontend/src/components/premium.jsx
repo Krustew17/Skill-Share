@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { loadStripe } from "@stripe/stripe-js";
 import { toast, Bounce } from "react-toastify";
+import Cookies from "js-cookie";
 import React from "react";
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
