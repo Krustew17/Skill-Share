@@ -47,6 +47,8 @@ export default function Premium() {
         };
         const headers = {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            refreshToken: Cookies.get("refreshToken"),
         };
 
         const request = await fetch(
