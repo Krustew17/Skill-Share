@@ -4,10 +4,13 @@ import * as dotenv from 'dotenv';
 import * as cookieParser from 'cookie-parser';
 import { raw } from 'body-parser';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
+import { Response } from 'express';
 
 dotenv.config();
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const port = parseInt(process.env.PORT) || 3000;
   app.use(
     '/stripe/webhook/events',
@@ -31,6 +34,13 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  app.useStaticAssets(join(__dirname, '..', '../frontend/build'));
+
+  app.getHttpAdapter().get('*', (req, res: Response) => {
+    res.sendFile(join(__dirname, '..', '../frontend/build', 'index.html'));
+  });
+
   await app.listen(port);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
