@@ -153,7 +153,11 @@ const TalentList = ({ onDataSend }) => {
         setCurrentReviews(responseJson.data);
         setSelectedTalent(talent);
         console.log(talent);
-        Cookies.set("talentUserId", talent.user.id, { expires: 1 });
+        Cookies.set("talentUserId", talent.user.id, {
+            expires: 1,
+            secure: true,
+            sameSite: "none",
+        });
         document.body.classList.add("overflow-hidden");
         setIsSidePanelOpen(true);
     };

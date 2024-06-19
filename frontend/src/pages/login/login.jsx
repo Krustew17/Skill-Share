@@ -52,6 +52,8 @@ export default function Login({ onClose, handleSignUp }) {
             localStorage.setItem("token", responseJson.access_token);
             Cookies.set("refreshToken", responseJson.refresh_token, {
                 expires: 7,
+                secure: true,
+                sameSite: "none",
             });
             setTimeout(() => window.location.reload(), 3000);
             toast.success("Successful Login", {

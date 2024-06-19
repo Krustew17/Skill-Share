@@ -34,7 +34,10 @@ export default async function tryRefreshToken(responseJson, setCurrentUser) {
             console.log("refreshed");
             const user = await userResponse.json();
             setCurrentUser(user);
-            Cookies.set("loggedUserId", user.user.id);
+            Cookies.set("loggedUserId", user.user.id, {
+                secure: true,
+                sameSite: "none",
+            });
         } else {
             logout();
             console.error("Token refresh failed");

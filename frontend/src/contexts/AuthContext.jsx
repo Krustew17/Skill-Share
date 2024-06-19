@@ -37,7 +37,10 @@ const AuthProvider = ({ children }) => {
         const responseJson = await request.json();
         if (responseJson.user) {
             setCurrentUser(responseJson);
-            Cookies.set("loggedUserId", responseJson.user.id);
+            Cookies.set("loggedUserId", responseJson.user.id, {
+                secure: true,
+                sameSite: "none",
+            });
         }
 
         tryRefreshToken(responseJson, setCurrentUser);
