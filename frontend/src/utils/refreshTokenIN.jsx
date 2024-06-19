@@ -28,6 +28,7 @@ export default async function tryRefreshToken(responseJson) {
                 {
                     headers: {
                         Authorization: `Bearer ${refreshResponseJson.access_token}`,
+                        refreshToken: Cookies.get("refreshToken"),
                     },
                     credentials: "include",
                 }

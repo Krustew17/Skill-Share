@@ -31,6 +31,7 @@ const TalentSidePanel = ({
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    refreshToken: Cookies.get("refreshToken"),
                 },
                 body: JSON.stringify({
                     amount: selectedTalent.price,

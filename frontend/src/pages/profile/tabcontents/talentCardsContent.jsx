@@ -52,6 +52,7 @@ export default function TalentCardsTabContent() {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    refreshToken: Cookies.get("refreshToken"),
                 },
                 credentials: "include",
             }
@@ -76,6 +77,7 @@ export default function TalentCardsTabContent() {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    refreshToken: Cookies.get("refreshToken"),
                 },
                 credentials: "include",
             }
@@ -102,6 +104,7 @@ export default function TalentCardsTabContent() {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    refreshToken: Cookies.get("refreshToken"),
                 },
                 credentials: "include",
             })
@@ -168,7 +171,11 @@ export default function TalentCardsTabContent() {
                                     "https://lh3.googleusercontent.com"
                                 )
                                     ? talent.user.profile.profileImage
-                                    : `${import.meta.env.VITE_API_URL}/uploads/profileImages/${talent.user.profile.profileImage}`
+                                    : `${
+                                          import.meta.env.VITE_API_URL
+                                      }/uploads/profileImages/${
+                                          talent.user.profile.profileImage
+                                      }`
                             }`}
                             alt="Profile image"
                         />

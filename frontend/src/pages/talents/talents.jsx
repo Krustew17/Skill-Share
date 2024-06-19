@@ -30,6 +30,7 @@ export default function Talents() {
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    refreshToken: Cookies.get("refreshToken"),
                 },
                 credentials: "include",
             }
