@@ -106,11 +106,15 @@ export class AuthService {
       access_token: this.jwtService.sign({ user }, { expiresIn: '5s' }),
       refresh_token: this.jwtService.sign({ user }, { expiresIn: '7d' }),
     };
+    res.cookie('refreshToken', data.refresh_token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
-    return data;
+    return res.send({ data });
   }
-
-  // #TO DO BLACKLIST THE REFRESH TOKEN
   async logoutUser(req: Request, res: Response) {
     res.clearCookie('refreshToken');
     return {
