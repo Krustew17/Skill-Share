@@ -21,6 +21,7 @@ export class JwtMiddleware implements NestMiddleware {
     }
 
     const token = authHeader.split(' ')[1];
+
     try {
       let decoded = this.jwtService.verify(token, {
         secret: process.env.JWT_SECRET,
@@ -29,13 +30,15 @@ export class JwtMiddleware implements NestMiddleware {
       next();
     } catch (error) {
       if (error.name === 'TokenExpiredError') {
-        const refreshToken = req.cookies['refreshToken'];
+        const refreshTokenHeader = req.headers['refreshtoken'];
 
-        if (!refreshToken) {
+        if (!refreshTokenHeader) {
           return res
             .status(401)
             .json({ message: 'Unauthorized: No refresh token provided' });
         }
+        console.log('refresh token', refreshTokenHeader);
+        const refreshToken = refreshTokenHeader as string;
 
         try {
           const newAccessToken =
