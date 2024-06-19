@@ -11,7 +11,7 @@ import MagicLinkVerification from "./pages/magic_link_verification/magic_link_ve
 import { AuthContext } from "./contexts/AuthContext.jsx";
 import ProtectedRoute from "./components/protectedRouteComponent.jsx";
 
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Router, Routes, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import { Elements } from "@stripe/react-stripe-js";
@@ -75,6 +75,7 @@ function App() {
     return (
         <>
             <NavBar />
+            {/* <Router> */}
             <Routes>
                 <Route path="/" element={<Hero />} />
                 <Route path="/talent" element={<Talents />} />
@@ -89,6 +90,7 @@ function App() {
                     element={<ProtectedElement component={ProfilePage} />}
                 />
             </Routes>
+            {/* </Router> */}
             {location.pathname == "/" && (
                 <>
                     <AboutUs />
