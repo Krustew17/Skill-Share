@@ -57,7 +57,7 @@ export default function CheckoutForm({ onClose }) {
         const { error } = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: import.meta.env.FRONTEND_URL,
+                return_url: import.meta.env.DOMAIN,
             },
         });
 
