@@ -22,7 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-uploads/portfolio
-uploads/profileImages
-!uploads/profileImages/default_avatar.jpg
