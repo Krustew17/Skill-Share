@@ -29,7 +29,7 @@ const AuthProvider = ({ children }) => {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
-                    refreshToken: Cookies.get("refreshToken"),
+                    // refreshToken: Cookies.get("refreshToken"),
                 },
                 credentials: "include",
             }
@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
             setCurrentUser(responseJson);
             Cookies.set("loggedUserId", responseJson.user.id, {
                 secure: true,
-                sameSite: "none",
+                expires: 1,
             });
         }
 

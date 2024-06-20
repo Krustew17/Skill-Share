@@ -53,7 +53,7 @@ export default function TalentCardsTabContent() {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    refreshToken: Cookies.get("refreshToken"),
+                    // refreshToken: Cookies.get("refreshToken"),
                 },
                 credentials: "include",
             }
@@ -78,7 +78,7 @@ export default function TalentCardsTabContent() {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    refreshToken: Cookies.get("refreshToken"),
+                    // refreshToken: Cookies.get("refreshToken"),
                 },
                 credentials: "include",
             }
@@ -105,7 +105,7 @@ export default function TalentCardsTabContent() {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    refreshToken: Cookies.get("refreshToken"),
+                    // refreshToken: Cookies.get("refreshToken"),
                 },
                 credentials: "include",
             })
