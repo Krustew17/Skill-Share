@@ -35,15 +35,14 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  // app.useStaticAssets(join(__dirname, '..', '../frontend/build'));
-
-  // app.getHttpAdapter().get('*', (req, res: Response) => {
-  //   res.sendFile(join(__dirname, '..', '../frontend/build', 'index.html'));
-  // });
-
   app.setGlobalPrefix('api');
 
   await app.listen(port);
+  const frontendBuildPath = join(__dirname, '..', '../frontend/build');
+  const uploadsPath = join(__dirname, '..', '../uploads');
+
+  console.log(`Serving frontend from: ${frontendBuildPath}`);
+  console.log(`Serving uploads from: ${uploadsPath}`);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
