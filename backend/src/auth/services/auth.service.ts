@@ -53,19 +53,23 @@ export class AuthService {
     }
     validatePassword(userData.password);
     const password = await hashPassword(userData.password);
-    const newUser = this.userRepository.create({ ...userData, password });
+    const stripeCustomer = await this.stripe.customers.create({
+      email: userData.email,
+    });
+    const newUser = this.userRepository.create({
+      ...userData,
+      password,
+      customerId: stripeCustomer.id,
+    });
     const savedUser = await this.userRepository.save(newUser);
     const verificationToken = this.jwtService.sign({
       user: savedUser,
     });
     await this.emailService.sendVerificationEmail(
+      savedUser.username,
       savedUser.email,
       verificationToken,
     );
-    const stripeCustomer = await this.stripe.customers.create({
-      email: userData.email,
-    });
-    savedUser.customerId = stripeCustomer.id;
     await this.userRepository.save(savedUser);
 
     const userProfile = this.userProfileRepository.create({
@@ -160,8 +164,8 @@ export class AuthService {
     };
   }
 
-  async createPasswordResetToken(userId: number): Promise<string> {
-    const payload = { userId };
+  async createPasswordResetToken(user: User): Promise<string> {
+    const payload = { user };
     return this.jwtService.sign(payload, { expiresIn: '1h' });
   }
 
@@ -170,8 +174,9 @@ export class AuthService {
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
-    const resetToken = await this.createPasswordResetToken(user.id);
-    await this.emailService.sendPasswordResetEmail(email, resetToken);
+    const resetToken = await this.createPasswordResetToken(user);
+    const username = user.username;
+    await this.emailService.sendPasswordResetEmail(username, email, resetToken);
     return {
       message: 'Password reset email sent',
       HttpStatus: HttpStatus.OK,
@@ -184,7 +189,9 @@ export class AuthService {
     confirmPassword: string,
   ) {
     try {
+      console.log(token);
       const decoded = this.jwtService.verify(token);
+      console.log(decoded);
       const userId = decoded.userId;
       const user = await this.userRepository.findOneBy({ id: userId });
       if (!user) {
@@ -207,7 +214,7 @@ export class AuthService {
       };
     } catch (error) {
       throw new HttpException(
-        'Invalid or expired token',
+        error.message || 'Invalid or expired token',
         HttpStatus.BAD_REQUEST,
       );
     }

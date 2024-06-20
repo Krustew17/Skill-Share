@@ -185,7 +185,7 @@ export default function SignUp({ setter, handleSignIn }) {
                         />
                     </div>
                     <a
-                        href="#"
+                        href="reset-password"
                         className="text-xs text-gray-500 dark:text-gray-300 hover:underline mt-5"
                     >
                         Forget Password?
