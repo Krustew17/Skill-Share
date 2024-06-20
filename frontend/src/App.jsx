@@ -22,6 +22,8 @@ import React from "react";
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedElement from "./components/protectedRouteComponent.jsx";
+import ProtectedElementFromLoggedusers from "./components/protectedFromLoggedUsers.jsx";
+import SendResetPasswordRequest from "./components/resetPassword.jsx";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
@@ -75,7 +77,6 @@ function App() {
     return (
         <>
             <NavBar />
-            {/* <Router> */}
             <Routes>
                 <Route path="/" element={<Hero />} />
                 <Route path="/talent" element={<Talents />} />
@@ -89,8 +90,15 @@ function App() {
                     path="/profile"
                     element={<ProtectedElement component={ProfilePage} />}
                 />
+                <Route
+                    path="/reset-password"
+                    element={
+                        <ProtectedElementFromLoggedusers
+                            component={SendResetPasswordRequest}
+                        />
+                    }
+                />
             </Routes>
-            {/* </Router> */}
             {location.pathname == "/" && (
                 <>
                     <AboutUs />

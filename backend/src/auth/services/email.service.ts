@@ -20,33 +20,33 @@ export class EmailService {
       },
     });
   }
-  async sendVerificationEmail(email: string, token: string) {
+  async sendVerificationEmail(username: string, email: string, token: string) {
     const url = `${HOST}/verify-email?token=${token}`;
     if (email.includes('gmail.com')) {
       await this.transporter.sendMail({
         from: 'mailtrap@demomailtrap.com',
         to: email,
         subject: 'Verify your email',
-        html: `Click <a href="${url}">here</a> to verify your email.`,
+        html: `Hello ${username}, click <a href="${url}">here</a> to verify your email.\n test`,
       });
     } else {
       await this.transporter.sendMail({
         from: '"mailtrap@demomailtrap.com',
         to: email,
         subject: 'Verify your email',
-        html: `Click the url below to verify your email:\n
+        html: `Hello ${username}, click the url below to verify your email:\n
       ${url}`,
       });
     }
   }
 
-  async sendPasswordResetEmail(email: string, token: string) {
-    const url = `${HOST}/auth/reset-password?token=${token}`;
+  async sendPasswordResetEmail(username: string, email: string, token: string) {
+    const url = `${HOST}/reset-password?resetToken=${token}`;
     await this.transporter.sendMail({
       from: '"mailtrap@demomailtrap.com',
       to: email,
       subject: 'Reset your password',
-      html: `Click <a href="${url}">here</a> to reset your password.`,
+      html: `Hey ${username}, click <a href="${url}">here</a> to reset your password.`,
     });
   }
 

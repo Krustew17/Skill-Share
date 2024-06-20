@@ -64,11 +64,16 @@ export class AuthController {
 
   @Post('reset-password')
   async resetPassword(
-    @Query('token') token: string,
+    @Query('resetToken') resetToken: string,
     @Body('password') newPassword: string,
     @Body('confirmPassword') confirmPassword: string,
   ) {
-    return this.authService.resetPassword(token, newPassword, confirmPassword);
+    console.log(resetToken);
+    return this.authService.resetPassword(
+      resetToken,
+      newPassword,
+      confirmPassword,
+    );
   }
 
   @Get('google')
