@@ -189,10 +189,8 @@ export class AuthService {
     confirmPassword: string,
   ) {
     try {
-      console.log(token);
       const decoded = this.jwtService.verify(token);
-      console.log(decoded);
-      const userId = decoded.userId;
+      const userId = decoded.user.id;
       const user = await this.userRepository.findOneBy({ id: userId });
       if (!user) {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -208,6 +206,7 @@ export class AuthService {
 
       user.password = await hashPassword(newPassword);
       await this.userRepository.save(user);
+      console.log('updated', user);
       return {
         message: 'Password reset successfully',
         HttpStatus: HttpStatus.OK,
