@@ -23,5 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-
-uploads
+uploads/portfolio
+uploads/profileImages
+!uploads/profileImages/default_avatar.jpg

@@ -104,7 +104,7 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
                         Authorization: `Bearer ${localStorage.getItem(
                             "token"
                         )}`,
-                        refreshToken: Cookies.get("refreshToken"),
+                        // refreshToken: Cookies.get("refreshToken"),
                     },
                     credentials: "include",
                 }

@@ -45,7 +45,7 @@ const TalentList = ({ onDataSend }) => {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    refreshToken: Cookies.get("refreshToken"),
+                    // refreshToken: Cookies.get("refreshToken"),
                 },
                 body: JSON.stringify(reviewData),
                 credentials: "include",
@@ -157,7 +157,6 @@ const TalentList = ({ onDataSend }) => {
         Cookies.set("talentUserId", talent.user.id, {
             expires: 1,
             secure: true,
-            sameSite: "none",
         });
         document.body.classList.add("overflow-hidden");
         setIsSidePanelOpen(true);

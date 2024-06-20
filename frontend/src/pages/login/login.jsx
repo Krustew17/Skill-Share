@@ -16,24 +16,20 @@ export default function Login({ onClose, handleSignUp }) {
 
     const handleSubmit = async (event) => {
         const apiUrl = `${import.meta.env.VITE_API_URL}/auth/login`;
-        console.log(apiUrl);
         setErrorMessage("");
         event.preventDefault();
         const formData = new FormData(event.target);
-        console.log(import.meta.env.VITE_API_URL);
-        const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/auth/login`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    username: formData.get("username"),
-                    password: formData.get("password"),
-                }),
-            }
-        );
+        console.log(apiUrl);
+        const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username: formData.get("username"),
+                password: formData.get("password"),
+            }),
+        });
         const responseJson = await response.json();
         console.log(responseJson);
         if (responseJson.message === "user not verified") {
@@ -53,7 +49,6 @@ export default function Login({ onClose, handleSignUp }) {
             Cookies.set("refreshToken", responseJson.refresh_token, {
                 expires: 7,
                 secure: true,
-                sameSite: "none",
             });
             setTimeout(() => window.location.reload(), 3000);
             toast.success("Successful Login", {

@@ -32,7 +32,7 @@ export default function ChangePasswordTabContent() {
                         Authorization: `Bearer ${localStorage.getItem(
                             "token"
                         )}`,
-                        refreshToken: Cookies.get("refreshToken"),
+                        // refreshToken: Cookies.get("refreshToken"),
                     },
                     body: JSON.stringify(formData),
                     credentials: "include",

@@ -28,7 +28,7 @@ export default async function tryRefreshToken(responseJson) {
                 {
                     headers: {
                         Authorization: `Bearer ${refreshResponseJson.access_token}`,
-                        refreshToken: Cookies.get("refreshToken"),
+                        // refreshToken: Cookies.get("refreshToken"),
                     },
                     credentials: "include",
                 }
@@ -37,7 +37,6 @@ export default async function tryRefreshToken(responseJson) {
             const user = await userResponse.json();
             Cookies.set("loggedUserId", user.user.id, {
                 secure: true,
-                sameSite: "none",
             });
         } else {
             logout();

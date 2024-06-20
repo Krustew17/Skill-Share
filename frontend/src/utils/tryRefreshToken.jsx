@@ -36,7 +36,6 @@ export default async function tryRefreshToken(responseJson, setCurrentUser) {
             setCurrentUser(user);
             Cookies.set("loggedUserId", user.user.id, {
                 secure: true,
-                sameSite: "none",
             });
         } else {
             logout();
