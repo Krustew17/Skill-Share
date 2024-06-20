@@ -54,7 +54,7 @@ export class TalentController {
   @UseInterceptors(
     FileFieldsInterceptor([{ name: 'portfolio', maxCount: 5 }], {
       storage: diskStorage({
-        destination: '../frontend/build/uploads',
+        destination: '../../frontend/build/uploads',
         filename: (req, file, cb) => {
           const filename = `${Date.now()}-${file.originalname}`;
           cb(null, filename);
@@ -111,7 +111,7 @@ export class TalentController {
   @UseInterceptors(
     FileFieldsInterceptor([{ name: 'portfolio', maxCount: 5 }], {
       storage: diskStorage({
-        destination: '../frontend/build/uploads',
+        destination: '../frontend/build/uploads/portfolio',
         filename: (req, file, cb) => {
           const filename = `${Date.now()}-${file.originalname}`;
           cb(null, filename);

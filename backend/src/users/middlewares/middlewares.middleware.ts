@@ -30,7 +30,7 @@ export class JwtMiddleware implements NestMiddleware {
       next();
     } catch (error) {
       if (error.name === 'TokenExpiredError') {
-        const refreshTokenHeader = req.headers['refreshtoken'];
+        const refreshTokenHeader = req.cookies['refreshToken'];
 
         if (!refreshTokenHeader) {
           return res
