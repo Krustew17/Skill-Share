@@ -236,7 +236,7 @@ const TalentList = ({ onDataSend }) => {
                     >
                         <div className="flex justify-center sm:justify-start">
                             <img
-                                className="w-16 h-16 sm:w-24 sm:h-24 rounded-full border border-black dark:border-gray-50"
+                                className="w-16 h-16 sm:w-24 sm:h-24 mx-2 rounded-full border border-black dark:border-gray-50"
                                 src={`${
                                     talent?.user?.profile?.profileImage.startsWith(
                                         "https://lh3.googleusercontent.com"

@@ -46,7 +46,7 @@ export class UsersController {
   @UseInterceptors(
     FileFieldsInterceptor([{ name: 'profileImage', maxCount: 1 }], {
       storage: diskStorage({
-        destination: '../frontend/build/uploads/profileImages',
+        destination: '../frontend/public/images/uploads/profileImages',
         filename: (req, file, cb) => {
           const filename = `${Date.now()}-${file.originalname}`;
           cb(null, filename);

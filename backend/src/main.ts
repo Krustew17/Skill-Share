@@ -38,6 +38,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   await app.listen(port);
+  console.log(join(__dirname, '../uploads'));
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
