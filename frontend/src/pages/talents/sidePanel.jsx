@@ -66,6 +66,7 @@ const TalentSidePanel = ({
                     amount: selectedTalent.price,
                     talentId: selectedTalent.id,
                     description: selectedTalent.description,
+                    receiptEmail: currentUser.user.email,
                 }),
                 credentials: "include",
             }

@@ -78,7 +78,7 @@ export class StripeController {
         break;
       case 'payment_intent.succeeded':
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        console.log(paymentIntent);
+        this.handlePaymentIntentSucceeded(paymentIntent);
         break;
     }
 
@@ -88,9 +88,20 @@ export class StripeController {
   @Post('create-payment-intent')
   async createPaymentIntent(
     @Body('amount') amount: number,
-    @Body('talentId') talentId: number,
+    @Body('receiptEmail') receiptEmail: string,
   ) {
-    return this.stripeService.createPaymentIntent(amount, talentId);
+    return this.stripeService.createPaymentIntent(amount, receiptEmail);
+  }
+
+  private async handlePaymentIntentSucceeded(
+    paymentIntent: Stripe.PaymentIntent,
+  ) {
+    console.log(paymentIntent);
+    await this.stripeService.sendHireReceipt(
+      paymentIntent.receipt_email,
+      paymentIntent.amount,
+      paymentIntent.id,
+    );
   }
 
   private async handleCheckoutSessionCompleted(

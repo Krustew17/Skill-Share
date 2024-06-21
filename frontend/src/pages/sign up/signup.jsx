@@ -21,7 +21,6 @@ export default function SignUp({ setter, handleSignIn }) {
 
         if (formData.get("password") !== formData.get("confirmPassword")) {
             setErrorMessage("Passwords do not match");
-            console.log("test");
             return;
         }
 

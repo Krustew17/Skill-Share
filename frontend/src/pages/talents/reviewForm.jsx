@@ -43,13 +43,11 @@ const ReviewForm = memo(
                 talentCardId,
             };
             submitData.rating = stars;
-            console.log(submitData);
             await onSubmit(submitData);
         };
 
         const handleReviewDataChange = (name, value) => {
             setReviewData((prevData) => ({ ...prevData, [name]: value }));
-            console.log(reviewData);
         };
 
         return (

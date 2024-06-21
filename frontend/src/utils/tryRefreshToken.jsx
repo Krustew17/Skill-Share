@@ -31,7 +31,6 @@ export default async function tryRefreshToken(responseJson, setCurrentUser) {
                     },
                 }
             );
-            console.log("refreshed");
             const user = await userResponse.json();
             setCurrentUser(user);
             Cookies.set("loggedUserId", user.user.id, {

@@ -57,4 +57,12 @@ export class EmailService {
       html: `Your account has been upgraded to premium. Enjoy!`,
     });
   }
+  async sendHireReceipt(email: string, amount: number, id: string) {
+    await this.transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: `Receipt ${id}`,
+      html: `You have successfully hired talent for ${amount}$. Thank you for using Skill Share! The talent has been notified and will contact you soon.`,
+    });
+  }
 }

@@ -20,7 +20,6 @@ export default function TalentCardsTabContent() {
 
     const handleEditTalentCard = (talent) => {
         const { id, title, description, price, skills, portfolio } = talent;
-        console.log(talent);
         setFormData({
             id,
             title,
@@ -59,7 +58,6 @@ export default function TalentCardsTabContent() {
             }
         );
         const data = await response.json();
-        console.log(data);
 
         tryRefreshToken(data);
 
@@ -71,7 +69,6 @@ export default function TalentCardsTabContent() {
     };
 
     const handleDeleteTalentCard = async (talent) => {
-        console.log(talent.id);
         const response = await fetch(
             import.meta.env.VITE_API_URL + "/talent/delete/" + talent.id,
             {
@@ -151,7 +148,6 @@ export default function TalentCardsTabContent() {
     useEffect(() => {
         fetchTalentCards();
     }, []);
-    console.log(talents);
 
     return (
         <div className="w-full px-2 py-2 sm:px-6 sm:py-4 flex-col flex-wrap gap-6">

@@ -67,7 +67,7 @@ export default function Premium() {
             sessionId: session.session.id,
         });
         if (result.error) {
-            console.log(result.error.message);
+            throw new Error(result.error.message);
         }
     };
 

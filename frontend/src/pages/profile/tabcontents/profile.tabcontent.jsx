@@ -104,7 +104,18 @@ export default function ProfileTabContent({ profileData }) {
                 window.location.reload();
             }, 1000);
         } else {
-            console.log(`data`, data);
+            toast.error(data.message, {
+                position: "bottom-left",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                limit: 1,
+                transition: Bounce,
+            });
         }
     };
 

@@ -20,7 +20,6 @@ export default function NavBar() {
     const hasGmailPhoto = currentUser?.userProfile?.profileImage.startsWith(
         "https://lh3.googleusercontent.com"
     );
-    console.log(hasGmailPhoto);
     const handleClose = (data) => {
         if (data === "close") {
             setIsModalOpen(false);

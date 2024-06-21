@@ -33,7 +33,6 @@ export default async function tryRefreshToken(responseJson) {
                     credentials: "include",
                 }
             );
-            console.log("refreshed");
             const user = await userResponse.json();
             Cookies.set("loggedUserId", user.user.id, {
                 secure: true,
