@@ -67,7 +67,7 @@ dotenv.config();
         exclude: ['/api/(.*)'],
       },
       {
-        rootPath: join(__dirname, '..', '../frontend/public/images/uploads'),
+        rootPath: join(__dirname, '..', '../frontend/build/uploads'),
         serveRoot: '/uploads',
       },
     ),

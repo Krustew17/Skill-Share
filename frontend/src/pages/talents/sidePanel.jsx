@@ -37,6 +37,21 @@ const TalentSidePanel = ({
             });
             return;
         }
+        if (currentUser.user.id === selectedTalent.user.id) {
+            toast.error("You cannot hire yourself", {
+                position: "bottom-left",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+            return;
+        }
+
         const stripe = await stripePromise;
 
         const response = await fetch(
