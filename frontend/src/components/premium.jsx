@@ -95,7 +95,7 @@ export default function Premium() {
                             </li>
                             <li className="flex gap-2 text-sm sm:text-xl">
                                 <GoDotFill className=" text-gray-800 dark:text-red-500 text-2xl" />
-                                Unlimited job listings{" "}
+                                No fees{" "}
                                 <IoMdClose className=" text-red-500 text-2xl" />
                             </li>
                             <li className="flex gap-2 text-sm sm:text-xl">
@@ -133,7 +133,7 @@ export default function Premium() {
                             </li>
                             <li className="flex gap-2 text-sm sm:text-xl">
                                 <GoDotFill className=" text-gray-800 dark:text-green-500  text-2xl" />
-                                No Fees{" "}
+                                No fees{" "}
                                 <FaCheck className=" text-green-500   text-2xl" />
                             </li>
                             <li className="flex gap-2 text-sm sm:text-xl">
