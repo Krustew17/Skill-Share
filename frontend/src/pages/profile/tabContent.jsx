@@ -9,7 +9,7 @@ const TabContent = ({ activeTab }) => {
     const { currentUser } = useContext(AuthContext);
 
     return (
-        <div className="w-3/4 bg-white dark:bg-gray-800 rounded-xl">
+        <div className="w-full mx-auto bg-white dark:bg-gray-800 rounded-xl px-8">
             {activeTab === 1 && (
                 <ProfileTabContent
                     profileData={{

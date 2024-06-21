@@ -114,7 +114,7 @@ export default function TalentCardFilters({ skills }) {
                     placeholder="Max Price"
                 />
             </div>
-            <div className="mb-6">
+            {/* <div className="mb-6">
                 <div className="text-white">
                     <label className="mb-2 text-lg font-semibold dark:text-gray-200">
                         Select Skills
@@ -136,7 +136,7 @@ export default function TalentCardFilters({ skills }) {
                         </div>
                     )}
                 </div>
-            </div>
+            </div> */}
             <div className="mb-6">
                 <h4 className="mb-2 text-lg font-semibold dark:text-gray-200">
                     Rating

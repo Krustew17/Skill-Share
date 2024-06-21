@@ -154,19 +154,19 @@ export default function TalentCardsTabContent() {
     console.log(talents);
 
     return (
-        <div className="w-full px-6 flex-col py-2 flex-wrap gap-6">
+        <div className="w-full px-2 py-2 sm:px-6 sm:py-4 flex-col flex-wrap gap-6">
             {talents.length === 0 ? (
-                <div className="text-black text-6xl text-center mt-32 dark:text-white">
+                <div className="text-black text-2xl sm:text-6xl text-center mt-16 sm:mt-32 dark:text-white">
                     No talents found
                 </div>
             ) : (
                 talents.data.map((talent) => (
                     <div
-                        className="bg-white dark:bg-gray-800 shadow-lg dark:shadow-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-6 mb-5 flex dark:text-white"
+                        className="bg-white dark:bg-gray-800 shadow-lg dark:shadow-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-4 sm:p-6 mb-4 sm:mb-5 flex flex-col sm:flex-row dark:text-white"
                         key={talent.id}
                     >
                         <img
-                            className="w-16 h-16 rounded-full mr-4 border border-black dark:border-gray-50"
+                            className="w-12 h-12 sm:w-16 sm:h-16 rounded-full mb-4 sm:mb-0 sm:mr-4 border border-black dark:border-gray-50 mx-auto sm:mx-0"
                             src={`${
                                 talent.user.profile.profileImage.startsWith(
                                     "https://lh3.googleusercontent.com"
@@ -180,28 +180,26 @@ export default function TalentCardsTabContent() {
                             }`}
                             alt="Profile image"
                         />
-                        <div className="flex-1 border-l-2 dark:border-gray-600 pl-4 border-gray-300">
-                            <div className="flex justify-between items-center mb-2 ">
-                                <div>
+                        <div className="flex-1 border-l-0 sm:border-l-2 dark:border-gray-600 pl-0 sm:pl-4 border-gray-300 text-center sm:text-left">
+                            <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center sm:items-center mb-2">
+                                <div className="text-center sm:text-left">
                                     <h2 className="text-lg font-semibold dark:text-gray-200">
                                         {talent.user.profile.firstName &&
                                         talent.user.profile.lastName
-                                            ? talent.user.profile.firstName +
-                                              " " +
-                                              talent.user.profile.lastName
+                                            ? `${talent.user.profile.firstName} ${talent.user.profile.lastName}`
                                             : talent.user.username}
                                     </h2>
                                     <p className="text-gray-600 dark:text-white">
                                         {truncateDescription(talent.title, 50)}
                                     </p>
-                                    <p className="text-xs text-gray-500 flex items-center gap-1">
+                                    <p className="text-xs text-gray-500 flex items-center justify-center sm:justify-start gap-1">
                                         <MdLocationPin className="text-sm" />{" "}
                                         {talent.user.profile.country}
                                     </p>
                                 </div>
-                                <div className="flex gap-3">
+                                <div className="flex gap-2 sm:gap-3 mt-2 sm:mt-0">
                                     <button
-                                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                                        className="bg-blue-500 hover:bg-blue-600 text-white px-2 sm:px-4 py-1 sm:py-2 rounded"
                                         onClick={() =>
                                             handleViewDetails(talent)
                                         }
@@ -209,7 +207,7 @@ export default function TalentCardsTabContent() {
                                         View profile
                                     </button>
                                     <button
-                                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                                        className="bg-blue-500 hover:bg-blue-600 text-white px-2 sm:px-4 py-1 sm:py-2 rounded"
                                         onClick={() =>
                                             handleEditTalentCard(talent)
                                         }
@@ -217,7 +215,7 @@ export default function TalentCardsTabContent() {
                                         <FaPen />
                                     </button>
                                     <button
-                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                                        className="bg-red-500 hover:bg-red-600 text-white px-2 sm:px-4 py-1 sm:py-2 rounded"
                                         onClick={() =>
                                             handleDeleteTalentCard(talent)
                                         }
@@ -226,46 +224,46 @@ export default function TalentCardsTabContent() {
                                     </button>
                                 </div>
                             </div>
-                            <div className="flex items-center text-sm mb-2">
+                            <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start text-sm mb-2">
                                 <p className="mr-2 dark:text-green-500 text-green-600">
                                     ${talent.price}
                                 </p>
-                                <p className="mx-2">|</p>
-                                <p className="mx-2 dark:text-green-500 text-green-600">
+                                <p className="hidden sm:block mx-2">|</p>
+                                <p className="mt-1 sm:mt-0 dark:text-green-500 text-green-600">
                                     100% Job Success
                                 </p>
-                                <p className="mx-2">|</p>
-                                <p className="dark:text-green-500 text-green-600">
-                                    $1K+ earned{" "}
+                                <p className="hidden sm:block mx-2">|</p>
+                                <p className="mt-1 sm:mt-0 dark:text-green-500 text-green-600">
+                                    $1K+ earned
                                 </p>
-                                <p className="mx-2">|</p>
-                                <p className="flex items-center gap-2">
+                                <p className="hidden sm:block mx-2">|</p>
+                                <p className="flex items-center gap-1 mt-1 sm:mt-0">
                                     {talent.averageRating}{" "}
                                     <FaStar className="text-yellow-500" />
                                 </p>
                             </div>
-                            <div className="flex items-center mb-2">
+                            <div className="flex flex-wrap items-center justify-center sm:justify-start mb-2">
                                 {talent.skills
                                     .slice(0, AMOUNT_SKILLS_TO_SHOW)
                                     .map((skill, index) => (
                                         <span
                                             key={index}
-                                            className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2"
+                                            className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2 mt-1"
                                         >
                                             {skill}
                                         </span>
                                     ))}
                                 {talent.skills.length >
                                     AMOUNT_SKILLS_TO_SHOW && (
-                                    <span className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2">
+                                    <span className="bg-gray-200 dark:bg-blue-300 text-gray-800 px-2 py-1 rounded-full text-xs mr-2 mt-1">
                                         +
                                         {talent.skills.length -
                                             AMOUNT_SKILLS_TO_SHOW}
                                     </span>
                                 )}
                             </div>
-                            <div className="text-gray-700 text-sm max-w-screen-lg dark:text-gray-200">
-                                {truncateDescription(talent.description, 250)}
+                            <div className="text-gray-700 text-sm max-w-full dark:text-gray-200 text-left sm:text-left">
+                                {truncateDescription(talent.description, 50)}
                             </div>
                         </div>
                     </div>

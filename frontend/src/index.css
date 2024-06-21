@@ -120,6 +120,17 @@
     box-sizing: border-box;
 }
 
+@media (max-width: 600px) {
+    .checkoutForm {
+        padding: 20px;
+        min-width: 200px;
+    }
+
+    .checkout-form-container {
+        padding: 20px;
+    }
+}
+
 .CheckoutButton {
     width: 100%;
     padding: 10px;

@@ -8,13 +8,13 @@ const SkillList = ({ skills, maxSkillsToShow }) => {
     };
 
     return (
-        <div className="p-4 flex gap-5 flex-wrap">
+        <div className="p-4 flex md:gap-5 gap-2 md:text-md text-sm flex-wrap">
             {skills
                 .slice(0, showAll ? skills.length : maxSkillsToShow)
                 .map((skill, index) => (
                     <span
                         key={index}
-                        className="px-6 py-1 bg-blue-800 dark:bg-blue-600 rounded-md text-white"
+                        className="md:px-6 px-3 py-1 bg-blue-800 dark:bg-blue-600 rounded-md text-white"
                     >
                         {skill}
                     </span>

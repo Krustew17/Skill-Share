@@ -212,15 +212,15 @@ export default function ProfileTabContent({ profileData }) {
                         className="w-full px-4 py-2 border rounded-md dark:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-4">
                     <button
                         type="submit"
-                        className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
+                        className="bg-blue-500 text-white md:px-6 md:py-2 md:text-md text-sm px-4 py-2 rounded-md hover:bg-blue-600"
                     >
                         Save Changes
                     </button>
                     <button
-                        className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
+                        className="bg-blue-500 text-white md:px-6 md:py-2 md:text-md text-sm px-4 py-2 rounded-md hover:bg-blue-600"
                         onClick={handleDefaultAvatar}
                     >
                         Use Default Avatar

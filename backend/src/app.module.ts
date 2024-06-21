@@ -1,11 +1,9 @@
 import { UsersModule } from './users/users.module';
 import { User } from './users/users.entity';
-import { Job } from './jobs/jobs.entity';
 import { Earnings } from './users/earnings.entity';
 import { TalentCards } from './talent/talentcards.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { JobsModule } from './jobs/jobs.module';
 import { TalentModule } from './talent/talent.module';
 import { LeaderboardModule } from './leaderboard/leaderboard.module';
 import AuthModule from './auth/auth.module';
@@ -20,10 +18,18 @@ import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ConfigService, ConfigModule } from '@nestjs/config';
+import { TalentReviews } from './talent/talentReviews.entity';
+import { UserProfile } from './users/user.profile.entity';
+import { TalentStatistics } from './users/user.statistics.entity';
 dotenv.config();
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env', '.env.test'],
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST,
@@ -35,12 +41,23 @@ dotenv.config();
       synchronize: true,
       autoLoadEntities: true,
     }),
-    TypeOrmModule.forFeature([User, Job, Earnings, TalentCards]),
+    TypeOrmModule.forFeature([
+      User,
+      UserProfile,
+      TalentStatistics,
+      Earnings,
+      TalentCards,
+      TalentReviews,
+      Earnings,
+    ]),
     UsersModule,
-    JobsModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '1d' },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: { expiresIn: '1d' },
+      }),
+      inject: [ConfigService],
     }),
     AuthModule,
     TalentModule,

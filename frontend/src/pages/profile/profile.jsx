@@ -10,11 +10,8 @@ const ProfilePage = () => {
     };
 
     return (
-        <div className="flex max-w-7xl mx-auto mt-20 rounded-2xl min-h-full gap-5">
-            {/* Dashboard */}
+        <div className="flex flex-col md:flex-row max-w-7xl mx-auto mt-5 md:mt-20 rounded-2xl md:min-h-full gap-5">
             <Dashboard activeTab={activeTab} handleTabClick={handleTabClick} />
-
-            {/* Tab Content */}
             <TabContent activeTab={activeTab} />
         </div>
     );

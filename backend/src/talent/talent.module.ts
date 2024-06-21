@@ -1,7 +1,7 @@
 import { TalentCards } from './talentcards.entity';
-import { User } from 'src/users/users.entity';
-import { UserProfile } from 'src/users/user.profile.entity';
-import { TalentStatistics } from 'src/users/user.statistics.entity';
+import { User } from '../users/users.entity';
+import { UserProfile } from '../users/user.profile.entity';
+import { TalentStatistics } from '../users/user.statistics.entity';
 import { TalentService } from './services/talent.service';
 import { TalentController } from './controllers/talent.controller';
 
@@ -11,8 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtMiddleware } from '../users/middlewares/middlewares.middleware';
 import { JwtService } from '@nestjs/jwt';
 import { TalentReviews } from './talentReviews.entity';
-import { AuthService } from 'src/auth/services/auth.service';
-import AuthModule from 'src/auth/auth.module';
+import AuthModule from '../auth/auth.module';
 
 @Module({
   imports: [

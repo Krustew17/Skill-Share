@@ -123,6 +123,9 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
                     theme: "colored",
                     transition: Bounce,
                 });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             } else {
                 setErrorMessage(data.message);
             }
@@ -137,7 +140,7 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
             onClick={onClose}
         >
             <div
-                className="relative bg-white rounded-lg shadow-lg w-1/2 p-6 z-10 max-w-lg"
+                className="relative bg-white rounded-lg shadow-lg w-full sm:w-1/2 md:w-1/3 p-4 sm:p-6 z-10 max-w-lg max-h-screen overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
             >
                 {step === 1 && (
@@ -192,6 +195,7 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
                                 <div className="flex flex-wrap gap-1 mb-4">
                                     {skills.map((skill) => (
                                         <span
+                                            key={skill}
                                             className="px-2 py-1 bg-blue-300 rounded-lg text-sm cursor-pointer hover:bg-blue-400"
                                             onClick={() =>
                                                 handleSkillClick(skill)
@@ -213,7 +217,7 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
                             <button
                                 type="button"
                                 onClick={nextStep}
-                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto"
                             >
                                 Next
                             </button>
@@ -241,19 +245,21 @@ const TalentCardForm = ({ onClose, formData, setFormData }) => {
                                     multiple
                                 />
                             </div>
-                            <button
-                                type="button"
-                                onClick={prevStep}
-                                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mr-2"
-                            >
-                                Previous
-                            </button>
-                            <button
-                                onClick={handleSubmit}
-                                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-                            >
-                                Save
-                            </button>
+                            <div className="flex justify-between">
+                                <button
+                                    type="button"
+                                    onClick={prevStep}
+                                    className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded w-full sm:w-auto mr-2"
+                                >
+                                    Previous
+                                </button>
+                                <button
+                                    onClick={handleSubmit}
+                                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded w-full sm:w-auto"
+                                >
+                                    Save
+                                </button>
+                            </div>
                         </form>
                     </div>
                 )}

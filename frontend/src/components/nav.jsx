@@ -203,35 +203,41 @@ export default function NavBar() {
                 <div className="md:hidden mt-4 space-y-2 list-none flex flex-col gap-4 h-full text-center dark:text-white">
                     <CustomScroll
                         to="/"
-                        scrollTo={2150}
+                        scrollTo={2280}
                         className="block text-lg"
                     >
                         Premium
                     </CustomScroll>
-                    <CustomLink to="/talents" className="block text-lg">
+                    <CustomLink to="/talent" className="block text-lg">
                         Talents
                     </CustomLink>
                     <CustomLink to="/FAQ" className="block text-lg">
                         FAQ
                     </CustomLink>
                     {authenticated ? (
-                        <button
-                            onClick={logout}
-                            className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 max-w-32 self-center"
-                        >
-                            Logout
-                        </button>
+                        <div className="gap-10 list-none">
+                            <CustomLink
+                                to="/profile"
+                                className="block text-lg mb-5"
+                            >
+                                Profile
+                            </CustomLink>
+                            <button
+                                onClick={logout}
+                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400"
+                            >
+                                Logout
+                            </button>
+                        </div>
                     ) : (
                         <div className="flex flex-col gap-2 items-center">
                             <CustomLink
-                                // to="/sign-up"
                                 onClick={openModal}
                                 className="block max-w-32 text-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400"
                             >
                                 Sign up
                             </CustomLink>
                             <CustomLink
-                                // to="/login"
                                 onClick={openLogin}
                                 className="block max-w-32 text-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400"
                             >
