@@ -131,16 +131,16 @@ const TalentList = ({ onDataSend }) => {
         const newSearchParams = new URLSearchParams(searchParams);
         newSearchParams.set("page", newPage);
         setSearchParams(newSearchParams);
+        setPage(newPage);
         window.scrollTo(0, 0);
     };
+
     useEffect(() => {
         const currentPage = new URLSearchParams(location.search).get("page");
-        if (currentPage !== page) {
-            console.log(currentPage, page);
-            setPage(currentPage ? parseInt(currentPage) : 1);
+        if (currentPage && currentPage !== page) {
+            setPage(parseInt(currentPage));
         }
-        // console.log(currentPage, page);
-    }, [location]);
+    }, [location.search, page]);
 
     const handleViewDetails = async (talent) => {
         console.log(talent);
@@ -219,9 +219,6 @@ const TalentList = ({ onDataSend }) => {
         fetchTalents();
     }, [location.search, page, limit]);
 
-    if (talents.message === "No talents found") {
-        return <div>Loading...</div>;
-    }
     return (
         <div className="w-full lg:w-4/5 px-6 flex-col flex-wrap gap-6">
             {talents.length === 0 ? (
