@@ -54,7 +54,7 @@ export class TalentController {
   @UseInterceptors(
     FileFieldsInterceptor([{ name: 'portfolio', maxCount: 5 }], {
       storage: diskStorage({
-        destination: '../../frontend/build/uploads',
+        destination: 'uploads/portfolio',
         filename: (req, file, cb) => {
           const filename = `${Date.now()}-${file.originalname}`;
           cb(null, filename);
@@ -85,7 +85,6 @@ export class TalentController {
     const portfolioPaths = files.portfolio
       ? files.portfolio.map((file) => file.path)
       : [];
-
     const skills =
       typeof body.skills === 'string' ? JSON.parse(body.skills) : body.skills;
     if (!Array.isArray(skills)) {
@@ -143,6 +142,7 @@ export class TalentController {
     const portfolioPaths = files.portfolio
       ? files.portfolio.map((file) => file.path)
       : [];
+    console.log(portfolioPaths);
     return this.talentService.updateTalentCard(
       talentCardId,
       newTalentCardBody,

@@ -63,8 +63,12 @@ dotenv.config();
     StripeModule,
     ServeStaticModule.forRoot(
       {
-        rootPath: join(__dirname, '..', '/uploads'),
-        serveRoot: '/uploads',
+        rootPath: join(__dirname, '..', '/uploads/profileImages'),
+        serveRoot: '/uploads/profileImages',
+      },
+      {
+        rootPath: join(__dirname, '..', '../uploads/portfolio'),
+        serveRoot: '/uploads/portfolio',
       },
       {
         rootPath: join(__dirname, '..', '../frontend/build'),
