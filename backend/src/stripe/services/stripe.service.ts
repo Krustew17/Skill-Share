@@ -80,7 +80,6 @@ export class StripeService {
   //   return paymentIntent;
   // }
   async sendHireReceipt(email: string, amount: number, id: string) {
-    console.log(email, amount);
     const amountDollars = amount / 100;
     await this.emailService.sendHireReceipt(email, amountDollars, id);
   }
@@ -92,7 +91,7 @@ export class StripeService {
     }
 
     user.hasPremium = true;
-    await this.emailService.sendPremiumEmail(email);
+    await this.emailService.sendPremiumEmail(user.email);
     return await this.userRepository.save(user);
   }
 }

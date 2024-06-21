@@ -78,7 +78,9 @@ export class StripeController {
         break;
       case 'payment_intent.succeeded':
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        this.handlePaymentIntentSucceeded(paymentIntent);
+        if (paymentIntent.receipt_email) {
+          this.handlePaymentIntentSucceeded(paymentIntent);
+        }
         break;
     }
 
@@ -96,7 +98,6 @@ export class StripeController {
   private async handlePaymentIntentSucceeded(
     paymentIntent: Stripe.PaymentIntent,
   ) {
-    console.log(paymentIntent);
     await this.stripeService.sendHireReceipt(
       paymentIntent.receipt_email,
       paymentIntent.amount,
@@ -112,7 +113,6 @@ export class StripeController {
       session.status === 'complete' &&
       session.payment_status === 'paid'
     ) {
-      console.log('test');
       await this.stripeService.updateUserToPremium(session.customer_email);
     }
   }

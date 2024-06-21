@@ -50,12 +50,16 @@ export class EmailService {
   }
 
   async sendPremiumEmail(email: string) {
-    await this.transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'Premium Account',
-      html: `Your account has been upgraded to premium. Enjoy!`,
-    });
+    try {
+      await this.transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Premium Account',
+        html: `Your account has been upgraded to premium. Enjoy!`,
+      });
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
   }
   async sendHireReceipt(email: string, amount: number, id: string) {
     await this.transporter.sendMail({
