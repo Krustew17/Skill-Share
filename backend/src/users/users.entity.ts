@@ -1,4 +1,3 @@
-import { Job } from 'src/jobs/jobs.entity';
 import { TalentCards } from '../talent/talentcards.entity';
 import { Earnings } from './earnings.entity';
 import { UserProfile } from './user.profile.entity';
@@ -13,7 +12,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { TalentStatistics } from './user.statistics.entity';
-import { TalentReviews } from 'src/talent/talentReviews.entity';
+import { TalentReviews } from '../talent/talentReviews.entity';
 
 @Entity()
 export class User {
@@ -37,9 +36,6 @@ export class User {
 
   @Column({ default: false })
   isActive: boolean;
-
-  @OneToMany(() => Job, (job) => job.user, { cascade: true })
-  jobOffers: Job[];
 
   @OneToMany(() => TalentCards, (talent) => talent.user, { cascade: true })
   talentCards: TalentCards[];

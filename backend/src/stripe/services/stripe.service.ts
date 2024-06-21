@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { EmailService } from 'src/auth/services/email.service';
-import { User } from 'src/users/users.entity';
+import { EmailService } from '../../auth/services/email.service';
+import { User } from '../../users/users.entity';
 
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Request, Response } from 'express';
 import { Repository } from 'typeorm';
 
 import Stripe from 'stripe';

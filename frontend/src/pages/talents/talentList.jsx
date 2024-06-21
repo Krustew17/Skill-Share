@@ -23,7 +23,7 @@ const TalentList = ({ onDataSend }) => {
 
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(2);
+    const [limit, setLimit] = useState(10);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -284,14 +284,14 @@ const TalentList = ({ onDataSend }) => {
                                 <p className="mr-0 sm:mr-2 dark:text-green-500 text-green-600">
                                     ${talent?.price}
                                 </p>
-                                <p className="hidden sm:block mx-2">|</p>
+                                {/* <p className="hidden sm:block mx-2">|</p>
                                 <p className="mt-2 sm:mt-0 mx-2 dark:text-green-500 text-green-600">
                                     100% Job Success
                                 </p>
                                 <p className="hidden sm:block mx-2">|</p>
                                 <p className="mt-2 sm:mt-0 dark:text-green-500 text-green-600">
                                     $1K+ earned{" "}
-                                </p>
+                                </p> */}
                                 <p className="hidden sm:block mx-2">|</p>
                                 <p className="mt-2 sm:mt-0 flex items-center gap-2">
                                     {talent?.averageRating}{" "}

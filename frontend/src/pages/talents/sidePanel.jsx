@@ -105,6 +105,9 @@ const TalentSidePanel = ({
                                 <h3 className="dark:text-white text-xl">
                                     {selectedTalent.title}
                                 </h3>
+                                <h3 className="text-green-700 dark:text-green-500 text-md">
+                                    ${selectedTalent.price}
+                                </h3>
                                 {selectedTalent.user.profile.country && (
                                     <h3 className="dark:text-gray-400 text-sm flex items-center justify-center sm:justify-start">
                                         <MdLocationPin />
@@ -119,8 +122,8 @@ const TalentSidePanel = ({
                                 Hire
                             </button>
                         </section>
-                        <span className="block w-full h-1 bg-gray-300 dark:bg-gray-700 my-4"></span>
-                        <section className="flex flex-col sm:flex-row sm:justify-center items-center sm:gap-5 dark:text-white">
+                        {/* <span className="block w-full h-1 bg-gray-300 dark:bg-gray-700 my-4"></span> */}
+                        {/* <section className="flex flex-col sm:flex-row sm:justify-center items-center sm:gap-5 dark:text-white">
                             <p>Price ${selectedTalent.price}</p>
                             <p className="hidden sm:block mx-2">|</p>
                             <p>100% Job Success</p>
@@ -130,7 +133,7 @@ const TalentSidePanel = ({
                             <p>5+ years of experience</p>
                             <p className="hidden sm:block mx-2">|</p>
                             <p>$1K+ Earned</p>
-                        </section>
+                        </section> */}
                         <span className="block w-full h-1 bg-gray-300 dark:bg-gray-700 my-4"></span>
                         <SkillList
                             skills={selectedTalent.skills}

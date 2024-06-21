@@ -3,14 +3,15 @@ import { User } from './users.entity';
 import { UserService } from './services/user.service';
 import { UserProfile } from './user.profile.entity';
 import { TalentStatistics } from './user.statistics.entity';
-import AuthModule from 'src/auth/auth.module';
+import AuthModule from '../auth/auth.module';
 import { JwtMiddleware } from './middlewares/middlewares.middleware';
-import { TalentReviews } from 'src/talent/talentReviews.entity';
+import { TalentReviews } from '../talent/talentReviews.entity';
 
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
+import { ConfigService, ConfigModule } from '@nestjs/config';
 
 dotenv.config();
 
@@ -22,10 +23,14 @@ dotenv.config();
       TalentStatistics,
       TalentReviews,
     ]),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '1d' },
-    }),
+    // JwtModule.registerAsync({
+    //   imports: [ConfigModule],
+    //   useFactory: async (configService: ConfigService) => ({
+    //     secret: configService.get<string>('JWT_SECRET'),
+    //     signOptions: { expiresIn: '1d' },
+    //   }),
+    //   inject: [ConfigService],
+    // }),
     AuthModule,
   ],
   controllers: [UsersController],

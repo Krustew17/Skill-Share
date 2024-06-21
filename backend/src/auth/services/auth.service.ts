@@ -1,12 +1,11 @@
 import { registerUserDto } from '../dto/register.dto';
 import { changePasswordBodyDto } from '../dto/changePassword.dto';
 import { comparePasswords, hashPassword } from '../utils/bcrypt';
-import { User } from 'src/users/users.entity';
-import { Job } from 'src/jobs/jobs.entity';
+import { User } from '../../users/users.entity';
 import { EmailService } from './email.service';
 import validatePassword from '../utils/validatePassword';
 import { loginPayloadDto } from '../dto/login.dto';
-import { UserProfile } from 'src/users/user.profile.entity';
+import { UserProfile } from '../../users/user.profile.entity';
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -22,8 +21,6 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    @InjectRepository(Job)
-    private readonly jobRepository: Repository<Job>,
     @InjectRepository(UserProfile)
     private readonly userProfileRepository: Repository<UserProfile>,
 
@@ -152,10 +149,6 @@ export class AuthService {
     if (!user) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
-    const jobs = await this.jobRepository.find({
-      where: { user: { id: user.id } },
-    });
-    await this.jobRepository.remove(jobs);
     await this.userProfileRepository.remove(user.profile);
     await this.userRepository.delete({ id: user.id });
     return {
