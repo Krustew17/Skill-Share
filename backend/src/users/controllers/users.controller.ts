@@ -7,6 +7,7 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Req,
   UploadedFiles,
   UseInterceptors,
@@ -41,7 +42,7 @@ export class UsersController {
     return this.userService.getMe(token);
   }
 
-  @Post('profile/update')
+  @Put('profile/update')
   @UseInterceptors(
     FileFieldsInterceptor([{ name: 'profileImage', maxCount: 1 }], {
       storage: diskStorage({

@@ -8,6 +8,7 @@ import {
   Delete,
   Get,
   Post,
+  Put,
   Query,
   Req,
   Res,
@@ -89,7 +90,7 @@ export class AuthController {
     }
   }
 
-  @Post('password/change')
+  @Put('password/change')
   async changePassword(
     @Req() req: Request,
     @Body()
