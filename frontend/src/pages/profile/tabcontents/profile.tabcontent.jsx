@@ -78,7 +78,7 @@ export default function ProfileTabContent({ profileData }) {
         const response = await fetch(
             import.meta.env.VITE_API_URL + "/users/profile/update",
             {
-                method: "POST",
+                method: "PUT",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },

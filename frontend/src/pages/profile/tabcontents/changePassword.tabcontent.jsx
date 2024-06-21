@@ -26,7 +26,7 @@ export default function ChangePasswordTabContent() {
             const response = await fetch(
                 import.meta.env.VITE_API_URL + "/auth/password/change",
                 {
-                    method: "POST",
+                    method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${localStorage.getItem(
