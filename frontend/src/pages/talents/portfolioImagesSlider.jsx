@@ -43,19 +43,18 @@ const ImageSlider = ({ images }) => {
             <div>
                 <a
                     href={
-                        import.meta.env.VITE_API_URL +
-                        `/${images[currentIndex]}`
+                        import.meta.env.VITE_IMAGE_URL +
+                        `/portfolio/${images[currentIndex]}`
                     }
                     target="_blank"
                 >
                     <img
                         className="w-full h-96 rounded-md border border-black dark:border-gray-200 cursor-pointer"
                         src={
-                            import.meta.env.VITE_API_URL +
-                            `/${images[currentIndex]}`
+                            import.meta.env.VITE_IMAGE_URL +
+                            `/portfolio/${images[currentIndex]}`
                         }
                         alt="portfolio image"
-                        // onClick={() => handleClick(currentIndex)}
                     />
                 </a>
             </div>
