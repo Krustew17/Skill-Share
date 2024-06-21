@@ -110,7 +110,7 @@ export default function Premium() {
                             job opportunity to attract the right talent.{" "}
                         </p>
                         <button
-                            className="text-3xl text-black dark:text-white py-2 bg-blue-500 border-2 border-blue-500 rounded mt-6 sm:mt-10 hover:cursor-not-allowed"
+                            className="text-3xl text-white py-2 bg-blue-500 border-2 border-blue-500 rounded mt-6 sm:mt-10 hover:cursor-not-allowed"
                             disabled
                         >
                             Free
@@ -133,7 +133,7 @@ export default function Premium() {
                             </li>
                             <li className="flex gap-2 text-sm sm:text-xl">
                                 <GoDotFill className=" text-gray-800 dark:text-green-500  text-2xl" />
-                                Unlimited job listings{" "}
+                                No Fees{" "}
                                 <FaCheck className=" text-green-500   text-2xl" />
                             </li>
                             <li className="flex gap-2 text-sm sm:text-xl">
@@ -148,7 +148,7 @@ export default function Premium() {
                         </p>
                         <button
                             onClick={processPayment}
-                            className="text-3xl text-black text-center dark:text-white py-2 bg-blue-500 border-2 border-blue-500 hover:bg-blue-600 hover:border-blue-600 hover:cursor-pointer rounded mt-6 sm:mt-10"
+                            className="text-3xl text-white py-2 bg-blue-500 border-2 border-blue-500 hover:bg-blue-600 hover:border-blue-600 hover:cursor-pointer rounded mt-6 sm:mt-10"
                         >
                             9.99$
                         </button>

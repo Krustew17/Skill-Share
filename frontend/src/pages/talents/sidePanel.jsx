@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FaStar } from "react-icons/fa";
 import ReviewSlider from "./reviewSlider"; // Assuming this is your slider component
 import { MdLocationPin } from "react-icons/md";
@@ -6,10 +6,10 @@ import ImageSlider from "./portfolioImagesSlider";
 import SkillList from "./skillsComponent";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-
 import CheckoutForm from "../talents/checkoutForm";
 import "../../index.css";
-import Cookies from "js-cookie";
+import { AuthContext } from "../../contexts/AuthContext";
+import { toast, Bounce } from "react-toastify";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
@@ -21,10 +21,24 @@ const TalentSidePanel = ({
     handleAddReviewClick,
 }) => {
     const [clientSecret, setClientSecret] = useState("");
+    const { currentUser } = useContext(AuthContext);
     const handleHireClick = async () => {
+        if (!currentUser) {
+            toast.error("Please login to hire talent", {
+                position: "bottom-left",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+            return;
+        }
         const stripe = await stripePromise;
 
-        // Create PaymentIntent
         const response = await fetch(
             import.meta.env.VITE_API_URL + "/stripe/create-payment-intent",
             {
@@ -32,7 +46,6 @@ const TalentSidePanel = ({
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    // refreshToken: Cookies.get("refreshToken"),
                 },
                 body: JSON.stringify({
                     amount: selectedTalent.price,

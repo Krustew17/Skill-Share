@@ -5,7 +5,6 @@ import { TalentCards } from './talent/talentcards.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TalentModule } from './talent/talent.module';
-import { LeaderboardModule } from './leaderboard/leaderboard.module';
 import AuthModule from './auth/auth.module';
 import { StripeModule } from './stripe/stripe.module';
 
@@ -61,7 +60,6 @@ dotenv.config();
     }),
     AuthModule,
     TalentModule,
-    LeaderboardModule,
     StripeModule,
     ServeStaticModule.forRoot(
       {
@@ -69,7 +67,7 @@ dotenv.config();
         exclude: ['/api/(.*)'],
       },
       {
-        rootPath: join(__dirname, '..', '../frontend/build/uploads'),
+        rootPath: join(__dirname, '..', '../frontend/public/images/uploads'),
         serveRoot: '/uploads',
       },
     ),
