@@ -21,7 +21,7 @@ export default function NavBar() {
         "https://lh3.googleusercontent.com"
     );
     console.log(hasGmailPhoto);
-    const test = (data) => {
+    const handleClose = (data) => {
         if (data === "close") {
             setIsModalOpen(false);
             setIsMenuOpen(false);
@@ -194,7 +194,10 @@ export default function NavBar() {
                         onClick={closeModal}
                     ></div>
                     <div className="relative z-10 px-4">
-                        <SignUp setter={test} handleSignIn={handleSignIn} />
+                        <SignUp
+                            setter={handleClose}
+                            handleSignIn={handleSignIn}
+                        />
                     </div>
                 </div>
             )}
