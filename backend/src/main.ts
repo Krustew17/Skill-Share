@@ -13,7 +13,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const port = parseInt(process.env.PORT) || 3000;
   app.use(
-    '/stripe/webhook/events',
+    '/api/stripe/webhook/events',
     raw({ type: 'application/json' }),
     (req: Request, res: Response, next: () => void) => {
       (req as any).rawBody = req.body;

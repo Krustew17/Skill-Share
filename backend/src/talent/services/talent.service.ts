@@ -40,8 +40,7 @@ export class TalentService {
     return { data: talentCards, amount: talentCards.length };
   }
 
-  async getAllTalents(page: number = 1, limit: number = 2) {
-    console.log(page, limit);
+  async getAllTalents(page: number = 1, limit: number = 10) {
     const [talents, total] = await this.talentRepository
       .createQueryBuilder('talent')
       .leftJoinAndSelect('talent.user', 'user')
@@ -140,8 +139,6 @@ export class TalentService {
       .skip((page - 1) * limit)
       .take(limit)
       .getManyAndCount();
-
-    console.log(page, limit, filteredTalents);
 
     return {
       talents: filteredTalents,

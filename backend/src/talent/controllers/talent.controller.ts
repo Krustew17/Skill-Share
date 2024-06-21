@@ -143,7 +143,6 @@ export class TalentController {
     const portfolioPaths = files.portfolio
       ? files.portfolio.map((file) => file.path)
       : [];
-    console.log(portfolioPaths);
     return this.talentService.updateTalentCard(
       talentCardId,
       newTalentCardBody,
@@ -178,7 +177,6 @@ export class TalentController {
     },
     @Req() req: Request,
   ) {
-    console.log(body);
     return this.talentService.createTalentReview(body, req);
   }
 }

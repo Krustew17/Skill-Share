@@ -79,7 +79,6 @@ export class StripeService {
   //   return paymentIntent;
   // }
   async updateUserToPremium(email: string) {
-    console.log(email);
     const user = await this.userRepository.findOneBy({ email });
 
     if (!user) {
