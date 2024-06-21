@@ -121,7 +121,6 @@ const TalentList = ({ onDataSend }) => {
                 theme: "colored",
                 transition: Bounce,
             });
-            console.log("hi");
             return;
         }
         setShowReviewForm(true);
@@ -143,7 +142,6 @@ const TalentList = ({ onDataSend }) => {
     }, [location.search, page]);
 
     const handleViewDetails = async (talent) => {
-        console.log(talent);
         const response = await fetch(
             import.meta.env.VITE_API_URL +
                 "/talent/reviews?talentCardId=" +
@@ -153,7 +151,7 @@ const TalentList = ({ onDataSend }) => {
 
         setCurrentReviews(responseJson.data);
         setSelectedTalent(talent);
-        console.log(talent);
+
         Cookies.set("talentUserId", talent.user.id, {
             expires: 1,
             secure: true,
@@ -187,7 +185,6 @@ const TalentList = ({ onDataSend }) => {
                     },
                 });
                 const data = await response.json();
-                console.log(data);
                 setSkills(data.uniqueSkills);
                 setTotal(data.total);
                 onDataSend(data.uniqueSkills);

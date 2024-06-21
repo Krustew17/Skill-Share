@@ -21,7 +21,6 @@ export default function Talents() {
     const handleDataFromChild = (data) => {
         setChildData(data);
     };
-    console.log(childData);
     const handleButtonClick = async () => {
         if (!authenticated) {
             return setShowModal(true);
@@ -37,7 +36,6 @@ export default function Talents() {
             }
         );
         const responseJson = await talentCards.json();
-        console.log(responseJson);
         if (!currentUser?.user?.hasPremium && responseJson.amount === 3) {
             toast.error("You need premium to post more than 3 talent cards", {
                 position: "bottom-left",

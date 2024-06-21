@@ -31,7 +31,6 @@ const TalentCardForm = ({ onClose }) => {
             setStep(step + 1);
             setErrorMessage("");
         } else if (step == 2) {
-            console.log(formData.portfolio);
             if (formData.portfolio.length > 5) {
                 setErrorMessage("Maximum 5 portfolio images are allowed");
                 return;
@@ -61,7 +60,6 @@ const TalentCardForm = ({ onClose }) => {
     const handleKeyDown = (e) => {
         if (e.key === " ") {
             e.preventDefault();
-            console.log(currentSkill);
             if (currentSkill.trim()) {
                 setSkills([...skills, currentSkill.trim()]);
                 setCurrentSkill("");

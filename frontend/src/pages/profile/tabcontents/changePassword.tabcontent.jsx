@@ -16,7 +16,6 @@ export default function ChangePasswordTabContent() {
             ...formData,
             [e.target.name]: e.target.value,
         });
-        console.log(formData);
     };
 
     const handleSubmit = async (e) => {
@@ -39,7 +38,6 @@ export default function ChangePasswordTabContent() {
                 }
             );
             const data = await response.json();
-            console.log(data);
             if (data.HttpStatus !== 200) {
                 setErrorMessage(data.message);
             } else {

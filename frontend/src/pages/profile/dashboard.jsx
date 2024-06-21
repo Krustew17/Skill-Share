@@ -70,7 +70,7 @@ const Dashboard = ({ activeTab, handleTabClick }) => {
                             Change Password
                         </li>
                     ) : null}
-                    <li
+                    {/* <li
                         className={`cursor-pointer text-lg sm:text-xl mt-1 flex gap-2  ${
                             activeTab === 4
                                 ? "text-blue-500"
@@ -80,7 +80,7 @@ const Dashboard = ({ activeTab, handleTabClick }) => {
                     >
                         <FaMoneyBillTransfer className="text-2xl sm:text-3xl" />{" "}
                         Connect Stripe
-                    </li>
+                    </li> */}
                 </ul>
             </div>
         </div>

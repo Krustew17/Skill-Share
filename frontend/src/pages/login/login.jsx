@@ -19,7 +19,7 @@ export default function Login({ onClose, handleSignUp }) {
         setErrorMessage("");
         event.preventDefault();
         const formData = new FormData(event.target);
-        console.log(apiUrl);
+
         const response = await fetch(apiUrl, {
             method: "POST",
             headers: {
@@ -31,7 +31,7 @@ export default function Login({ onClose, handleSignUp }) {
             }),
         });
         const responseJson = await response.json();
-        console.log(responseJson);
+
         if (responseJson.message === "user not verified") {
             setErrorMessage("User not verified. Please check your email.");
         }

@@ -53,7 +53,6 @@ export default function CheckoutForm({ onClose }) {
         }
 
         setIsLoading(true);
-        console.log(import.meta.env.VITE_IMAGE_URL);
 
         const { error } = await stripe.confirmPayment({
             elements,

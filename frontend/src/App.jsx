@@ -67,7 +67,6 @@ function App() {
             }, 1000);
         }
         if (searchParams.get("token")) {
-            console.log(searchParams.get("token"));
             localStorage.setItem("token", searchParams.get("token"));
             setAuthenticated(true);
             window.location.replace("/");

@@ -45,10 +45,11 @@ export class StripeService {
     return session;
   }
 
-  async createPaymentIntent(amount: number, talentId: number) {
+  async createPaymentIntent(amount: number, receiptEmail: string) {
     const paymentIntent = await this.stripe.paymentIntents.create({
       amount: amount * 100,
       currency: 'usd',
+      receipt_email: receiptEmail,
     });
     return {
       clientSecret: paymentIntent.client_secret,
@@ -78,6 +79,11 @@ export class StripeService {
 
   //   return paymentIntent;
   // }
+  async sendHireReceipt(email: string, amount: number, id: string) {
+    console.log(email, amount);
+    const amountDollars = amount / 100;
+    await this.emailService.sendHireReceipt(email, amountDollars, id);
+  }
   async updateUserToPremium(email: string) {
     const user = await this.userRepository.findOneBy({ email });
 
