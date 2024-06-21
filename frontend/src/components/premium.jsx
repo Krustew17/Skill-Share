@@ -67,7 +67,18 @@ export default function Premium() {
             sessionId: session.session.id,
         });
         if (result.error) {
-            throw new Error(result.error.message);
+            return toast.error(result.error.message, {
+                position: "bottom-left",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                limit: 1,
+                transition: Bounce,
+            });
         }
     };
 
