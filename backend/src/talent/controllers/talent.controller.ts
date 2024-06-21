@@ -90,6 +90,9 @@ export class TalentController {
     if (!Array.isArray(skills)) {
       throw new Error('Skills must be an array');
     }
+    if (body.title.length > 60) {
+      throw new Error('Title is too long');
+    }
 
     const talentCardData: Partial<TalentCards> = {
       ...body,
