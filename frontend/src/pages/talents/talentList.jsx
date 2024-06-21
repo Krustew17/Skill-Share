@@ -174,7 +174,7 @@ const TalentList = ({ onDataSend }) => {
                     queryParams.has("maxPrice") ||
                     queryParams.has("rating")
                 ) {
-                    const params = `/talent/search?${queryParams.toString()}&limit=${limit}`;
+                    const params = `/talent/search?${queryParams.toString()}&page=${page}&limit=${limit}`;
                     url += params;
                 } else {
                     url += `/talent/all?page=${page}&limit=${limit}`;
