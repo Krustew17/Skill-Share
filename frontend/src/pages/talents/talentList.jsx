@@ -172,7 +172,7 @@ const TalentList = ({ onDataSend }) => {
                     queryParams.has("maxPrice") ||
                     queryParams.has("rating")
                 ) {
-                    const params = `/talent/search?${queryParams.toString()}&page=${page}&limit=${limit}`;
+                    const params = `/talent/search?${queryParams.toString()}&limit=${limit}`;
                     url += params;
                 } else {
                     url += `/talent/all?page=${page}&limit=${limit}`;
@@ -207,6 +207,7 @@ const TalentList = ({ onDataSend }) => {
                         };
                     })
                 );
+                console.log(talentsWithRatings);
                 setTalents(talentsWithRatings);
             } catch (error) {
                 console.error("Error fetching talents:", error);
