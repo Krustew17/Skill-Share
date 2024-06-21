@@ -44,15 +44,15 @@ const ImageSlider = ({ images }) => {
                 <a
                     href={
                         import.meta.env.VITE_IMAGE_URL +
-                        `/portfolio/${images[currentIndex]}`
+                        `/${images[currentIndex]}`
                     }
                     target="_blank"
                 >
                     <img
-                        className="w-full h-96 rounded-md border border-black dark:border-gray-200 cursor-pointer"
+                        className="w-full h-40 md:h-96 rounded-md border border-black dark:border-gray-200 cursor-pointer"
                         src={
                             import.meta.env.VITE_IMAGE_URL +
-                            `/portfolio/${images[currentIndex]}`
+                            `/${images[currentIndex]}`
                         }
                         alt="portfolio image"
                     />
@@ -64,18 +64,20 @@ const ImageSlider = ({ images }) => {
             >
                 &gt;
             </button>
-            {expandedImage && (
+            {/* {expandedImage && (
                 <div
                     className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
                     onClick={handleClose}
                 >
                     <img
-                        src={import.meta.env.VITE_API_URL + `/${expandedImage}`}
+                        src={
+                            import.meta.env.VITE_IMAGE_URL + `/${expandedImage}`
+                        }
                         alt="expanded image"
                         className="max-w-full max-h-full"
                     />
                 </div>
-            )}
+            )} */}
         </div>
     );
 };
