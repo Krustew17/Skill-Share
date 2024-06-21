@@ -69,7 +69,6 @@ export class AuthController {
     @Body('password') newPassword: string,
     @Body('confirmPassword') confirmPassword: string,
   ) {
-    console.log(resetToken);
     return this.authService.resetPassword(
       resetToken,
       newPassword,

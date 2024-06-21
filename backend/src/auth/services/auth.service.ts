@@ -199,7 +199,6 @@ export class AuthService {
 
       user.password = await hashPassword(newPassword);
       await this.userRepository.save(user);
-      console.log('updated', user);
       return {
         message: 'Password reset successfully',
         HttpStatus: HttpStatus.OK,
@@ -270,7 +269,6 @@ export class AuthService {
   async refreshToken(refreshToken: string) {
     try {
       const payload = this.jwtService.verify(refreshToken);
-      console.log(payload);
       const user = await this.userRepository.findOneBy({ id: payload.user.id });
 
       if (!user) {
@@ -281,7 +279,6 @@ export class AuthService {
         { user },
         { expiresIn: '10s' },
       );
-      console.log(newAccessToken);
 
       return {
         access_token: newAccessToken,

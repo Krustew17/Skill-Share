@@ -93,11 +93,6 @@ export class StripeController {
     return this.stripeService.createPaymentIntent(amount, talentId);
   }
 
-  // @Post('confirm/:id')
-  // async confirmPaymentIntent(@Param('id') id: string) {
-  //   return this.stripeService.confirmPaymentIntent(id);
-  // }
-
   private async handleCheckoutSessionCompleted(
     session: Stripe.Checkout.Session,
   ) {

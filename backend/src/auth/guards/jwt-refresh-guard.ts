@@ -30,7 +30,6 @@ export class JwtRefreshGuard implements CanActivate {
       if (error.name === 'TokenExpiredError') {
         const newToken = await this.authService.refreshToken(token);
         request.headers['authorization'] = `Bearer ${newToken}`;
-        console.log('refreshed token');
         return true;
       } else {
         throw new UnauthorizedException();
