@@ -9,20 +9,28 @@ export default function FAQ() {
 
     const faqs = [
         {
-            question: "How do I update my billing information?",
-            answer: "To update your billing information, go to the billing section in your account settings and follow the instructions.",
+            question: "What is Skillshare?",
+            answer: "Skillshare is an online platform where talented individuals can offer their services, and users can browse and purchase these services. The platform connects experts in various fields with those looking to hire professionals for specific tasks or projects.",
         },
         {
-            question: "How can I contact customer support?",
-            answer: "To contact customer support, look for a 'Contact us' or 'Help' button or link on the website or platform. You may be able to email, call, or chat with customer support for assistance.",
+            question: "How do I hire a talent on Skillshare?",
+            answer: "To hire a talent, simply browse through the available service listings, select a talent that fits your needs, and purchase their service directly through the platform. You can communicate with the talent to discuss the details and ensure the service meets your expectations.",
         },
         {
-            question: "How do I update my profile information?",
-            answer: "To update your profile information, go to the profile section in your account settings and make the necessary changes.",
+            question: "How much does Skillshare cost?",
+            answer: "Currently Skillshare offers a single premium plan for individuals. It is a one-time payment so you don't have to worry about annoying monthly charges. All the benefits are described in the pricing page.",
         },
         {
-            question: "How do I find my purchase history?",
-            answer: "To find your purchase history, go to the orders section in your account settings where you can view your past orders.",
+            question: "How can I offer my services on Skillshare?",
+            answer: "Anybody can offer their services in Skillshare for free. The platform connects experts in various fields with those looking to hire professionals for specific tasks or projects. Simply go to the talents page, click on 'add talent', fill in the form and you're all set!",
+        },
+        {
+            question: "What types of services are available on Skillshare?",
+            answer: "Skillshare offers a wide range of services, including graphic design, web development, writing, marketing, personal coaching, and more. Users can find professionals for almost any type of project, ensuring a diverse selection of talents and services.",
+        },
+        {
+            question: "How much does Skillshare charge?",
+            answer: "Skillshare will tax 1% of the total amount paid for hiring a talent. Using premium Skillshare will NOT charge you a single cent.",
         },
     ];
 

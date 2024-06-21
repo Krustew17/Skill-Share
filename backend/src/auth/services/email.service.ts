@@ -12,8 +12,8 @@ export class EmailService {
   private transporter;
   constructor() {
     this.transporter = nodemailer.createTransport({
-      host: 'sandbox.smtp.mailtrap.io',
-      port: 2525,
+      host: 'smtp.gmail.com',
+      port: 587,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,
@@ -24,18 +24,17 @@ export class EmailService {
     const url = `${HOST}/verify-email?token=${token}`;
     if (email.includes('gmail.com')) {
       await this.transporter.sendMail({
-        from: 'mailtrap@demomailtrap.com',
+        from: process.env.EMAIL_USER,
         to: email,
         subject: 'Verify your email',
-        html: `Hello ${username}, click <a href="${url}">here</a> to verify your email.\n test`,
+        html: `Hello ${username}, click <a href="${url}">here</a> to verify your email.`,
       });
     } else {
       await this.transporter.sendMail({
-        from: '"mailtrap@demomailtrap.com',
+        from: process.env.EMAIL_USER,
         to: email,
         subject: 'Verify your email',
-        html: `Hello ${username}, click the url below to verify your email:\n
-      ${url}`,
+        html: `Hello ${username}, click <a href="${url}">here</a> to verify your email.`,
       });
     }
   }
@@ -43,7 +42,7 @@ export class EmailService {
   async sendPasswordResetEmail(username: string, email: string, token: string) {
     const url = `${HOST}/reset-password?resetToken=${token}`;
     await this.transporter.sendMail({
-      from: '"mailtrap@demomailtrap.com',
+      from: process.env.EMAIL_USER,
       to: email,
       subject: 'Reset your password',
       html: `Hey ${username}, click <a href="${url}">here</a> to reset your password.`,
@@ -52,7 +51,7 @@ export class EmailService {
 
   async sendPremiumEmail(email: string) {
     await this.transporter.sendMail({
-      from: '"mailtrap@demomailtrap.com',
+      from: process.env.EMAIL_USER,
       to: email,
       subject: 'Premium Account',
       html: `Your account has been upgraded to premium. Enjoy!`,
