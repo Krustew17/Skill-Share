@@ -102,19 +102,6 @@ export default function Login({ onClose, handleSignUp }) {
                         Sign in with Google
                     </span>
                 </a>
-
-                <div className="flex items-center justify-between mt-4">
-                    <span className="w-1/5 border-b dark:border-gray-600 lg:w-1/4"></span>
-
-                    <a
-                        href="#"
-                        className="text-xs text-center text-gray-500 uppercase dark:text-gray-400 hover:underline"
-                    >
-                        or login with username
-                    </a>
-
-                    <span className="w-1/5 border-b dark:border-gray-400 lg:w-1/4"></span>
-                </div>
                 <form onSubmit={handleSubmit}>
                     <div className="text-red-500 mt-3 mb-3 text-md">
                         {errorMessage}
