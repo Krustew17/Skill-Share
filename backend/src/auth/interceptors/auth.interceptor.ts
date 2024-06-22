@@ -38,7 +38,6 @@ export class AuthInterceptor implements NestInterceptor {
     } catch (error) {
       res.setHeader('isAuth', 'false');
     }
-    console.log('returning...');
     return next.handle();
   }
 }

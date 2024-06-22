@@ -207,7 +207,6 @@ const TalentList = ({ onDataSend }) => {
                         };
                     })
                 );
-                console.log(talentsWithRatings);
                 setTalents(talentsWithRatings);
             } catch (error) {
                 console.error("Error fetching talents:", error);
