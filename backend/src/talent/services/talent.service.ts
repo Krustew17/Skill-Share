@@ -192,7 +192,6 @@ export class TalentService {
       { id: talentCardId },
       { ...talentCardData },
     );
-    console.log(updatedCard);
     return {
       message: 'Talent card updated successfully',
       HttpStatus: HttpStatus.OK,

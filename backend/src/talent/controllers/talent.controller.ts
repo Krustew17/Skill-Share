@@ -145,7 +145,6 @@ export class TalentController {
     const portfolioPaths = files.portfolio
       ? files.portfolio.map((file) => file.path)
       : [];
-    console.log(portfolioPaths);
     return this.talentService.updateTalentCard(
       talentCardId,
       newTalentCardBody,
