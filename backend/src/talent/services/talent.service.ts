@@ -1,14 +1,7 @@
 import { TalentCards } from '../talentcards.entity';
-import { createTalentDto } from '../dto/create.talent.dto';
 import { updateTalentDto } from '../dto/update.talent.dto';
 
-import {
-  HttpException,
-  HttpStatus,
-  Inject,
-  Injectable,
-  Req,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
@@ -201,7 +194,7 @@ export class TalentService {
   async deleteTalentCard(talentCardId: number, req: Request) {
     const talentCard = await this.talentRepository.findOne({
       where: { id: talentCardId },
-      relations: ['user'],
+      relations: ['user', 'talentReviews'],
     });
 
     if (!talentCard) {
@@ -212,6 +205,8 @@ export class TalentService {
     if (user.id !== talentCard.user.id) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
+    const reviews = talentCard.talentReviews;
+    await this.talentReviewsRepository.remove(reviews);
 
     await this.talentRepository.delete({ id: talentCardId });
 

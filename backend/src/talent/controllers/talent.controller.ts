@@ -6,6 +6,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
   HttpStatus,
   Param,
   Post,
@@ -88,10 +89,13 @@ export class TalentController {
     const skills =
       typeof body.skills === 'string' ? JSON.parse(body.skills) : body.skills;
     if (!Array.isArray(skills)) {
-      throw new Error('Skills must be an array');
+      throw new HttpException(
+        'Skills must be an array',
+        HttpStatus.BAD_REQUEST,
+      );
     }
     if (body.title.length > 60) {
-      throw new Error('Title is too long');
+      throw new HttpException('Title is too long', HttpStatus.BAD_REQUEST);
     }
 
     const talentCardData: Partial<TalentCards> = {

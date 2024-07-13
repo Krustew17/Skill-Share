@@ -28,6 +28,10 @@ const TalentCardForm = ({ onClose }) => {
                 setErrorMessage("Skills are required");
                 return;
             }
+            if (formData.title.length > 60) {
+                setErrorMessage("Title must be less than 60 characters");
+                return;
+            }
             setStep(step + 1);
             setErrorMessage("");
         } else if (step == 2) {
