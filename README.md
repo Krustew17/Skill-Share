@@ -18,6 +18,6 @@ instaVibe is a modern social media platform inspired by Instagram. It allows use
 
 ## Test the hosted version
 might take 1-5 minutes to load since render turns the vm off due to inactivity.
-```bash
-[skill-share](https://skill-share-app.onrender.com)
-```
+
+[skill share](https://skill-share-app.onrender.com)
+
